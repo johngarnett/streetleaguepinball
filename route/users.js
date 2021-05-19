@@ -313,7 +313,13 @@ function clearUser(req,res) {
   delete sessions[req.user.id];
   var fn = 'data/sessions/' +req.user.id;
   if(util.fileExists(fn)) {
-    fs.unlink(fn);
+    fs.unlink(fn, (err => {
+      if (err) { 
+        console.log(err);
+      } else {
+        console.log("\nDeleted file: " + fn);
+      }
+    }));
   }
 }
 module.exports = router;

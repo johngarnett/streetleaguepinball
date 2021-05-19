@@ -29,6 +29,8 @@ router.use('/', function(req, res, next) {
   }
   //console.log('POST/hn:' +hn);
 
+  next();
+  /*
   if(list.indexOf(hn) != -1) {
     //console.log("ACCEPT: " +hn);
     next();
@@ -36,7 +38,7 @@ router.use('/', function(req, res, next) {
   else {
     console.log("REJECT: " +req.protocol+ "://" +req.hostname + req.originalUrl);
     res.sendStatus(400);
-  }
+  }*/
 });
 
 module.exports = router;
