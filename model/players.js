@@ -137,10 +137,10 @@ module.exports = {
     if(username.indexOf('@') >= 0) {
       //Find the ukey to match the email, if possible.
       player = this.getByEmail(username);
+    } else {
+      player = this.getByName(username);
     }
-    else { //This is semi-deprecated because of the new hash keys.
-      player = this.get(username);
-    }
+    
     if(!player) {
       console.log("login failed, unknown player: \"" + username + "\"");
       return callback("ERROR: Failed to login");

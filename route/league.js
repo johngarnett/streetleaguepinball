@@ -73,6 +73,9 @@ router.get('/stats',function(req,res) {
 
   const divs = all.reduce((divs, player) => {
     const pDivs = player.divisions;
+    if(!pDivs){
+      return {};
+    }
     const { name, key } = player;
     const rating = IPR.forName(name) || 0;
 
