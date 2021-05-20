@@ -2,6 +2,8 @@ var fs = require('fs');
 var CONST = require('../constants');
 var seasons = require('../model/seasons');
 var matches = require('../model/matches');
+require('dotenv').load();
+const CURRENT_SEASON = process.env.CURRENT_SEASON;
 
 function createMatches(params) {
   var params = params || {};
@@ -93,7 +95,7 @@ function createMatches(params) {
 }
 
 var params = {
-  key: 'season-13',
+  key: SEASON,
   week: process.argv[2]
 };
 

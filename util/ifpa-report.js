@@ -4,8 +4,11 @@
 // 2) Attempt to match via IFPA API.
 
 const fs = require('fs');
+require('dotenv').load();
+const DATA_FOLDER = process.env.DATA_FOLDER;
+const CURRENT_SEASON = process.env.CURRENT_SEASON;
 
-const ifpa = fs.readFileSync('data/ifpa_num.csv').toString()
+const ifpa = fs.readFileSync(DATA_FOLDER + '/ifpa_num.csv').toString()
   .split('\n')
   .filter(line => line.length > 0)
   .map(line => line.split(','))
@@ -15,7 +18,7 @@ const ifpa = fs.readFileSync('data/ifpa_num.csv').toString()
     return map;
   }, {});
 
-const pdb = fs.readFileSync('data/season-9/playerdb.csv').toString()
+const pdb = fs.readFileSync(DATA_FOLDER + '/' + CURRENT_SEASON + '/playerdb.csv').toString()
   .split('\n')
   .filter(line => line.length > 0)
   .map(line => line.split(','))

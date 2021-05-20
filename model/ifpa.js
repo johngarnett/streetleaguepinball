@@ -8,11 +8,12 @@ var players = require('./players');
 
 require('dotenv').load();
 const IFPA_API_KEY = process.env.IFPA_API_KEY;
+const DATA_FOLDER = process.env.DATA_FOLDER;
 
 var map = {};
 
 function load() {
-  var filename = 'data/ifpa_num.csv';
+  var filename = DATA_FOLDER + '/ifpa_num.csv';
   console.log("Loading: " +filename+ " ...");
   var rows = csv.load(filename);
   for(i in rows) {
@@ -25,7 +26,7 @@ function load() {
       name: name,
       num: num
     };
-    var fn = 'data/ifpa/' + num;
+    var fn = dataFolder + '/ifpa/' + num;
     if(util.fileExists(fn)) {
       var json = JSON.parse(fs.readFileSync(fn));
       p.fetched = json.mnp_fetched || 0;
@@ -77,7 +78,7 @@ function work() {
       var rank = json.player_stats.current_wppr_rank;
       console.log("rank:",rank);
       json.mnp_fetched = Date.now();
-      fs.writeFileSync('data/ifpa/'+item.num,JSON.stringify(json,null,2));
+      fs.writeFileSync(dataFolder + '/ifpa/' + item.num,JSON.stringify(json,null,2));
     });
     res.on('end',function() {
       // setTimeout(work, 500);

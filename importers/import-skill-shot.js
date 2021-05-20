@@ -1,6 +1,8 @@
 var fs = require('fs');
-
-var filename = 'data/season-6/venues.all.txt';
+require('dotenv').load();
+const DATA_FOLDER = process.env.DATA_FOLDER;
+const CURRENT_SEASON = process.env.CURRENT_SEASON;
+var filename = DATA_FOLDER + '/' + CURRENT_SEASON + '/venues.all.txt';
 
 var raw = fs.readFileSync(filename).toString();
 

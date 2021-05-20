@@ -6,13 +6,14 @@ var email = require('../lib/email');
 var util = require('../lib/util');
 var A = require('../lib/auth');
 const makeKey = require('../lib/make-key');
-
+require('dotenv').load();
+const DATA_FOLDER = process.env.DATA_FOLDER;
 var _map = {};
 
 // TODO: ALERT, destroy player isn't erasing anything but the player file.
 function destroyPlayer(k) {
   delete _map[k];
-  const filename = `data/players/${k}`;
+  const filename = DATA_FOLDER + `/players/${k}`;
   if(util.fileExists(filename)) {
     fs.unlinkSync(filename);
   }
@@ -24,9 +25,9 @@ function getPlayer(k) {
   var p = _map[key]; //This would be replaced by a mongo.get/findOne.
   if(!p) {
     //Try to load from disk.
-    var filename = 'data/players/' + key;
+    var filename = DATA_FOLDER + '/players/' + key;
     if(util.fileExists(filename)) {
-      var raw = fs.readFileSync('data/players/'+key);
+      var raw = fs.readFileSync(DATA_FOLDER + '/players/' + key);
       try {
         p = JSON.parse(raw);
       } catch (e) { console.log(e); }
@@ -45,7 +46,7 @@ function getPlayer(k) {
 }
 
 function getAll() {
-  var list = fs.readdirSync('data/players');
+  var list = fs.readdirSync(DATA_FOLDER + '/players');
   var results = [];
   for(i in list) {
     var p = getPlayer(list[i]);
@@ -66,13 +67,13 @@ function passesMatch(params) {
 function playerExists(key) {
   var k = key.toLowerCase();
   if(_map[k]) return true;
-  if(util.fileExists('data/players/'+k)) return true;
+  if(util.fileExists(DATA_FOLDER + '/players/' + k)) return true;
   return false;
 }
 
 function savePlayer(player) {
   try {
-    fs.writeFileSync('data/players/'+player.key,JSON.stringify(player,null,2));
+    fs.writeFileSync(DATA_FOLDER + '/players/' + player.key,JSON.stringify(player,null,2));
   } catch (err) {
     console.log(err);
   }

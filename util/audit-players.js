@@ -3,6 +3,8 @@ const makeKey = require('../lib/make-key');
 const IPR = require('../model/ratings');
 const season = require('../model/seasons').get();
 const {ROOT} = require('../constants');
+require('dotenv').load();
+const DATA_FOLDER = process.env.DATA_FOLDER;
 
 const {teams} = season;
 const players = Object.keys(teams)
@@ -20,7 +22,7 @@ const players = Object.keys(teams)
   }, {});
 
 // The readdir assumes this is running from the project root.
-const DIR = './data/players';
+const DIR = DATA_FOLDER + '/players';
 const files = fs.readdirSync(DIR);
 
 files.forEach(fn => {

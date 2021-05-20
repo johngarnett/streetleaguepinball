@@ -3,6 +3,8 @@ var fs = require('fs');
 var util = require('../lib/util');
 var router = express.Router();
 
+const DATA_FOLDER = process.env.DATA_FOLDER;
+
 //NOTE: By placing this middleware AFTER the users middleware,
 //	all the login, logout, and signup routes will be
 //	handled before this, which is nice to avoid
@@ -52,9 +54,9 @@ for(prop in req.body) {
   var id = util.digest(chunk);
 
   //THIS WAS A REALLY BAD IDEA TO APPEND TO A COMMON FILE.
-  //fs.appendFileSync('data/post.log',chunk+',\n');
+  //fs.appendFileSync(DATA_FOLDER + '/post.log',chunk+',\n');
 
-  fs.writeFileSync('data/posts/'+id,chunk);
+  fs.writeFileSync(DATA_FOLDER + '/posts/'+id,chunk);
   next();
 });
 

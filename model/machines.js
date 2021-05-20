@@ -1,4 +1,6 @@
 var fs = require('fs');
+require('dotenv').load();
+const DATA_FOLDER = process.env.DATA_FOLDER;
 
 var _map = {};
 
@@ -11,7 +13,7 @@ function fileExists(filename) {
 }
 
 function init() {
-  var filename = 'data/machines.json';
+  var filename = DATA_FOLDER + '/machines.json';
   if(!fileExists(filename)) {
     console.log("FAILED to load " +filename);
     return;
@@ -31,7 +33,7 @@ init();
 
 function save() {
   var json = JSON.stringify(_map);
-  fs.writeFileSync('data/machines.json',json);
+  fs.writeFileSync(DATA_FOLDER + '/machines.json',json);
 }
 
 var machines = module.exports = {

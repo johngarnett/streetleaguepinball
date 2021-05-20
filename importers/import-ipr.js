@@ -1,6 +1,7 @@
 'use strict';
 
-const info = JSON.parse(require('fs').readFileSync('data/playerinfo.json'));
+const DATA_FOLDER = process.env.DATA_FOLDER;
+const info = JSON.parse(require('fs').readFileSync(DATA_FOLDER + '/playerinfo.json'));
 const { players } = info;
 
 // IPR.csv output

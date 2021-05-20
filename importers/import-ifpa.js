@@ -1,8 +1,9 @@
 'use strict';
 
 const fs = require('fs');
+const DATA_FOLDER = process.env.DATA_FOLDER;
 
-const filename = process.argv[2] || './data/WPPR_PLAYERS.csv';
+const filename = process.argv[2] || './' + DATA_FOLDER + '/WPPR_PLAYERS.csv';
 
 let raw = fs.readFileSync(filename).toString();
 

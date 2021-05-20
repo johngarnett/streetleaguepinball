@@ -3,21 +3,23 @@ var CONST = require('../constants');
 var players = require('../model/players');
 var util = require('../lib/util');
 var A = require('../lib/auth');
+require('dotenv').load();
+const DATA_FOLDER = process.env.DATA_FOLDER;
 
 var list = players.all();
 
 var sessions = [];
-var files = fs.readdirSync('data/sessions');
+var files = fs.readdirSync(DATA_FOLDER + '/sessions');
 for(i in files) {
 //console.log(files[i]);
   var id = files[i];
-  var fn = 'data/sessions/' + id;
+  var fn = DATA_FOLDER + '/sessions/' + id;
   var raw = fs.readFileSync(fn);
   var obj = JSON.parse(raw);
   obj.id = id;
   obj.save = function() {
 console.log("Saving session: " +this.id);
-    var filename = 'data/sessions/' + this.id;
+    var filename = DATA_FOLDER + '/sessions/' + this.id;
     var str = JSON.stringify({
       key: this.key,
       created_at: this.created_at
@@ -34,7 +36,7 @@ for(i in list) {
   var key = players.makeKey(player.name);
 
   if(old != key && old != CONST.ROOT) {
-    var fn = 'data/players/' + old;
+    var fn = DATA_FOLDER + '/players/' + old;
     if(util.fileExists(fn)) { fs.unlinkSync(fn); }
     player.key = key;
 

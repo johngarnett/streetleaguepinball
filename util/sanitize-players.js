@@ -2,7 +2,9 @@
 
 const fs = require('fs');
 
-const DIR = 'data/players';
+require('dotenv').load();
+const DATA_FOLDER = process.env.DATA_FOLDER;
+const DIR = DATA_FOLDER + '/players';
 
 const ALLOWED = ['key', 'name', 'email', 'created_at', 'verified'];
 

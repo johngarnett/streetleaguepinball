@@ -3,8 +3,12 @@ FROM node:16-alpine
 WORKDIR /usr/src/app
 
 # These should be part of docker compose, or passed on the docker run command line
-ENV LEAGUE_ADMINS=7199
+ENV CREDENTIALS_FOLDER=/usr/src/data/x.credentials
 ENV CURRENT_SEASON=season-13
+ENV DATA_FOLDER=/usr/src/data
+ENV IFPA_API_KEY=??
+ENV LEAGUE_ADMINS=7199
+ENV TEST_EMAIL_ADDRESS=??
 
 COPY package*.json ./
 

@@ -1,8 +1,11 @@
 const fs = require('fs');
+require('dotenv').load();
+const DATA_FOLDER = process.env.DATA_FOLDER;
+const CURRENT_SEASON = process.env.CURRENT_SEASON;
 
 const rnd = () => Math.random() < 0.5 ? -1 : 1;
 
-const tiers = fs.readFileSync('data/season-9/teams.csv')
+const tiers = fs.readFileSync(DATA_FOLDER + '/' + DATA_FOLDER + '/teams.csv')
   .toString()
   .split('\n')
   .map(line => line.split(','))

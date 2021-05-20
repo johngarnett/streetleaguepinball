@@ -1,14 +1,17 @@
 'use strict';
 
+require('dotenv').load();
+const DATA_FOLDER = process.env.DATA_FOLDER;
+const CURRENT_SEASON = process.env.CURRENT_SEASON;
 var players = require('../model/players.js');
 
 var csv = require('../lib/csv.js');
 
-var rows1 = csv.load('./data/ifpa_num.csv');
-var rows2 = csv.load('./data/ifpa_official.csv');
+var rows1 = csv.load(DATA_FOLDER + '/ifpa_num.csv');
+var rows2 = csv.load(DATA_FOLDER + '/ifpa_official.csv');
 
 // TODO: This should load from a file, or maybe just season number?
-var pdb = csv.load('./data/season-7/playerdb.csv');
+var pdb = csv.load(DATA_FOLDER + '/' + CURRENT_SEASON + '/playerdb.csv');
 
 var map1 = rowsToMap(rows1);
 var map2 = rowsToMap(rows2);

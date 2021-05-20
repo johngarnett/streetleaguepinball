@@ -12,10 +12,12 @@
 'use strict';
 
 const fs = require('fs');
+require('dotenv').load();
+const DATA_FOLDER = process.env.DATA_FOLDER;
 
 const { makeKey } = require('../model/players');
 
-const changeFile = process.argv[2] || 'data/player-accounts-appended.csv';
+const changeFile = process.argv[2] || DATA_FOLDER + '/player-accounts-appended.csv';
 
 const data = fs.readFileSync(changeFile)
   .toString()
@@ -35,12 +37,12 @@ data
   .forEach(p => {
     console.log(p.acc_name, '->', p.ifpa_name);
     try {
-      const oldFilename = `data/players/${p.acc_key}`;
+      const oldFilename = DATA_FOLDER + `/players/${p.acc_key}`;
       const account = JSON.parse(fs.readFileSync(oldFilename));
       account.key = p.ifpa_key;
       account.name = p.ifpa_name;
 
-      const newFilename = `data/players/${p.ifpa_key}`;
+      const newFilename = DATA_FOLDER + `/players/${p.ifpa_key}`;
       fs.writeFileSync(newFilename, JSON.stringify(account, null, 2));
       fs.unlinkSync(oldFilename);
     } catch (err) {

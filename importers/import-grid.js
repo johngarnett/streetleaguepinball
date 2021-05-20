@@ -1,7 +1,10 @@
 'use strict';
 
+const DATA_FOLDER = process.env.DATA_FOLDER;
+const CURRENT_SEASON = process.env.CURRENT_SEASON;
+
 // TODO: No more hard coded season nums!
-require('../lib/csv').load('data/season-10/roster-grid.csv')
+require('../lib/csv').load(DATA_FOLDER + '/' + CURRENT_SEASON + '/roster-grid.csv')
   .filter(row => row[3] != '')
   .reduce((p, row) => {
     p.push(row.slice(2,5));   // C-D-E

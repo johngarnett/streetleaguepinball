@@ -3,6 +3,8 @@ var util = require('../lib/util');
 var CONST = require('../constants');
 var players = require('./players');
 var IPR = require('./ratings');
+require('dotenv').load();
+const DATA_FOLDER = process.env.DATA_FOLDER;
 
 // TODO: Refactor in conjunction with splitting venues.js
 var venues = require('./venues');
@@ -52,7 +54,7 @@ function getMatch(key) {
 }
 
 function loadMatch(key) {
-  var filename = 'data/matches/'+key+'.json';
+  var filename = DATA_FOLDER + '/matches/'+key+'.json';
   if(!util.fileExists(filename)) { return; }
 
   var json = JSON.parse(fs.readFileSync(filename));
@@ -70,7 +72,7 @@ function loadMatch(key) {
 
 //TODO: This never really got used. Probably remove at some point.
 function deleteMatch(key) {
-  var filename = 'data/matches/'+key+'.json';
+  var filename = DATA_FOLDER + '/matches/'+key+'.json';
   if(util.fileExists(filename)) {
       //TODO: Move the file to the trash instead of just wiping it.
     fs.unlinkSync(filename);
@@ -82,7 +84,7 @@ function deleteMatch(key) {
 //	   on how much junk we can just load.
 function loadAll() {
   console.log("loadAll()...");
-  var list = fs.readdirSync('data/matches');
+  var list = fs.readdirSync(DATA_FOLDER + '/matches');
   for(i in list) {
     var fn = list[i];
     var spot = fn.indexOf('.json');
@@ -1034,7 +1036,7 @@ Match.prototype = {
   },
   save: function() {
     var json = JSON.stringify(this,null,2);
-    fs.writeFileSync('data/matches/'+this.key+'.json',json);
+    fs.writeFileSync(DATA_FOLDER + '/matches/'+this.key+'.json',json);
   }
 };
 

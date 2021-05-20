@@ -2,9 +2,9 @@ const fs = require('fs');
 var venues = require('../model/venues');
 var csv = require('../lib/csv');
 
-var num = process.argv[2] || '13';
-
-var stem = 'data/season-' +num+ '/';
+const DATA_FOLDER = process.env.DATA_FOLDER;
+const CURRENT_SEASON = process.argv[2] || process.env.CURRENT_SEASON;
+var stem = DATA_FOLDER + '/' + CURRENT_SEASON + '/';
 
 //FIRST, Load up the team data
 var rows = csv.load(stem + 'teams.csv');
@@ -229,7 +229,7 @@ for(let k in keys) {
 }
 
 var season = {
-  key: 'season-' + num,
+  key: CURRENT_SEASON,
   teams: teams,
   weeks: list
 };

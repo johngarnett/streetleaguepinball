@@ -11,6 +11,8 @@ var COOKIE_NAME = 'mnp_sess';
 var COOKIE_OPTIONS = { maxAge: 1000*60*60*24*365*10 };
 
 var router = express.Router();
+require('dotenv').load();
+const DATA_FOLDER = process.env.DATA_FOLDER;
 
 // TODO: Refactor as middleware
 router.use(function(req, res, next) {
@@ -167,7 +169,7 @@ router.post('/signup',function(req,res) {
 
   const reason = req.body.signup_reason || 'default';
 
-  fs.writeFileSync('./data/signups/' +reason+ '/' +key+ '.json', json);
+  fs.writeFileSync(DATA_FOLDER + '/signups/' + reason + '/' + key + '.json', json);
 
   var host = req.protocol + '://' +req.hostname;
   players.signup({
@@ -278,7 +280,7 @@ function getUser(req,res) {
 
   var s = sessions[user.id];
   if(!s) {
-    var fn = 'data/sessions/' +user.id;
+    var fn = DATA_FOLDER + '/sessions/' + user.id;
     if(util.fileExists(fn)) {
       var raw = fs.readFileSync(fn);
       s = JSON.parse(raw);
@@ -301,7 +303,7 @@ function setPlayer(player,req,res) {
   };
   sessions[req.user.id] = sess;
   try {
-    var fn = 'data/sessions/' +req.user.id;
+    var fn = DATA_FOLDER + '/sessions/' + req.user.id;
     fs.writeFileSync(fn,JSON.stringify(sess,null,2));
   } catch (e) {
     console.log(e);
@@ -311,7 +313,7 @@ function setPlayer(player,req,res) {
 function clearUser(req,res) {
   res.clearCookie(COOKIE_NAME);
   delete sessions[req.user.id];
-  var fn = 'data/sessions/' +req.user.id;
+  var fn = DATA_FOLDER + '/sessions/' + req.user.id;
   if(util.fileExists(fn)) {
     fs.unlink(fn, (err => {
       if (err) { 

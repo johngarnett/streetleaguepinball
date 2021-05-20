@@ -1,9 +1,11 @@
 var fs = require('fs');
+require('dotenv').load();
+const DATA_FOLDER = process.env.DATA_FOLDER;
 
 // var matches = require('./matches');
 
 function loadSeason(key) {
-  var fn = 'data/'+key+'/season.json';
+  var fn = DATA_FOLDER + '/' + key + '/season.json';
   var season;
   try {
     season = JSON.parse(fs.readFileSync(fn));
@@ -46,8 +48,7 @@ function loadSeason(key) {
   return season;
 }
 
-require('dotenv').load();
-const CURRENT = (process.env.CURRENT_SEASON ? process.env.CURRENT_SEASON : 'season-13');
+const CURRENT_SEASON = (process.env.CURRENT_SEASON ? process.env.CURRENT_SEASON : 'season-13');
 
 var _map = {
   // Not sure why we would need to load other seasons like this.
@@ -56,13 +57,13 @@ var _map = {
   // 'season-7': loadSeason('season-7'),
   // 'season-8': loadSeason('season-8'),
   // 'season-9': loadSeason('season-9'),
-  [CURRENT]: loadSeason(CURRENT)
+  [CURRENT_SEASON]: loadSeason(CURRENT_SEASON)
 };
 
 module.exports = {
   get: function(params) {
     var params = params || {};
-    var key = params.key || CURRENT;
+    var key = params.key || CURRENT_SEASON;
     return _map[key];
   }
 };

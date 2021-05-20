@@ -15,6 +15,8 @@
   data/stats/<key> - as JSON { key, name, ...other_stuff }
 */
 const fs = require('fs');
+require('dotenv').load();
+const DATA_FOLDER = process.env.DATA_FOLDER;
 
 const { shadows, tokens } = require('../lib/auth');
 
@@ -22,7 +24,7 @@ const { shadows, tokens } = require('../lib/auth');
 const makeKey = player => require('../lib/make-key')(player.name);
 
 const migratePlayer = (oldKey, props) => {
-  const player = JSON.parse(fs.readFileSync(`data/players/${oldKey}`));
+  const player = JSON.parse(fs.readFileSync(DATA_FOLDER + `/players/${oldKey}`));
   if(!props.name) delete props.name; // Remove unwanted name: undefined, don't want to overwrite in that case.
   Object.assign(player, props); // TODO: Update node version to use ...props
   const newKey = makeKey(player);
@@ -34,14 +36,14 @@ const migratePlayer = (oldKey, props) => {
 
   // Save the player with the new key at the new filename.
   console.log('Saving to', newKey);
-  fs.writeFileSync(`data/players/${player.key}`, JSON.stringify(player, null, 2));
+  fs.writeFileSync(DATA_FOLDER + `/players/${player.key}`, JSON.stringify(player, null, 2));
 
   // Update shadows so the user can still login.
   console.log('Reset shadow', oldKey, '->', newKey);
   shadows.set(newKey, shadows.get(oldKey));
 
   // Clear the old player file.
-  fs.unlinkSync(`data/players/${oldKey}`);
+  fs.unlinkSync(DATA_FOLDER + `/players/${oldKey}`);
   shadows.clear(oldKey);
 };
 

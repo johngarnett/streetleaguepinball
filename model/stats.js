@@ -2,7 +2,9 @@ var fs = require('fs');
 
 var _map = {};
 
-var DATA_DIR = "data/stats";
+require('dotenv').load();
+const DATA_FOLDER = process.env.DATA_FOLDER;
+const DATA_DIR = DATA_FOLDER + '/stats';
 
 function load() {
   var list = fs.readdirSync(DATA_DIR);

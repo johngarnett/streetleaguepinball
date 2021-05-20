@@ -9,6 +9,8 @@ const findSessions = require('./find-sessions');
 
 const fromName = process.argv[2];
 const toName = process.argv[3];
+require('dotenv').load();
+const DATA_FOLDER = process.env.DATA_FOLDER;
 
 if(!fromName || !toName) {
   console.log('Usage: node util/rename-player fromName toName');
@@ -59,7 +61,7 @@ console.log('Finding sessions to update for', fromName);
 // Update session file, if it exists
 findSessions({name: fromName}).forEach(sessionId => {
   console.log('sessionId', sessionId);
-  const sessionFilename = `data/sessions/${sessionId}`;
+  const sessionFilename = DATA_FOLDER + `/sessions/${sessionId}`;
   const session = JSON.parse(fs.readFileSync(sessionFilename));
   console.log('from:', session);
   session.key = newPlayer.key;

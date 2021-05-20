@@ -1,10 +1,12 @@
 var fs = require('fs');
+require('dotenv').load();
+const DATA_FOLDER = process.env.DATA_FOLDER;
 
 const season = require('./seasons').get();
 
 var _map = {};
 
-var filename = 'data/venues.json';
+var filename = DATA_FOLDER + '/venues.json';
 
 function loadVenues() {
   var buf = fs.readFileSync(filename);

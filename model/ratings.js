@@ -1,6 +1,8 @@
 const fs = require('fs');
+require('dotenv').load();
+const DATA_FOLDER = process.env.DATA_FOLDER
 
-const csv = fs.readFileSync('data/IPR.csv')
+const csv = fs.readFileSync(DATA_FOLDER + '/IPR.csv')
   .toString()
   .split('\n')
   .filter(line => line.length > 0)

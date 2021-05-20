@@ -5,6 +5,9 @@ const fs = require('fs');
 const machines = require('../model/machines');
 const players = require('../model/players');
 const { teams } = require('../model/seasons').get();
+require('dotenv').load();
+const DATA_FOLDER = process.env.DATA_FOLDER;
+const CURRENT_SEASON = process.env.CURRENT_SEASON;
 
 const PA = [0, 2.5, 3, 3, 2.5, 0];
 
@@ -26,7 +29,7 @@ function format(num) {
 }
 
 // TODO: Stop using hardcoded season numbers.
-const rosters = fs.readFileSync('data/season-13/rosters.csv').toString()
+const rosters = fs.readFileSync(DATA_FOLDER + '/' + CURRENT_SEASON + '/rosters.csv').toString()
 //.replace('\r', '')
 .split('\n')
 .filter(line => line.length > 0)
@@ -48,10 +51,10 @@ const rosters = fs.readFileSync('data/season-13/rosters.csv').toString()
   return x;
 }, {});
 
-const lookup = fs.readdirSync('data/matches')
+const lookup = fs.readdirSync(DATA_FOLDER + '/matches')
 .filter(fn => fn.match(/mnp-\d+-\d+/)) // only MNP league matches
 .map(fn => {
-  return JSON.parse(fs.readFileSync('data/matches/' +fn));
+  return JSON.parse(fs.readFileSync(DATA_FOLDER + '/matches/' + fn));
 })
 .reduce((stats, match) => {
   const names = [ ...match.away.lineup, ...match.home.lineup ]
