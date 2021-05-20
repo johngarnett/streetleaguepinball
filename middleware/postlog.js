@@ -3,7 +3,9 @@ var fs = require('fs');
 var util = require('../lib/util');
 var router = express.Router();
 
+require('dotenv').load();
 const DATA_FOLDER = process.env.DATA_FOLDER;
+const UPLOADS_FOLDER = process.env.UPLOADS_FOLDER;
 
 //NOTE: By placing this middleware AFTER the users middleware,
 //	all the login, logout, and signup routes will be
@@ -32,7 +34,7 @@ for(prop in req.body) {
     console.log("Saving photo data ...");
     var x = req.body.photo_data;
     var sha = util.digest(x);
-    var fn = 'uploads/' +sha;
+    var fn = UPLOADS_FOLDER + '/' +sha;
     if(!util.fileExists(fn)) {
       fs.writeFileSync(fn,x);
       console.log(" ... saved " +fn+ " " +x.length+ " bytes");

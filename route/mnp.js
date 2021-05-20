@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 var mustache = require('mustache');
+require('dotenv').load();
+const DATA_FOLDER = process.env.DATA_FOLDER;
+const UPLOADS_FOLDER = process.env.UPLOADS_FOLDER;
 
 // TODO: This could probably be renamed to matches,
 // or matches should be a folder that includes the parts of this router.
@@ -851,9 +854,10 @@ router.post('/games/:key.:round.:n/report', function(req,res) {
 });
 
 router.get('/pics/:pid',function(req,res) {
-  var filename = 'uploads/' +req.params.pid;
+  var filename = UPLOADS_FOLDER + '/' +req.params.pid;
+  console.log("Stephen: " + filename);
   if(util.fileExists(filename)) {
-    res.sendFile(filename, {root: '.'});
+    res.sendFile(filename, {});
   }
   else {
     res.send("NOT FOUND");

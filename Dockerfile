@@ -9,6 +9,7 @@ ENV DATA_FOLDER=/usr/src/data
 ENV IFPA_API_KEY=??
 ENV LEAGUE_ADMINS=7199
 ENV TEST_EMAIL_ADDRESS=??
+ENV UPLOADS_FOLDER=/usr/src/data/uploads
 
 COPY package*.json ./
 

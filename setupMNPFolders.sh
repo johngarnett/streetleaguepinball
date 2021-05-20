@@ -43,9 +43,9 @@ if [ ! -d "data/stats" ]; then
 	mkdir data/stats
 fi
 
-if [ ! -d "uploads" ]; then 
-	echo "creating folder: uploads"
-	mkdir uploads
+if [ ! -d "data/uploads" ]; then 
+	echo "creating folder: data/uploads"
+	mkdir data/uploads
 fi
 
 

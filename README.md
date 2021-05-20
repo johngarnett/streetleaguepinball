@@ -55,7 +55,7 @@ mkdir data/posts
 
 # All image data is currently just saved on the server.
 # TODO: Save image data to a scalable storage service like AWS/S3
-mkdir uploads
+mkdir data/uploads
 
 # You need season-# directories for any season you want to load.
 # See model/seasons.js
