@@ -17,6 +17,6 @@ RUN npm ci --only=production
 
 COPY . .
 
-EXPOSE 80
-CMD ["node", "http.js"]
+EXPOSE 80 443
+CMD ["node", "app.js"]
 
