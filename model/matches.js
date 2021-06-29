@@ -513,14 +513,12 @@ Match.prototype = {
     return round.games[n-1];
   },
   // ----------------- WHO PICKS/PLAYS FIRST? ------------------
-  // TODO: getOrder and getPickingTeam are where tie breaker rounds fall apart.
   getOrder: function(round) {
     var round = round || this.round;
     if(round == 1) return [this.away, this.home];
     if(round == 2) return [this.home, this.away];
     if(round == 3) return [this.away, this.home];
     if(round == 4) return [this.home, this.away];
-    if(round == 5) return [this.home, this.away];
   },
   getPickingTeam: function(round) {
     var order = this.getOrder(round);
@@ -741,31 +739,6 @@ Match.prototype = {
         points.rounds[r].away += g.away_points || 0;
       }
     }
-    if(this.rounds.length == 5) {
-      var round = this.rounds[4];
-      var asum = 0;
-      var hsum = 0;
-      for(var i = 0; i < round.games.length; i++) {
-        var g = round.games[i];
-
-        asum += g.away_points || 0;
-        hsum += g.home_points || 0;
-      }
-      if(asum > 0.5) {
-        points.away += 1;
-        points.rounds[4] = { n: 5, home: 0, away: 1 };
-      }
-      else if(hsum > 0.5) {
-        points.home += 1;
-        points.rounds[4] = { n: 5, home: 1, away: 0 };
-      }
-      else {
-        points.rounds[4] = { n: 5, home: 0, away: 0 };
-      }
-    }
-    else {
-      points.rounds.push({ n: 5, home: 0, away: 0 });
-    }
     var hb = this.home.getBonusPoints();
     var ab = this.away.getBonusPoints();
     points.bonus = {
@@ -984,30 +957,9 @@ Match.prototype = {
     if(round.left_confirmed && round.right_confirmed) {
       //console.log("Round has been mutually confirmed!");
 
-      //Do we need more rounds?
-      var more = false;
       if(this.round < 4) {
-        more = true;
-      }
-      else if (this.round == 4) {
-        var points = this.getPoints();
-        if(points.home == points.away) {
-          this.rounds.push(makeRound(5));
-          more = true;
-          this.step = 1;
-          // TODO: This is where the tie breaker status is created.
-          //       if(this.rounds.length == 5) inTieBreaker = true;
-        }
-      }
-      // TODO: If inTieBreaker, need to follow the steps.
-      if(more) {
         this.round++;
-        if(this.round == 5) {
-          this.state = CONST.TIE_BREAKER;
-        }
-        else {
-          this.state = CONST.PICKING;
-        }
+        this.state = CONST.PICKING;
       }
       else {
         this.state = CONST.COMPLETE;
@@ -1026,12 +978,17 @@ Match.prototype = {
     var round = this.getRound();
     if(this.round == 4) {
       if(round.done) {
-        return (points.home != points.away);
+        return true;
       }
-      else return false; //Finish round 4
+      else {
+        console.log("!round.done")
+        return false; //Finish round 4
+      }
     }
-    if(this.round == 5) {
-      return round.done;
+    // Soon this will be an assert condition, but consuming old matches can result in round 5 (which we will now ignore)
+    if ( this.round > 4 ) {
+      console.log("this.round > 4");
+      return true;//We don't support round 5 any more.  So assume 'done'
     }
   },
   save: function() {
@@ -1082,35 +1039,6 @@ function calcPoints(game, round) {
     game.score_24 = game.score_2;
     game.away_points = (round == 2 ? points[1] : points[0]);
     game.home_points = (round == 2 ? points[0] : points[1]);
-  }
-  else if(round == 5) {
-    //Shared
-    var points = calcShared([
-      game.score_1,
-      game.score_2
-    ]);
-    game.points_1 = points[0];
-    game.points_2 = points[1];
-    game.points_13 = points[0];
-    game.points_24 = points[1];
-    game.score_13 = game.score_1;
-    game.score_24 = game.score_2;
-
-    // A rule change in season 10 now has players on either side,
-    // depending on the game number.
-    // TODO: This is where problems would arise if a match were
-    //       to be recalc'd. It appears after s10 wk 3, the matches
-    //       from week 2 still seem to show the correct score, and
-    //       thus the same winner. But it still seems shaky.
-    if(game.n > 1) {
-      game.away_points = points[0],
-      game.home_points = points[1];
-    }
-    else {
-      // Away plays 2nd in only the first game.
-      game.away_points = points[1],
-      game.home_points = points[0];
-    }
   }
   else {
     return undefined;
@@ -1205,7 +1133,7 @@ function countGames(match) {
 }
 
 function roundDone(round) {
-  //console.log("roundDone() round:",round);
+  console.log("roundDone() round:",round);
   var games = round.games;
   var done = true;
   for(var i = 0; i < games.length; i++) {
@@ -1219,13 +1147,22 @@ function roundDone(round) {
 
 function gameDone(game, r) {
   var done = true;
-  if(!game.score_1 || game.score_1.length == 0) done = false;
-  if(!game.score_2 || game.score_2.length == 0) done = false;
+  if(!game.score_1 || game.score_1.length == 0) {
+    done = false;
+  }
+  if(!game.score_2 || game.score_2.length == 0) {
+    done = false;
+  }
   if(NUM_SCORES[r-1] > 2) {
-    if(!game.score_3 || game.score_3.length == 0) done = false;
-    if(!game.score_4 || game.score_4.length == 0) done = false;
+    if(!game.score_3 || game.score_3.length == 0) {
+      done = false;
+    }
+    if(!game.score_4 || game.score_4.length == 0) {
+      done = false;
+    }
   }
   game.done = done;
+  consoleLog("done: ", done);
   return done;
 }
 
