@@ -7,7 +7,8 @@
   <td>Team</td>
   <td class="text-xs-center">W</td>
   <td class="text-xs-center">L</td>
-  <td>Points</td>
+  <td class="text-xs-center">T</td>
+  <td class="text-xs-right">Points</td>
 </tr>
 {{#rows}}
 <tr>
@@ -15,6 +16,7 @@
   <td><a href="/teams/{{key}}">{{name}}</a></td>
   <td class="text-xs-center">{{wins.length}}</td>
   <td class="text-xs-center">{{losses.length}}</td>
+  <td class="text-xs-center">{{ties.length}}</td>
   <td class="text-xs-right">{{points}}</td>
 </tr>
 {{/rows}}
