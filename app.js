@@ -18,8 +18,9 @@ var app = express();
 app.use('/', router);
 
 const cert = {
-    key: fs.readFileSync(CREDENTIALS_FOLDER + '/key.pem'),
-    cert: fs.readFileSync(CREDENTIALS_FOLDER + '/cert.pem')
+  key: fs.readFileSync(CREDENTIALS_FOLDER + '/privkey.pem'),
+  cert: fs.readFileSync(CREDENTIALS_FOLDER + '/cert.pem'),
+  ca: fs.readFileSync(CREDENTIALS_FOLDER + '/chain.pem')
 }
 https.createServer(cert, app).listen(443);
 
