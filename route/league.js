@@ -169,6 +169,15 @@ router.get('/new-teams',function(req,res) {
   res.send(html);
 });
 
+router.get('/ratings',function(req,res) {
+  const template = fs.readFileSync('./template/ratings.html').toString();
+  const html = mustache.render(base,{
+    title: 'Ratings'
+  },{
+    content: template
+  });
+  res.send(html);
+});
 
 //TODO: This function can be handled with Numeral on the client side.
 function format(num) {
