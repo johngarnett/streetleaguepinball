@@ -4,7 +4,7 @@ var ids = require('../lib/ids');
 // TODO: Move the email integration into the router?
 var email = require('../lib/email');
 var util = require('../lib/util');
-var A = require('../lib/auth');
+var Auth = require('../lib/auth');
 const makeKey = require('../lib/make-key');
 
 var _map = {};
@@ -146,7 +146,7 @@ module.exports = {
       return callback("ERROR: Failed to login");
     }
 
-    if(!A.shadows.check(player.key,pass)) {
+    if(!Auth.shadows.check(player.key,pass)) {
       console.log("login failed, incorrect password for player: " + player.key);
       return callback("ERROR: Failed to login");
     }
@@ -175,7 +175,7 @@ module.exports = {
       var key = makeKey(name);
       token = ids.create();
 
-      A.tokens.set(key,token);
+      Auth.tokens.set(key,token);
       player = {
         key: key,
         name: name,
@@ -193,11 +193,11 @@ module.exports = {
         console.log("Player not yet verified, using the most recent email...");
         player.email = email;
       }
-      token = A.tokens.get(player.key);
+      token = Auth.tokens.get(player.key);
       if(!token) {
         console.log("Token did not exist for " +player.key);
         token = ids.create();
-        A.tokens.set(player.key, token);
+        Auth.tokens.set(player.key, token);
       }
     }
     sendVerify({
@@ -214,7 +214,7 @@ module.exports = {
     //TODO: Index the tokens if needed.
     //TODO: OR mongo.find('players',{token: token})...
 
-    var ukey = A.tokens.keyFor(token);
+    var ukey = Auth.tokens.keyFor(token);
     if(!ukey) {
       return callback("ERROR: No token found: " +token);
     }
@@ -232,7 +232,7 @@ module.exports = {
     if(!passesMatch(params)) { return callback("ERR: Passwords did not match"); }
     var player = this.get(params.ukey);
     if(!player) { return callback("ERR: Player not found for " +params.ukey); }
-    A.shadows.put(player.key, params.pass);
+    Auth.shadows.put(player.key, params.pass);
     console.log("Password set for: " +player.key);
     callback(null,player);
   },
