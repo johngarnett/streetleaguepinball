@@ -1,0 +1,43 @@
+{{#error}}
+{{.}}
+{{/error}}
+<!--
+<h2>Login</h2>
+-->
+<form action="/forgotpass" method="POST">
+<div class="container">
+  <div class="form-group row">
+    <label for="username" class="col-sm-2 col-form-label">Email</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="email" name="email">
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="offset-sm-2">
+      <button type="submit" name="pwreset" class="btn btn-primary" style="padding-left: 5em; padding-right: 5em; margin: 0.5em;">SEND EMAIL WITH PASSWORD RESET LINK</button>
+    </div>
+  </div>
+</div>
+
+<!--
+<table>
+<tr>
+<td>Email:</td>
+<td><input type="text" name="username" placeholder="Email"></td>
+</tr>
+<tr>
+<td>Password:</td>
+<td><input type="password" name="password"></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>
+<input type="submit" value="LOGIN">
+</td>
+</tr>
+</table>
+-->
+
+</form>
+<br>
+<center>No account? No problem. <a href="/signup{{#redirect_url}}?redirect_url={{.}}{{/redirect_url}}">SIGN-UP</a></center>

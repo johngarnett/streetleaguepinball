@@ -42,6 +42,7 @@ function sendLoginHtml(res,err,redirect_url) {
 
 router.post('/login',function(req,res) {
   var rurl = req.body.redirect_url || '/';
+  console.log('/login post');
   players.login({
     username: req.body.username,
     pass: req.body.password
@@ -71,6 +72,7 @@ router.get('/profile',function(req,res) {
 });
 
 router.get('/forgotpass',function(req,res) {
+  console.log('/forgotpass post');
   var template = fs.readFileSync('./template/forgotpass.html').toString();
   var html = mustache.render(base, {
     title: 'Forgot Password'
@@ -80,40 +82,18 @@ router.get('/forgotpass',function(req,res) {
   res.send(html);
 });
 
-/*
-router.get('/changepass',function(req,res) {
-  var rurl = req.query.redirect_url || '/';
-  var template = fs.readFileSync('./template/changepass.html').toString();
+router.post('/forgotpass',function(req,res) {
+  console.log('POST forgotpass')
+  req.body.timestamp = Date.now();
 
-  var ukey = req.user.key;
-  if(!ukey || ukey == 'ANON') {
-    return res.redirect('/login?redirect_url='+rurl);
-  }
-
-  var html = mustache.render(base, {
-    title: 'Change Password',
-    redirect_url: rurl,
-    ukey: ukey
-  }, {
-    content: template
-  });
-
-  res.send(html);
-});
-
-router.post('/changepass',function(req,res) {
-  var rurl = req.body.redirect_url || '/';
-  players.changePass({
-    ukey: req.user.key,
-    pass: req.body.pass,
-    conf: req.body.conf,
-    old: req.body.old
-  }, function(err,player) {
-    if(err) console.log(err);
-    res.redirect(rurl);
+  var host = req.protocol + '://' +req.hostname;
+  players.forgotpass({
+    email: req.body.email,
+    host: host
+  } ,function(err,player) {
+    return res.redirect('/login');
   });
 });
-*/
 
 //NOTE: This is mostly for testing. Users won't really
 //      need to logout for any reason. And considering
@@ -195,6 +175,18 @@ router.post('/signup',function(req,res) {
 
 router.get('/verify/:token',function(req,res) {
   console.log("GET /verify token:",req.params.token);
+  players.verify(req.params,function(err,player) {
+    if(err) {
+      console.log(err);
+      return res.redirect('/signup');
+    }
+    setPlayer(player,req,res);
+    res.redirect('/createpass');
+  });
+});
+
+router.get('/forgotpassword/:token',function(req,res) {
+  console.log("GET /forgotpassword token:",req.params.token);
   players.verify(req.params,function(err,player) {
     if(err) {
       console.log(err);

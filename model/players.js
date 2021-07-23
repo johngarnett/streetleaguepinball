@@ -102,6 +102,29 @@ function sendVerify(params) {
   email.send(to, subject, message, htmlMessage);
 }
 
+function sendForgotPass(params) {
+  console.log("sendForgotPass()... ");
+  var template = fs.readFileSync('./template/email_forgotpass.html').toString();
+
+  var url = params.url;
+  var name = params.name;
+  var to = params.email;
+  var subject = params.subject || 'MNP - Reset Password';
+
+  var message = mustache.render(template, {
+    name: name,
+    link: url
+  });
+
+  var urlLink = '<br/><br/><a href="mailto:' + url + '">' + url + '</a><br/><br/>';
+  var htmlMessage = mustache.render(template, {
+    name: name,
+    link: urlLink
+  });
+  
+  email.send(to, subject, message, htmlMessage);
+}
+
 module.exports = {
   makeKey, // TODO: Remove as an export from players, now that it's a lib.
   all: getAll,
@@ -211,6 +234,42 @@ module.exports = {
     sendVerify({
       url: params.host + '/verify/' + token,
       name: name,
+      email: player.email
+    });
+    savePlayer(player);
+    callback(null, player);
+  },
+  forgotpass: function(params,callback) {
+    console.log('player.forgotpass function called');
+    var email = params.email;
+    console.log('email: ' + email);
+    if(!util.isEmail(email)) { return callback("ERROR: Invalid Email address. \"" +params.email+ "\""); }
+
+    var player = this.getByEmail(email);
+    console.log('player.name: ' + player.name);
+    var token;
+    if(!player) {
+      console.log("Player is unknown");
+    }
+    else {
+      console.log("Player object exists, sending verify link...");
+      if(player.verified) {
+        console.log("Player already verified, sending to existing email...");
+      }
+      else {
+        console.log("Player not yet verified, using the most recent email...");
+        player.email = email;
+      }
+      token = Auth.tokens.get(player.key);
+      if(!token) {
+        console.log("Token did not exist for " +player.key);
+        token = ids.create();
+        Auth.tokens.set(player.key, token);
+      }
+    }
+    sendForgotPass({
+      url: params.host + '/forgotpassword/' + token,
+      name: player.name,
       email: player.email
     });
     savePlayer(player);
