@@ -1,0 +1,127 @@
+<div class=WordSection1>
+
+<h1>Individual Player Ratings</h1>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal>MNP now uses Individual Player Ratings (IPR) to track the
+strength of each player, and more importantly to track and balance team
+strength. The Team Rating is simply the
+sum of IPR of all players on that team's roster. An adjusted Team Rating may exist on any
+specific night when roster players are absent and subs are used. Refer to the
+Team Roster and Substitute rules for more details on adjusting players on the
+team.</p>
+
+<p class=MsoNormal>This page provides the details on the calculation of IPR.</p>
+
+<p class=MsoNormal>IPR sources two databases of competitive results, namely the
+IFPA World Rankings, and the Matchplay.events Ratings
+(MPR). Through Fall
+2017, only IFPA world rankings were used, and only to track players ranked in
+the top 1000. IPR expands the use if IFPA world rankings to track all players,
+and adds in the MPR that provides a more accurate rating by considering
+head-to-head data from more events, including Monday Night Pinball matches
+themselves.</p>
+
+<p class=MsoNormal>MPR uses the Glicko algorithm that
+starts every player at 1500, and increases their rating as they win more, or
+decreased it as they lose more. A Ratings Deviation (RD) specifies the presumed
+accuracy of the rating, and can range between 125 (not accurate at all) and 30
+(as accurate as the algorithm expects to be). </p>
+
+<p class=MsoNormal>The MPR Lower Bound (MPLB) is computed as a player's rating
+minus 2x the lower bound. Thus the lower bound for a new player starts at
+1500-250 = 1250. For a player with a
+rating of 1550, and RD of 30, their lower bound would be 1550-2*30 = 1490. It is this lower bound that is used in the
+computation of IPR.</p>
+
+<p class=MsoNormal>MNP retrieves the data from both IFPA and MPR multiple times
+per season, and produces a current list of all roster players and anyone who
+has subbed either the prior or current season. For each player, it computes an
+IPR for each player. Once that is done, the IPR for the player is frozen until
+the next data retrieval update, even if the player's MPLB or IFPA changes
+shortly after the update. MNP will generally announce at least one week ahead
+of time, and possibly at the start of the season, approximately when each
+update will occur, allowing captains to plan accordingly.</p>
+
+<p class=MsoNormal>The IPR itself is a value between 1 and 6, as illustrated in
+the following diagram:</p>
+
+<p class=MsoNormal><!--[if gte vml 1]><v:shapetype
+ id="_x0000_t75" coordsize="21600,21600" o:spt="75" o:preferrelative="t"
+ path="m@4@5l@4@11@9@11@9@5xe" filled="f" stroked="f">
+ <v:stroke joinstyle="miter"/>
+ <v:formulas>
+  <v:f eqn="if lineDrawn pixelLineWidth 0"/>
+  <v:f eqn="sum @0 1 0"/>
+  <v:f eqn="sum 0 0 @1"/>
+  <v:f eqn="prod @2 1 2"/>
+  <v:f eqn="prod @3 21600 pixelWidth"/>
+  <v:f eqn="prod @3 21600 pixelHeight"/>
+  <v:f eqn="sum @0 0 1"/>
+  <v:f eqn="prod @6 1 2"/>
+  <v:f eqn="prod @7 21600 pixelWidth"/>
+  <v:f eqn="sum @8 21600 0"/>
+  <v:f eqn="prod @7 21600 pixelHeight"/>
+  <v:f eqn="sum @10 21600 0"/>
+ </v:formulas>
+ <v:path o:extrusionok="f" gradientshapeok="t" o:connecttype="rect"/>
+ <o:lock v:ext="edit" aspectratio="t"/>
+</v:shapetype><v:shape id="Picture_x0020_1" o:spid="_x0000_i1025" type="#_x0000_t75"
+ style='width:626.25pt;height:482.25pt;visibility:visible;mso-wrap-style:square'>
+ <v:imagedata src="ratings_files/image001.png" o:title=""/>
+</v:shape><![endif]--><![if !vml]><img width=835 height=643
+src="/player_rating_distribution.png" v:shapes="Picture_x0020_1"><![endif]></span></p>
+
+<p class=MsoNormal>And IPR of 1 represents a novice, 3 is the average player,
+and 6 is for the top players in the city. A player's IPR is computed by
+comparing the player's current IFPA ranking and MPLB to defined thresholds, and
+determining what range they fall in. The ranges are defined so that at the time
+the IPR list is updated, the lowest rated 15% of roster players are a '1', the
+next 20% are a '2', the next 30% are a '3', the next 20% are a '4', the top 15%
+excluding the top 2% are a 5, and the top 2% are a 6. The MPLB of non-roster players (i.e. subs) do
+not affect the computation of the thresholds, but all not-roster players in the
+list are still assigned an IPR by where they fall within the range.</p>
+
+<p class=MsoNormal>The MPLB is the primary assignment of IPR. However, if a
+player's IFPA ranking maps to a higher IPR value, then that higher value will
+be assigned to the player. The use of IFPA ranking is because most major
+tournaments, including NWPC, NWPAS, Pinburgh, and
+tournaments in other cities do not currently have their data submitted to MPR.
+Rather, MPR data primarily consists of the many local weekly and monthly
+tournaments in the Seattle area. The continued use of IFPA ranking data in this
+way ensures that a player who typically only plays in the larger IFPA-ranked
+tournaments, and has demonstrated a high level of performance those tournaments,
+will still be assigned an appropriate IPR, and won't show up as a 1 or 2 and
+appearing as a novice due to lack of MPR data. For the majority of players who
+play locally more than they play in the major tournaments, the MPLB will be
+more accurate, and thus that will tend to provide the basis for the IPR.</p>
+
+<p class=MsoNormal>Technical References:</p>
+
+<p class=MsoListParagraphCxSpFirst style='text-indent:-.25in;mso-list:l0 level1 lfo1'><![if !supportLists]><span
+style='mso-ascii-font-family:Calibri;mso-fareast-font-family:Calibri;
+mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'><span
+style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span class=SpellE>Glicko</span> algorithm used
+by <span class=SpellE>matchplay</span>:<span style='mso-spacerun:yes'> </span><a
+href="http://www.glicko.net/glicko/glicko.pdf" target="_blank">http://www.glicko.net/glicko/glicko.pdf</a></p>
+
+<p class=MsoListParagraphCxSpMiddle style='text-indent:-.25in;mso-list:l0 level1 lfo1'><![if !supportLists]><span
+style='mso-ascii-font-family:Calibri;mso-fareast-font-family:Calibri;
+mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'><span
+style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]>MP implementation of <span class=SpellE>Glicko</span>
+(read only): <a
+href="https://github.com/haugstrup/TournamentUtils/blob/master/src/GlickoCalculator.php">https://github.com/haugstrup/TournamentUtils/blob/master/src/GlickoCalculator.php</a>
+</p>
+
+<p class=MsoListParagraphCxSpLast style='text-indent:-.25in;mso-list:l0 level1 lfo1'><![if !supportLists]><span
+style='mso-ascii-font-family:Calibri;mso-fareast-font-family:Calibri;
+mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'><span
+style='mso-list:Ignore'>-<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]>IFPA Ranking Information and Computation: <a
+href="https://www.ifpapinball.com/menu/ranking-info/">https://www.ifpapinball.com/menu/ranking-info/</a>
+</p>
+
+</div>    
