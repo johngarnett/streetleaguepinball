@@ -88,11 +88,18 @@ function sendVerify(params) {
   var to = params.email;
   var subject = params.subject || 'MNP - Confirm Email';
 
-  var body = mustache.render(template, {
+  var message = mustache.render(template, {
     name: name,
     link: url
   });
-  email.send(to, subject, body);
+
+  var urlLink = '<br/><br/><a href="mailto:' + url + '">' + url + '</a><br/><br/>';
+  var htmlMessage = mustache.render(template, {
+    name: name,
+    link: urlLink
+  });
+  
+  email.send(to, subject, message, htmlMessage);
 }
 
 module.exports = {
