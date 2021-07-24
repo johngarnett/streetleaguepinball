@@ -88,7 +88,7 @@ router.post('/forgotpass',function(req,res) {
 
   var host = req.protocol + '://' +req.hostname;
   players.forgotpass({
-    email: req.body.email,
+    username: req.body.username,
     host: host
   } ,function(err,player) {
     return res.redirect('/login');

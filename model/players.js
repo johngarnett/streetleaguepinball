@@ -102,6 +102,9 @@ function sendVerify(params) {
   email.send(to, subject, message, htmlMessage);
 }
 
+function isString(val) {
+  return typeof val === 'string' || ((!!val && typeof val === 'object') && Object.prototype.toString.call(val) === '[object String]');
+}
 function sendForgotPass(params) {
   console.log("sendForgotPass()... ");
   var template = fs.readFileSync('./template/email_forgotpass.html').toString();
@@ -140,11 +143,13 @@ module.exports = {
   },
   //TODO: This should be replaced by mongo.findOne
   getByField: function(field,value) {
+    console.log('getByField - ' + field + ' / value - ' + value);
     var list = this.all();
     var check = value.trim().toLowerCase(); //For now only using lower case on values. fields should be known.
     for(i in list) {
       var p = list[i];
-      if(p[field] && p[field].trim().toLowerCase() == check) {
+      console.log('i: ' + i, '  p: ' + p + '  p[field]: ' + p[field]);
+      if(p[field] && isString(p[field]) && p[field].trim().toLowerCase() == check) {
         return p;
       }
     }
@@ -241,11 +246,16 @@ module.exports = {
   },
   forgotpass: function(params,callback) {
     console.log('player.forgotpass function called');
-    var email = params.email;
-    console.log('email: ' + email);
-    if(!util.isEmail(email)) { return callback("ERROR: Invalid Email address. \"" +params.email+ "\""); }
+    const username = params.username;
+    console.log('username: ' + username);
 
-    var player = this.getByEmail(email);
+    player = this.getByEmail(username);
+    if (!player) {
+      player = this.getByName(username);
+    }
+    if(!player) { 
+      return callback("ERROR: No such user: \"" +username+ "\""); 
+    }
     console.log('player.name: ' + player.name);
     var token;
     if(!player) {
@@ -253,13 +263,6 @@ module.exports = {
     }
     else {
       console.log("Player object exists, sending verify link...");
-      if(player.verified) {
-        console.log("Player already verified, sending to existing email...");
-      }
-      else {
-        console.log("Player not yet verified, using the most recent email...");
-        player.email = email;
-      }
       token = Auth.tokens.get(player.key);
       if(!token) {
         console.log("Token did not exist for " +player.key);
@@ -272,7 +275,6 @@ module.exports = {
       name: player.name,
       email: player.email
     });
-    savePlayer(player);
     callback(null, player);
   },
   verify: function(params,callback) {
