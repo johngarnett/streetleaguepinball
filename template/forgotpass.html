@@ -4,8 +4,7 @@
 <!--
 <h2>Login</h2>
 -->
-<form action="/login" method="POST">
-<input type="hidden" name="redirect_url" value="{{redirect_url}}">
+<form action="/forgotpass" method="POST">
 <div class="container">
   <div class="form-group row">
     <label for="username" class="col-sm-2 col-form-label">Email or Name</label>
@@ -14,15 +13,8 @@
     </div>
   </div>
   <div class="form-group row">
-    <label for="password" class="col-sm-2 col-form-label">Password</label>
-    <div class="col-sm-10">
-      <input type="password" class="form-control" id="password" name="password">
-    </div>
-  </div>
-  <div class="form-group row">
     <div class="offset-sm-2">
-      <button type="submit" name="login" class="btn btn-primary" style="padding-left: 5em; padding-right: 5em; margin: 0.5em;">LOGIN</button>
-      <button type="button" name="forgotpass" class="btn btn-secondary" style="padding-left: 5em; padding-right: 5em; margin: 0.5em;" onclick="window.location.replace('/forgotpass');">FORGOT PASSWORD</button>
+      <button type="submit" name="pwreset" class="btn btn-primary" style="padding-left: 5em; padding-right: 5em; margin: 0.5em;">SEND EMAIL WITH PASSWORD RESET LINK</button>
     </div>
   </div>
 </div>

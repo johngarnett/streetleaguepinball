@@ -11,6 +11,13 @@ ENV LEAGUE_ADMINS=7199
 ENV TEST_EMAIL_ADDRESS=??
 ENV UPLOADS_FOLDER=/usr/src/data/uploads
 
+ENV EMAIL_HOST=smtp.gmail.com
+ENV EMAIL_PORT=587
+ENV EMAIL_ADDRESS=seattlemnp.donotreply@gmail.com
+ENV EMAIL_NAME=SeattleMNP.DoNotReply
+# email password need to be passed on the docker commandline
+# ENV EMAIL_PASSWORD=
+
 COPY package*.json ./
 
 RUN npm ci --only=production
