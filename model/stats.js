@@ -16,6 +16,27 @@ function load() {
   }
 }
 
+/*
+ * The Team page displays stats for each player on the team.
+ */
+function Stats(obj) {
+  this.key = obj.key;
+  this.history = [];
+  this.divisions = ['all', 'div-1', 'div-2'].map(id => ({
+    id,
+    pops: '0.000',
+    num_matches: 0,
+    ppm: '0.000',
+    points: { won: 0, of: 0 }
+  })).reduce((obj, div) => {
+    obj[div.id] = div;
+    return obj;
+  }, {});
+}
+
+// Need to load here, because we render stats on the Team page (in addition to the stats page).
+load();
+
 module.exports = {
   get: function(key) {
     return _map[key] || new Stats({ key: key });
