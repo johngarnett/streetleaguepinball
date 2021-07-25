@@ -11,8 +11,7 @@ var COOKIE_NAME = 'mnp_sess';
 var COOKIE_OPTIONS = { maxAge: 1000*60*60*24*365*10 };
 
 var router = express.Router();
-require('dotenv').load();
-const DATA_FOLDER = process.env.DATA_FOLDER;
+const DATA_FOLDER = require('../config').DATA_FOLDER;
 
 // TODO: Refactor as middleware
 router.use(function(req, res, next) {

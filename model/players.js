@@ -6,8 +6,7 @@ var email = require('../lib/email');
 var util = require('../lib/util');
 var Auth = require('../lib/auth');
 const makeKey = require('../lib/make-key');
-require('dotenv').load();
-const DATA_FOLDER = process.env.DATA_FOLDER;
+const DATA_FOLDER = require('../config').DATA_FOLDER;
 var _map = {};
 
 // TODO: ALERT, destroy player isn't erasing anything but the player file.

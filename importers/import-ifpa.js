@@ -1,7 +1,7 @@
 'use strict';
 
 const fs = require('fs');
-const DATA_FOLDER = process.env.DATA_FOLDER;
+const DATA_FOLDER = require('../config').DATA_FOLDER;
 
 const filename = process.argv[2] || './' + DATA_FOLDER + '/WPPR_PLAYERS.csv';
 

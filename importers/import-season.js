@@ -2,9 +2,9 @@ const fs = require('fs');
 var venues = require('../model/venues');
 var csv = require('../lib/csv');
 
-require('dotenv').load();
-const DATA_FOLDER = process.env.DATA_FOLDER;
-const CURRENT_SEASON = process.argv[2] || process.env.CURRENT_SEASON;
+const config = require('../config');
+const DATA_FOLDER = config.DATA_FOLDER;
+const CURRENT_SEASON = process.argv[2] || config.CURRENT_SEASON;
 var stem = DATA_FOLDER + '/' + CURRENT_SEASON + '/';
 
 //FIRST, Load up the team data

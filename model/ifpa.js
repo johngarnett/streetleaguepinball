@@ -6,9 +6,9 @@ var csv = require('../lib/csv');
 var util = require('../lib/util');
 var players = require('./players');
 
-require('dotenv').load();
-const IFPA_API_KEY = process.env.IFPA_API_KEY;
-const DATA_FOLDER = process.env.DATA_FOLDER;
+const config = require('..config');
+const IFPA_API_KEY = config.IFPA_API_KEY;
+const DATA_FOLDER = config.DATA_FOLDER;
 
 var map = {};
 

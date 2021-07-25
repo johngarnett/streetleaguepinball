@@ -1,12 +1,11 @@
 var fs = require('fs');
-require('dotenv').load();
-const DATA_FOLDER = process.env.DATA_FOLDER;
-const CURRENT_SEASON = process.env.CURRENT_SEASON;
+const config = require('../config');
+const DATA_FOLDER = config.DATA_FOLDER;
+const CURRENT_SEASON = config.CURRENT_SEASON;
 var filename = DATA_FOLDER + '/' + CURRENT_SEASON + '/venues.all.txt';
 
 var raw = fs.readFileSync(filename).toString();
 
-//console.log(raw);
 
 var lines = raw.split('\n');
 
