@@ -2,8 +2,7 @@ var fs = require('fs');
 
 var _map = {};
 
-require('dotenv').load();
-const DATA_FOLDER = process.env.DATA_FOLDER;
+const DATA_FOLDER = require('../config').DATA_FOLDER;
 const DATA_DIR = DATA_FOLDER + '/stats';
 
 function load() {

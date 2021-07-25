@@ -2,9 +2,8 @@ var fs = require('fs');
 var CONST = require('../constants');
 var players = require('../model/players');
 var util = require('../lib/util');
-var A = require('../lib/auth');
-require('dotenv').load();
-const DATA_FOLDER = process.env.DATA_FOLDER;
+var Auth = require('../lib/auth');
+const DATA_FOLDER = require('../config').DATA_FOLDER;
 
 var list = players.all();
 
@@ -40,14 +39,14 @@ for(i in list) {
     if(util.fileExists(fn)) { fs.unlinkSync(fn); }
     player.key = key;
 
-    var sh = A.shadows.get(old);
-    A.shadows.set(key,sh);
-    A.shadows.clear(old);
+    var sh = Auth.shadows.get(old);
+    Auth.shadows.set(key,sh);
+    Auth.shadows.clear(old);
 
-    var token = A.tokens.get(old);
+    var token = Auth.tokens.get(old);
     if(token) {
-      A.tokens.set(key,token);
-      A.tokens.clear(old);
+      Auth.tokens.set(key,token);
+      Auth.tokens.clear(old);
     }
 
     //Fix the sessions, too.

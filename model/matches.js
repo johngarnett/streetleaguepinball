@@ -3,8 +3,7 @@ var util = require('../lib/util');
 var CONST = require('../constants');
 var players = require('./players');
 var IPR = require('./ratings');
-require('dotenv').load();
-const DATA_FOLDER = process.env.DATA_FOLDER;
+const DATA_FOLDER = require('../config').DATA_FOLDER;
 
 // TODO: Refactor in conjunction with splitting venues.js
 var venues = require('./venues');
