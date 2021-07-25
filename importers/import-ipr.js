@@ -1,6 +1,6 @@
 'use strict';
 
-const DATA_FOLDER = process.env.DATA_FOLDER;
+const DATA_FOLDER = require('./config').DATA_FOLDER;
 const info = JSON.parse(require('fs').readFileSync(DATA_FOLDER + '/playerinfo.json'));
 const { players } = info;
 

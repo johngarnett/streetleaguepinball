@@ -10,6 +10,7 @@ const matches = require('../model/matches'); //For standings
 const stats = require('../model/stats');
 const IPR = require('../model/ratings');
 const { ROOT } = require('../constants');
+const config = require('../config');
 
 // TODO: Look into getSuggestions in the context of rosters.
 //  There appears to be some match specific filtering built in
@@ -19,7 +20,6 @@ const { ROOT } = require('../constants');
 // TODO: It might be good to verify eligibility of a player to be added.
 const getSuggestions = () => IPR.getNames();
 
-require('dotenv').load();
 
 const base = fs.readFileSync('./template/base.html').toString();
 
@@ -31,7 +31,7 @@ const admins = [
   // TODO: What if there are no admins (empty string)?
   // My guess is that the first call to teams.js would crash
   // the server.
-  ...process.env.LEAGUE_ADMINS.split(',')
+  ...config.LEAGUE_ADMINS
 ];
 
 router.use(function(req,res,next) {

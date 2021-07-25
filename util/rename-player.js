@@ -9,8 +9,7 @@ const findSessions = require('./find-sessions');
 
 const fromName = process.argv[2];
 const toName = process.argv[3];
-require('dotenv').load();
-const DATA_FOLDER = process.env.DATA_FOLDER;
+const DATA_FOLDER = require('../config').DATA_FOLDER;
 
 if(!fromName || !toName) {
   console.log('Usage: node util/rename-player fromName toName');

@@ -1,7 +1,8 @@
 'use strict';
 
-const DATA_FOLDER = process.env.DATA_FOLDER;
-const CURRENT_SEASON = process.env.CURRENT_SEASON;
+const config = require('../config');
+const DATA_FOLDER = config.DATA_FOLDER;
+const CURRENT_SEASON = config.CURRENT_SEASON;
 
 // TODO: No more hard coded season nums!
 require('../lib/csv').load(DATA_FOLDER + '/' + CURRENT_SEASON + '/roster-grid.csv')

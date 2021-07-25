@@ -5,9 +5,9 @@ const fs = require('fs');
 const machines = require('../model/machines');
 const players = require('../model/players');
 const { teams } = require('../model/seasons').get();
-require('dotenv').load();
-const DATA_FOLDER = process.env.DATA_FOLDER;
-const CURRENT_SEASON = process.env.CURRENT_SEASON;
+const config = require('../config');
+const DATA_FOLDER = config.DATA_FOLDER;
+const CURRENT_SEASON = config.CURRENT_SEASON;
 
 const PA = [0, 2.5, 3, 3, 2.5, 0];
 
@@ -62,7 +62,6 @@ const lookup = fs.readdirSync(DATA_FOLDER + '/matches')
     x[p.key] = p.name;
     return x;
   }, {});
-  // console.log(names);
 
   // For the time being, there are no mixed division matches.
   // If the home team isn't found or doesn't have a division,
@@ -121,7 +120,6 @@ const lookup = fs.readdirSync(DATA_FOLDER + '/matches')
           history: []
         };
         delete item.pk; // Don't need key after stats lookup.
-        // console.log(player.key, player.name, item);
         player.history.push(item);
         stats[player.key] = player;
       });
@@ -162,5 +160,4 @@ Object.keys(lookup).forEach(pk => {
   };
 
   require('../model/stats').set(pk, player);
-  // console.log(player);
 });

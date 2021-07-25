@@ -3,9 +3,9 @@ var fs = require('fs');
 var util = require('../lib/util');
 var router = express.Router();
 
-require('dotenv').load();
-const DATA_FOLDER = process.env.DATA_FOLDER;
-const UPLOADS_FOLDER = process.env.UPLOADS_FOLDER;
+const config = require('../config');
+const DATA_FOLDER = config.DATA_FOLDER;
+const UPLOADS_FOLDER = config.UPLOADS_FOLDER;
 
 //NOTE: By placing this middleware AFTER the users middleware,
 //	all the login, logout, and signup routes will be

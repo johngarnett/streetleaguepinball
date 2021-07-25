@@ -1,7 +1,7 @@
 const fs = require('fs');
-require('dotenv').load();
-const DATA_FOLDER = process.env.DATA_FOLDER;
-const CURRENT_SEASON = process.env.CURRENT_SEASON;
+const config = require('../config');
+const DATA_FOLDER = config.DATA_FOLDER;
+const CURRENT_SEASON = config.CURRENT_SEASON;
 
 const rnd = () => Math.random() < 0.5 ? -1 : 1;
 

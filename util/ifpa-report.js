@@ -4,9 +4,9 @@
 // 2) Attempt to match via IFPA API.
 
 const fs = require('fs');
-require('dotenv').load();
-const DATA_FOLDER = process.env.DATA_FOLDER;
-const CURRENT_SEASON = process.env.CURRENT_SEASON;
+const config = require('../config');
+const DATA_FOLDER = config.DATA_FOLDER;
+const CURRENT_SEASON = config.CURRENT_SEASON;
 
 const ifpa = fs.readFileSync(DATA_FOLDER + '/ifpa_num.csv').toString()
   .split('\n')

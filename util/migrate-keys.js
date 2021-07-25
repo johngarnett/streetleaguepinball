@@ -15,8 +15,7 @@
   data/stats/<key> - as JSON { key, name, ...other_stuff }
 */
 const fs = require('fs');
-require('dotenv').load();
-const DATA_FOLDER = process.env.DATA_FOLDER;
+const DATA_FOLDER = require('../config').DATA_FOLDER;
 
 const { shadows, tokens } = require('../lib/auth');
 

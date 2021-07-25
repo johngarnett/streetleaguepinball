@@ -1,8 +1,8 @@
 'use strict';
 
-require('dotenv').load();
-const DATA_FOLDER = process.env.DATA_FOLDER;
-const CURRENT_SEASON = process.env.CURRENT_SEASON;
+const config = require('../config');
+const DATA_FOLDER = config.DATA_FOLDER;
+const CURRENT_SEASON = config.CURRENT_SEASON;
 var players = require('../model/players.js');
 
 var csv = require('../lib/csv.js');
@@ -16,7 +16,6 @@ var pdb = csv.load(DATA_FOLDER + '/' + CURRENT_SEASON + '/playerdb.csv');
 var map1 = rowsToMap(rows1);
 var map2 = rowsToMap(rows2);
 
-//console.log(map1);
 console.log(Object.keys(map1).length);
 console.log(Object.keys(map2).length);
 
@@ -37,7 +36,6 @@ for(let i = 0; i < pdb.length; i++) {
   let x = map1[key];
   let y = map2[key];
   if(!x) {
-    //if(y) console.log(`${name},${y.num}`);
     if(!y) console.log('Unknown player:',name);
   }
 }

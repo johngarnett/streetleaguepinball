@@ -3,8 +3,7 @@ const fs = require('fs');
 const makeKey = require('../lib/make-key');
 
 const debug = () => {}; //console.log;
-require('dotenv').load();
-const DATA_FOLDER = process.env.DATA_FOLDER;
+const DATA_FOLDER = require('../config').DATA_FOLDER;
 
 const sessionDir = DATA_FOLDER + '/sessions';
 
