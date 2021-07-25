@@ -71,8 +71,16 @@ router.get('/stats',function(req,res) {
   const template = fs.readFileSync('./template/stats.html').toString();
   const all = stats.all();
 
+  /*
+   * We no longer want or need stats broken out by division.  However, the
+   * compute-stats.js does the stats and breaks them down by division.  We
+   * don't want to have to touch/test THAT script just yet.  So we'll keep
+   * the knowledge that there are multiple 'divisions' of stats.  And we
+   * will just grab the 'all' stats.
+   */
+
   const divs = all.reduce((divs, player) => {
-    const pDivs = player.divisions;
+    const pDivs = {'all': player.divisions['all']};
     if(!pDivs){
       return {};
     }
@@ -84,17 +92,9 @@ router.get('/stats',function(req,res) {
       divs[divId].push(
         Object.assign({}, pDivs[divId], { name, key, rating })
       );
-
-      // NOTE: At node version 6.9.1, you can't use object spread operator
-      // divs[divId].players.push({
-      //   name: player.name,
-      //   ...pDivs[divId]
-      // });
     });
     return divs;
   }, {});
-
-  // console.log(divisions);
 
   const divisions = Object.keys(divs).map(divId => {
     const list = divs[divId];
