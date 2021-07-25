@@ -1,6 +1,7 @@
 var fs = require('fs');
-require('dotenv').load();
-const DATA_FOLDER = process.env.DATA_FOLDER;
+const config = require('../config');
+const DATA_FOLDER = config.DATA_FOLDER;
+const CURRENT_SEASON = config.CURRENT_SEASON;
 
 // var matches = require('./matches');
 
@@ -47,8 +48,6 @@ function loadSeason(key) {
   // console.log("loadSeason()",key,fn,season.key);
   return season;
 }
-
-const CURRENT_SEASON = (process.env.CURRENT_SEASON ? process.env.CURRENT_SEASON : 'season-13');
 
 var _map = {
   // Not sure why we would need to load other seasons like this.

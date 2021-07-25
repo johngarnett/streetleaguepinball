@@ -2,9 +2,9 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 var mustache = require('mustache');
-require('dotenv').load();
-const DATA_FOLDER = process.env.DATA_FOLDER;
-const UPLOADS_FOLDER = process.env.UPLOADS_FOLDER;
+const config = require('../config');
+const DATA_FOLDER = config.DATA_FOLDER;
+const UPLOADS_FOLDER = config.UPLOADS_FOLDER;
 
 // TODO: This could probably be renamed to matches,
 // or matches should be a folder that includes the parts of this router.
