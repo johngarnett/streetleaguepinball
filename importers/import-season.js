@@ -1,21 +1,26 @@
 const fs = require('fs');
-var venues = require('../model/venues');
 var csv = require('../lib/csv');
 
 const config = require('../config');
 const DATA_FOLDER = config.DATA_FOLDER;
 const CURRENT_SEASON = process.argv[2] || config.CURRENT_SEASON;
 var stem = DATA_FOLDER + '/' + CURRENT_SEASON + '/';
+const num = CURRENT_SEASON.split('-')[1];
+
+let rows = csv.load(stem + 'venues.csv')
+const venues = rows.reduce((venues, row) => {
+  venues[row[0]] = row[1];
+  return venues;
+}, {});
 
 //FIRST, Load up the team data
-var rows = csv.load(stem + 'teams.csv');
+rows = csv.load(stem + 'teams.csv');
 
 var teams = {};
-for(let i in rows) {
-  var row = rows[i];
-  var tk = row[0];
-  teams[tk] = {
-    key: tk,
+rows.forEach(row => {
+  var team_key = row[0];
+  teams[team_key] = {
+    key: team_key,
     venue: row[1],
     name: row[2],
     roster: [],
@@ -23,18 +28,18 @@ for(let i in rows) {
     // Not sure what to default, but want to avoid uncaught error.
     division: parseInt(row[3] || 0)
   };
-}
+});
 
 var pteams = {};
 //ADDING PLAYOFF TEAMS to the map.
 for(let i = 1; i < 13; i++) {
-  let tk = 'S' +i;
-  pteams[tk] = { key: tk, name: 'Seed #' +i };
+  let team_key = 'S' +i;
+  pteams[team_key] = { key: team_key, name: 'Seed #' +i };
 }
 
 for(let i = 1; i < 9; i++) {
-  let tk = 'QF' +i;
-  pteams[tk] = { key: tk, name: 'SF #' +i };
+  let team_key = 'QF' +i;
+  pteams[team_key] = { key: team_key, name: 'SF #' +i };
 }
 
 pteams['H45'] = { key: 'H45', name: 'SF 4 vs 5' };
@@ -70,14 +75,13 @@ codes['S'] = 'SCRM';
 rows = csv.load(stem + 'rosters.csv');
 
 //Figure out which teams players go on, and if they are captains.
-for(let i in rows) {
-  let row = rows[i];
+rows.forEach(row => {
   if(row.length > 1) {
     let name = row[0];
-    let tk = row[1];
-    if(tk && tk.length > 0 && teams[tk]) {
+    let team_key = row[1];
+    if(team_key && team_key.length > 0 && teams[team_key]) {
 
-      var team = teams[tk];
+      var team = teams[team_key];
       if(row[2] == 'C') team.captain = name;
       if(row[2] == 'A') team.co_captain = name;
       team.roster.push({
@@ -85,16 +89,15 @@ for(let i in rows) {
       });
     }
   }
-}
+});
 
 //THIRD, Load all the matches to create schedules.
 rows = csv.load(stem + 'matches.csv');
 var weeks = {};
 
-for(let i in rows) {
-  let row = rows[i];
+rows.forEach(row => {
   let match = {
-    key: 'mnp-' +num+ '-' +row[0]+ '-' +row[2]+ '-' +row[3],
+    key: 'mnp-' + num + '-' +row[0]+ '-' +row[2]+ '-' +row[3],
     week: row[0],
     date: row[1],
     away: row[2],
@@ -156,12 +159,12 @@ for(let i in rows) {
       weeks[match.date] = week;
     }
 
-    var venue = venues.get(match.venue);
+    var venue = venues[match.venue];
 
     if(!venue) {
       console.warn('Venue not found:', match.venue, match.key);
 
-      venue = venues.get(home.venue) || {
+      venue = venues[home.venue] || {
         key: 'TBD',
         name: 'To Be Determined',
       };
@@ -174,12 +177,12 @@ for(let i in rows) {
     //HACK: Season 6 playoff hack to move a doubled up match to
     //an alternate location.
     if(num == 6 && match.week == 91 && home.key == 'JMF') {
-      venue = venues.get('OZS');
+      venue = venues['OZS'];
     }
 
     //HACK: Season 6 finals are at Shorty's.
     if(num == 6 && match.week == 94) {
-      venue = venues.get('SHR');
+      venue = venues['SHR'];
     }
 
     week.matches.push({
@@ -197,7 +200,7 @@ for(let i in rows) {
     let week = weeks[match.date];
     //Week is a special event.
     if(!week) {
-      let venue = venues.get(teams[match.away].venue);
+      let venue = venues[teams[match.away].venue];
       week = {
         date: match.date,
         isSpecial: true,
@@ -207,7 +210,7 @@ for(let i in rows) {
       weeks[match.date] = week;
     }
   }
-}
+});
 
 var list = [];
 
