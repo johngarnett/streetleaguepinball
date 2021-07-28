@@ -5,14 +5,38 @@ const config = require('../config');
 const DATA_FOLDER = config.DATA_FOLDER;
 const CURRENT_SEASON = process.argv[2] || config.CURRENT_SEASON;
 var stem = DATA_FOLDER + '/' + CURRENT_SEASON + '/';
-const num = CURRENT_SEASON.split('-')[1];
+const seasonNumber = CURRENT_SEASON.split('-')[1];//numeric part of "season-13"
 
+/*
+ * venues.csv is a list of venues in the form
+ * FTB,Full Tilt Ballard
+ * OLF,Olaf's
+ * SHR,Shorty's
+ * 
+ * The following turns this two dimensional array,
+ * into a map: key is 3 uppercase chars | value is the full name.
+ */
 let rows = csv.load(stem + 'venues.csv')
 const venues = rows.reduce((venues, row) => {
   venues[row[0]] = row[1];
   return venues;
 }, {});
 
+/*
+ * teams.csv is a list of teams in the form
+ * NLT,OLF,Northern Lights,1,,,,,,,,,,,,,,,,,,
+ * SJK,FTB,Soda Jerks,1,,,,,,,,,,,,,,,,,,
+ *
+ * We only care about columns 0,1 and 2.  Previously,
+ * we honored column 3 as the division; but we are
+ * doing away with that.  But to minimize code churn,
+ * we'll keep the team's division, but always make it 0. 
+ * 
+ * The following turns the csv array into a map:
+ * key is 3 uppercase chars | value is a team object.
+ * The team object is initialized with an empty roster,
+ * and an empty schedule.
+ */
 //FIRST, Load up the team data
 rows = csv.load(stem + 'teams.csv');
 
@@ -25,8 +49,7 @@ rows.forEach(row => {
     name: row[2],
     roster: [],
     schedule: [],
-    // Not sure what to default, but want to avoid uncaught error.
-    division: parseInt(row[3] || 0)
+    division: 0
   };
 });
 
@@ -71,10 +94,25 @@ codes[93] = 'FNL';
 
 codes['S'] = 'SCRM';
 
-//SECOND, Load all the players and assign them to their teams.
+/*
+ * rosters.csv is a list of players in the form
+ * Alexa Philbeck,TWC,C
+ * Algird Lisaius,SWL,P
+ * Alicia Seftel,LLK,A
+ * Allison McClure,SJK,P
+ * Altwin Hawksford,PGN,P
+ * 
+ * Column 0 is the player name, column 1 is the team key,
+ * column 2 is the enum {C - captain, A - assistant, P - player}
+ */
 rows = csv.load(stem + 'rosters.csv');
 
-//Figure out which teams players go on, and if they are captains.
+/* 
+ * Previously we initialized the teams and populated each
+ * with an empty roster array.  Here we are going to populate
+ * that roster.  The roster is made up of objects with only
+ * the player's name.
+ */
 rows.forEach(row => {
   if(row.length > 1) {
     let name = row[0];
@@ -91,13 +129,37 @@ rows.forEach(row => {
   }
 });
 
-//THIRD, Load all the matches to create schedules.
+/*
+ * matches.csv is a list of matches in the form
+ * 1,20200203,DSV,ETB,GET
+ * 1,20200203,CRA,KNR,FFD
+ * 1,20200203,SWL,SJK,FTB
+ * 1,20200203,BOC,PBR,AAB
+ * 1,20200203,TWC,SSS,SHR
+ * 
+ * Column 0 is the week number
+ * Column 1 is the date (YYYYMMDD)
+ * Column 2 is the away/visiting team
+ * Column 3 is the home team
+ * Column 4 is the venue
+ * 
+ * We'll give each match a unique key with
+ * mnp-{seasonNumber}-{away}-{home}-{venue}
+ * 
+ * Each team's schedule will be built up as an
+ * array.  Each object describes the match
+ * in terms of the team.
+ */
 rows = csv.load(stem + 'matches.csv');
 var weeks = {};
 
+/*
+ * Load all the matches to create schedules.
+ * Also, build up the 'weeks' array.
+ */
 rows.forEach(row => {
   let match = {
-    key: 'mnp-' + num + '-' +row[0]+ '-' +row[2]+ '-' +row[3],
+    key: 'mnp-' + seasonNumber + '-' +row[0]+ '-' +row[2]+ '-' +row[3],
     week: row[0],
     date: row[1],
     away: row[2],
@@ -105,6 +167,7 @@ rows.forEach(row => {
     venue: row[4]
   };
 
+  // I believe week 'S' indicates Scrimmage.
   if(match.week == 'S' || match.week > 0) {
     var home = teams[match.home];
     var away = teams[match.away];
@@ -174,17 +237,6 @@ rows.forEach(row => {
       console.warn('Using:', venue.name);
     }
 
-    //HACK: Season 6 playoff hack to move a doubled up match to
-    //an alternate location.
-    if(num == 6 && match.week == 91 && home.key == 'JMF') {
-      venue = venues['OZS'];
-    }
-
-    //HACK: Season 6 finals are at Shorty's.
-    if(num == 6 && match.week == 94) {
-      venue = venues['SHR'];
-    }
-
     week.matches.push({
       match_key: match.key,
       away_key: away.key,
@@ -214,10 +266,11 @@ rows.forEach(row => {
 
 var list = [];
 
-//FOURTH, Sort the weeks - Not needed.
-//      Just make sure to have a sorted input file. ;)
+/*
+ * This just goes through and converts all of the dates
+ * to a friendlier format: 02/03/2021
+ */
 var keys = Object.keys(weeks);
-// keys.sort();
 for(let k in keys) {
   let week = weeks[keys[k]];
 
