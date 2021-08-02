@@ -90,7 +90,7 @@ function getGroupForTeam(teamKey) {
       return value;
     }
   }
-  return 'unknown';
+  return undefined;
 }
 
 router.get('/teams/:team_id',function(req,res) {

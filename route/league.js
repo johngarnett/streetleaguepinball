@@ -33,10 +33,18 @@ router.get('/standings',function(req,res) {
   const season = seasons.get(); //TODO Allow other seasons.
 
   const divs = season.getStandings(); // { '1': [], '2': [] }
+  var groupNames = new Array();
+  var groupKeys = new Array();
+  for (const [key, value] of Object.entries(season.groups)) {
+    groupNames.push(value.name);
+    groupKeys.push(key);
+  }
 
   const divisions = Object.keys(divs).map(tier => ({
     tier,
-    rows: divs[tier]
+    rows: divs[tier],
+    groupName: groupNames[tier],
+    groupKey: groupKeys[tier]
   }));
 
   const html = mustache.render(base,{
