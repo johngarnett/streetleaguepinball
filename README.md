@@ -27,7 +27,8 @@ setupMNPFolders.sh.  Alternately, you can specify a different CURRENT_SEASON env
 on the command line.
 
 ```
-CURRENT_SEASON=season-13 node http.js
+CURRENT_SEASON=season-14
+node http.js
 ```
 
 
