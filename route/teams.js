@@ -73,6 +73,26 @@ function getTeam(key) {
   return team;
 }
 
+function getGroup(groupKey) {
+  const season = seasons.get(); //TODO Allow other seasons.
+  return season.groups[groupKey]
+}
+
+function getTeamsInGroup(groupKey) {
+  const group = getGroup(groupKey);
+  return group.teams;
+}
+
+function getGroupForTeam(teamKey) {
+  const season = seasons.get(); //TODO Allow other seasons.
+  for (const [key, value] of Object.entries(season.groups)) {
+    if (value.teams.includes(teamKey)) {
+      return value;
+    }
+  }
+  return 'unknown';
+}
+
 router.get('/teams/:team_id',function(req,res) {
   console.log('GET team', req.params.team_id, req.user);
   const template = fs.readFileSync('./template/team.html').toString();
@@ -81,6 +101,7 @@ router.get('/teams/:team_id',function(req,res) {
   const team = getTeam(req.params.team_id);
   if(!team) { return res.redirect('/teams'); }
 
+  const group = getGroupForTeam(team.key).name;
   const venue = venues.get(team.venue);
   const vname = venue ? venue.name : team.venue;
 
@@ -149,7 +170,7 @@ router.get('/teams/:team_id',function(req,res) {
     team_id: team.key,
     title: team.name,
     name: team.name,
-    division: team.division,
+    group: group,
     venue: vname,
     captain: team.captain,
     co_captain: team.co_captain,

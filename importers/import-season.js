@@ -24,8 +24,8 @@ const venues = rows.reduce((venues, row) => {
 
 /*
  * teams.csv is a list of teams in the form
- * NLT,OLF,Northern Lights,1,,,,,,,,,,,,,,,,,,
- * SJK,FTB,Soda Jerks,1,,,,,,,,,,,,,,,,,,
+ * NLT,OLF,Northern Lights,1
+ * SJK,FTB,Soda Jerks,1
  *
  * We only care about columns 0,1 and 2.  Previously,
  * we honored column 3 as the division; but we are
@@ -285,10 +285,46 @@ for(let k in keys) {
   list.push(week);
 }
 
+/*
+ * groups.csv is a list of matches in the form
+ * A,SlingshotX  ,BOC,CRA,CDC,DTP,
+ * B,PlungerX    ,DND,DSV,DIH,ETB,HHS,
+ * C,FlipperX    ,HWZ,KNR,LAS,LLK,RMS,
+ * D,BumperX     ,JMF,NLT,OLD,CPO,
+ * E,TargetX     ,PGN,PKT,PBR,RTR,SCN,
+ * F,SpinnerX    ,SSS,SKP,SJK,SWL,TWC,
+ * 
+ * 
+ * Column 0 is the group key
+ * Column 1 is the group name
+ * Column 2... is the list of team keys
+ * 
+ * Only the standings and the team page need
+ * to know about the groups
+ */
+var groups = {};
+
+rows = csv.load(stem + 'groups.csv');
+rows.forEach(row => {
+  var group_key = row[0];
+  groups[group_key] = {
+    key: group_key,
+    name: row[1],
+    teams: [],
+  };
+  row.slice(2,7).forEach( team => {
+    if (team != '') {
+      groups[group_key].teams.push(team)
+    }
+  });
+});
+
+
 var season = {
   key: CURRENT_SEASON,
   teams: teams,
-  weeks: list
+  weeks: list,
+  groups: groups
 };
 
 fs.writeFileSync(`${stem}/season.json`, JSON.stringify(season,null,2));
