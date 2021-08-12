@@ -312,7 +312,7 @@ rows.forEach(row => {
     name: row[1],
     teams: [],
   };
-  row.slice(2,7).forEach( team => {
+  row.slice(2,20).forEach( team => {
     if (team != '') {
       groups[group_key].teams.push(team)
     }
