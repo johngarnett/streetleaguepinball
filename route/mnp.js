@@ -119,6 +119,16 @@ router.get('/matches/create',function(req,res) {
   sendCreate(res);
 });
 
+router.get('/matches/reload',function(req,res) {
+  matches.reload();
+  res.redirect('/matches/');
+});
+
+router.get('/matches/spawn',function(req,res) {
+  matches.reload();
+  res.redirect('/matches/');
+});
+
 router.post('/matches/create',function(req,res) {
   console.log("POST /matches/create",req.body);
 
