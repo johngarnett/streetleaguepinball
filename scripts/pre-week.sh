@@ -23,5 +23,7 @@ echo "We are no longer running this on the server!!"
 # the resulting files, SSH into the server, stop/start 
 # the docker container.
 #
+# node util/spawn-matches.js 1
+#
 # We need an admin page that will allow us to do this
 # through the web interface.

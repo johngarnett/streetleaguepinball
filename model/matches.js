@@ -84,7 +84,7 @@ function deleteMatch(key) {
 function loadAll() {
   console.log("loadAll()...");
   _map = {};
-  
+
   var list = fs.readdirSync(DATA_FOLDER + '/matches');
   for(i in list) {
     var fn = list[i];
@@ -1163,7 +1163,7 @@ function gameDone(game, r) {
     }
   }
   game.done = done;
-  consoleLog("done: ", done);
+  console.log("done: ", done);
   return done;
 }
 
