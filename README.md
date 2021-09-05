@@ -143,6 +143,11 @@ team_key,venue_key,team_name
 player_lookup,player_name,team_key,role_on_team
 ```
 
+`group.csv` contains a list of groups and the teams in each group
+```
+group_identifier, group_name, team_name, team_name, ...
+```
+
 `player_lookup` has most recently been `player_name.trim().toLowerCase()`.
 
 TODO: It would be much better to have unique keys for every player.

@@ -1,10 +1,10 @@
 const fs = require('fs');
-var csv = require('../lib/csv');
+const csv = require('../lib/csv');
 
 const config = require('../config');
 const DATA_FOLDER = config.DATA_FOLDER;
 const CURRENT_SEASON = process.argv[2] || config.CURRENT_SEASON;
-var stem = DATA_FOLDER + '/' + CURRENT_SEASON + '/';
+const stem = DATA_FOLDER + '/' + CURRENT_SEASON + '/';
 const seasonNumber = CURRENT_SEASON.split('-')[1];//numeric part of "season-13"
 
 /*
@@ -319,13 +319,13 @@ var groups = {};
 
 rows = csv.load(stem + 'groups.csv');
 rows.forEach(row => {
-  var group_key = row[0];
+  let group_key = row[0];
   groups[group_key] = {
     key: group_key,
     name: row[1],
     teams: [],
   };
-  row.slice(2,20).forEach( team => {
+  row.slice(2).forEach( team => {
     if (team != '') {
       groups[group_key].teams.push(team)
     }
@@ -333,7 +333,7 @@ rows.forEach(row => {
 });
 
 
-var season = {
+const season = {
   key: CURRENT_SEASON,
   teams: teams,
   weeks: list,
