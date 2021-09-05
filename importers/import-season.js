@@ -22,6 +22,8 @@ const venues = rows.reduce((venues, row) => {
   return venues;
 }, {});
 
+console.log("venues:", venues);
+
 /*
  * teams.csv is a list of teams in the form
  * NLT,OLF,Northern Lights,1
@@ -222,15 +224,26 @@ rows.forEach(row => {
       weeks[match.date] = week;
     }
 
-    var venue = venues[match.venue];
+    var venue = {
+      key: match.venue,
+      name: venues[match.venue],
+    };
 
-    if(!venue) {
+    if(!venue.name) {
       console.warn('Venue not found:', match.venue, match.key);
 
-      venue = venues[home.venue] || {
-        key: 'TBD',
-        name: 'To Be Determined',
+      venue = {
+        key: match.venue,
+        name: venues[home.venue],
       };
+
+      if(!venue.name) {
+        console.warn('Home Team Venue not found:', match.venue, match.key);
+        venue = venues[home.venue] || {
+          key: 'TBD',
+          name: 'To Be Determined',
+        };
+      }
 
       // If the venue is still undefined, there will be an error below,
       // which is probably ok, because the matches.csv is not correct.

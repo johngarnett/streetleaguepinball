@@ -167,6 +167,10 @@ router.get('/matchrules',function(req,res) {
   // res.send(html);
 });
 
+router.get('/ifparules', function(req,res) {
+  res.redirect('https://www.ifpapinball.com/wp/wp-content/uploads/2020/12/PAPA_IFPA-Complete-Competition-Rules-1.pdf');
+});
+
 router.get('/new-teams',function(req,res) {
   const template = fs.readFileSync('./template/call-for-teams.html').toString();
   const html = mustache.render(base,{
