@@ -86,6 +86,8 @@ function deleteMatch(key) {
 //	   on how much junk we can just load.
 function loadAll() {
   console.log("loadAll()...");
+  _map = {};
+
   var list = fs.readdirSync(stem + '/matches/');
   list.forEach(fileName => {
     var spot = fileName.indexOf('.json');
@@ -1163,9 +1165,11 @@ function gameDone(game, r) {
     }
   }
   game.done = done;
-  consoleLog("done: ", done);
+  console.log("done: ", done);
   return done;
 }
+
+loadAll();
 
 module.exports = {
   Match,
@@ -1209,8 +1213,10 @@ module.exports = {
     if(!match) { return callback("ERROR: No match found for key=" +key); }
     deleteMatch(key);
     callback(null,match);
+  },
+  reload: function() {
+    loadAll();
   }
   //Team: Team,
 };
 
-loadAll();

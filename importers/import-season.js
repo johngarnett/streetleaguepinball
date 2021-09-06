@@ -1,10 +1,10 @@
 const fs = require('fs');
-var csv = require('../lib/csv');
+const csv = require('../lib/csv');
 
 const config = require('../config');
 const DATA_FOLDER = config.DATA_FOLDER;
 const CURRENT_SEASON = process.argv[2] || config.CURRENT_SEASON;
-var stem = DATA_FOLDER + '/' + CURRENT_SEASON + '/';
+const stem = DATA_FOLDER + '/' + CURRENT_SEASON + '/';
 const seasonNumber = CURRENT_SEASON.split('-')[1];//numeric part of "season-13"
 
 /*
@@ -21,6 +21,8 @@ const venues = rows.reduce((venues, row) => {
   venues[row[0]] = row[1];
   return venues;
 }, {});
+
+console.log("venues:", venues);
 
 /*
  * teams.csv is a list of teams in the form
@@ -222,15 +224,26 @@ rows.forEach(row => {
       weeks[match.date] = week;
     }
 
-    var venue = venues[match.venue];
+    var venue = {
+      key: match.venue,
+      name: venues[match.venue],
+    };
 
-    if(!venue) {
+    if(!venue.name) {
       console.warn('Venue not found:', match.venue, match.key);
 
-      venue = venues[home.venue] || {
-        key: 'TBD',
-        name: 'To Be Determined',
+      venue = {
+        key: match.venue,
+        name: venues[home.venue],
       };
+
+      if(!venue.name) {
+        console.warn('Home Team Venue not found:', match.venue, match.key);
+        venue = venues[home.venue] || {
+          key: 'TBD',
+          name: 'To Be Determined',
+        };
+      }
 
       // If the venue is still undefined, there will be an error below,
       // which is probably ok, because the matches.csv is not correct.
@@ -306,13 +319,13 @@ var groups = {};
 
 rows = csv.load(stem + 'groups.csv');
 rows.forEach(row => {
-  var group_key = row[0];
+  let group_key = row[0];
   groups[group_key] = {
     key: group_key,
     name: row[1],
     teams: [],
   };
-  row.slice(2,7).forEach( team => {
+  row.slice(2).forEach( team => {
     if (team != '') {
       groups[group_key].teams.push(team)
     }
@@ -320,7 +333,7 @@ rows.forEach(row => {
 });
 
 
-var season = {
+const season = {
   key: CURRENT_SEASON,
   teams: teams,
   weeks: list,

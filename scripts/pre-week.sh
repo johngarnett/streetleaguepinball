@@ -13,6 +13,17 @@ echo "Running Pre week:" `date` >> $LOG
 # Roster updates are now done through the site, and 
 # will be archived in the post-week script.
 
-cd /home/mnp/main
-node util/spawn-matches.js
-sh scripts/restart.sh
+#cd /home/mnp/main
+#node util/spawn-matches.js
+#sh scripts/restart.sh
+
+echo "We are no longer running this on the server!!"
+
+# We will manually run spawn-matches.js locally, upload
+# the resulting files, SSH into the server, stop/start 
+# the docker container.
+#
+# node util/spawn-matches.js 1
+#
+# We need an admin page that will allow us to do this
+# through the web interface.
