@@ -92,7 +92,7 @@ function sendVerify(params) {
     link: url
   });
 
-  var urlLink = '<br/><br/><a href="mailto:' + url + '">' + url + '</a><br/><br/>';
+  var urlLink = `<br/><br/><a href="${url}">${url}</a><br/><br/>`;
   var htmlMessage = mustache.render(template, {
     name: name,
     link: urlLink
