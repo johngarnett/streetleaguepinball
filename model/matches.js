@@ -996,7 +996,7 @@ Match.prototype = {
   },
   save: function() {
     var json = JSON.stringify(this,null,2);
-    fs.writeFileSync(DATA_FOLDER + '/matches/'+this.key+'.json',json);
+    fs.writeFileSync(`${stem}/matches/${this.key}.json`,json);
   }
 };
 

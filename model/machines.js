@@ -13,7 +13,7 @@ function fileExists(filename) {
 }
 
 function init() {
-  const filename = `${DATA_FOLDER}/${config.CURRENT_SEASON}/machines.json`;
+  const filename = `${DATA_FOLDER}/machines.json`;
   if(!fileExists(filename)) {
     console.log("FAILED to load " +filename);
     return;
@@ -33,7 +33,7 @@ init();
 
 function save() {
   var json = JSON.stringify(_map);
-  fs.writeFileSync(DATA_FOLDER + '/machines.json',json);
+  fs.writeFileSync(`${DATA_FOLDER}/machines.json`);
 }
 
 var machines = module.exports = {

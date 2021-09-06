@@ -118,15 +118,17 @@ rows = csv.load(stem + 'rosters.csv');
 rows.forEach(row => {
   if(row.length > 1) {
     let name = row[0];
-    let team_key = row[1];
-    if(team_key && team_key.length > 0 && teams[team_key]) {
-
-      var team = teams[team_key];
-      if(row[2] == 'C') team.captain = name;
-      if(row[2] == 'A') team.co_captain = name;
-      team.roster.push({
-        name: name //,
-      });
+    if(name.length>1) {
+      let team_key = row[1];
+      if(team_key && team_key.length > 0 && teams[team_key]) {
+  
+        var team = teams[team_key];
+        if(row[2] == 'C') team.captain = name;
+        if(row[2] == 'A') team.co_captain = name;
+        team.roster.push({
+          name: name //,
+        });
+      }
     }
   }
 });

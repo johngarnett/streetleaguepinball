@@ -77,6 +77,7 @@ Visit the [data archive](https://github.com/mondaynightpinball/data-archive)
 TODO: It would be awesome to have the code just point to a DATA_HOME .env var. Then people could clone the data archive and point the server code at it (until a better solution becomes available).
 
 ### Venues
+The venues.json is not a per-season database.  It represents a realtime view of the venues.  New venues are added via the web interface by the superuser.
 
 `data/venues.json` has the form:
 ```

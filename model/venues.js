@@ -6,7 +6,7 @@ const season = require('./seasons').get();
 
 var _map = {};
 
-const filename = `${DATA_FOLDER}/${config.CURRENT_SEASON}/venues.json`;
+const filename = `${DATA_FOLDER}/venues.json`;
 
 function loadVenues() {
   var buf = fs.readFileSync(filename);
