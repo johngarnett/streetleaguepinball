@@ -3,7 +3,9 @@ var util = require('../lib/util');
 var CONST = require('../constants');
 var players = require('./players');
 var IPR = require('./ratings');
-const DATA_FOLDER = require('../config').DATA_FOLDER;
+const config = require('../config');
+const DATA_FOLDER = config.DATA_FOLDER;
+const stem = DATA_FOLDER  + '/' + config.CURRENT_SEASON
 
 // TODO: Refactor in conjunction with splitting venues.js
 var venues = require('./venues');
@@ -53,8 +55,9 @@ function getMatch(key) {
 }
 
 function loadMatch(key) {
-  var filename = DATA_FOLDER + '/matches/'+key+'.json';
+  let filename = `${stem}/matches/${key}.json`;
   if(!util.fileExists(filename)) { return; }
+  console.log(filename);
 
   var json = JSON.parse(fs.readFileSync(filename));
   //How do we apply our prototype back to the loaded object.
@@ -85,18 +88,17 @@ function loadAll() {
   console.log("loadAll()...");
   _map = {};
 
-  var list = fs.readdirSync(DATA_FOLDER + '/matches');
-  for(i in list) {
-    var fn = list[i];
-    var spot = fn.indexOf('.json');
-    var key = fn.substring(0,spot);
+  var list = fs.readdirSync(stem + '/matches/');
+  list.forEach(fileName => {
+    var spot = fileName.indexOf('.json');
+    var key = fileName.substring(0,spot);
     var m = loadMatch(key);
     if(m) {
       m.key = key; //Fixes when I copy matches without changing key.
       _map[key] = m;
       // console.log("list["+i+"]:",m.key);
     }
-  }
+  })
 }
 
 //TODO: Do we need different find and findOne?

@@ -1,5 +1,6 @@
 var fs = require('fs');
-const DATA_FOLDER = require('../config').DATA_FOLDER;
+const config = require('../config');
+const DATA_FOLDER = config.DATA_FOLDER;
 
 var _map = {};
 
@@ -12,7 +13,7 @@ function fileExists(filename) {
 }
 
 function init() {
-  var filename = DATA_FOLDER + '/machines.json';
+  const filename = `${DATA_FOLDER}/${config.CURRENT_SEASON}/machines.json`;
   if(!fileExists(filename)) {
     console.log("FAILED to load " +filename);
     return;
