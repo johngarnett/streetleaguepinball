@@ -106,6 +106,11 @@ const canEdit = (venue, user) => {
 };
 
 router.get('/venues/:key',function(req,res) {
+  if(req.params.key==="NAV") {
+    res.redirect('/venues');
+    return;
+  }
+  
   const venue = venues.get(req.params.key);
   if(!venue) {
     //For invalid venues, just redirect to /venues

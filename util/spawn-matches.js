@@ -58,6 +58,7 @@ console.log('spawing', current);
 current.matches
   // Filter to only matches not already created. Safety against overwrite.
   .filter(({match_key}) => !matches.get(match_key))
+  .filter(info => (info.away_key!="BYE" && info.home_key!="BYE"))
   .map(info => {
     console.log(info);
     const away = season.teams[info.away_key];

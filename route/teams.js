@@ -94,6 +94,11 @@ function getGroupForTeam(teamKey) {
 }
 
 router.get('/teams/:team_id',function(req,res) {
+  if(req.params.team_id==="BYE") {
+    res.redirect('/teams');
+    return;
+  }
+  
   console.log('GET team', req.params.team_id, req.user);
   const template = fs.readFileSync('./template/team.html').toString();
 
