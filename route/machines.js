@@ -3,6 +3,7 @@ var CONST = require('../constants');
 var express = require('express');
 var mustache = require('mustache');
 var router = express.Router();
+const config = require('../config');
 
 var machines = require('../model/machines');
 
@@ -12,8 +13,10 @@ router.get('/machines',function(req,res) {
   var template = fs.readFileSync('./template/machines.html').toString();
   var ukey = req.user.key || 'ANON';
 
-  var canAdd = CONST.ROOT == ukey;
-  var canRemove = CONST.ROOT == ukey;
+  let isLeagueAdmin = !!config.LEAGUE_ADMINS.find(k => k === ukey);
+  
+  var canAdd = (CONST.ROOT == ukey || isLeagueAdmin);
+  var canRemove = (CONST.ROOT == ukey || isLeagueAdmin);
   var list = machines.all();
 
   console.log('# machines:',list.length);

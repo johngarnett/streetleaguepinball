@@ -7,6 +7,7 @@ const makeKey = require('../lib/make-key');
 const machines = require('../model/machines');
 const venues = require('../model/venues');
 const seasons = require('../model/seasons');
+const config = require('../config');
 
 const base = fs.readFileSync('./template/base.html').toString();
 
@@ -80,6 +81,10 @@ router.post('/venues/create',function(req,res) {
 const canEdit = (venue, user) => {
   // ROOT can always edit
   if(user.key === CONST.ROOT) {
+    return true;
+  }
+  let isLeagueAdmin = !!config.LEAGUE_ADMINS.find(k => k === user.key);
+  if(isLeagueAdmin) {
     return true;
   }
 
