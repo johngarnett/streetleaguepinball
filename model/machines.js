@@ -33,7 +33,7 @@ init();
 
 function save() {
   var json = JSON.stringify(_map);
-  fs.writeFileSync(`${DATA_FOLDER}/machines.json`);
+  fs.writeFileSync(`${DATA_FOLDER}/machines.json`, json);
 }
 
 var machines = module.exports = {
