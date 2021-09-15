@@ -9,6 +9,7 @@ const config = {
   IFPA_API_KEY: process.env.IFPA_API_KEY,
   EMAIL_HOST: process.env.EMAIL_HOST,
   EMAIL_PORT: process.env.EMAIL_PORT,
+  EMAIL_NAME: process.env.EMAIL_NAME,
   EMAIL_ADDRESS: process.env.EMAIL_ADDRESS,
   EMAIL_PASSWORD: process.env.EMAIL_PASSWORD,
   LEAGUE_ADMINS: (process.env.LEAGUE_ADMINS || "admin").split(',')
