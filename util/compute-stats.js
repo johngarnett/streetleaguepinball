@@ -51,10 +51,10 @@ const rosters = fs.readFileSync(DATA_FOLDER + '/' + CURRENT_SEASON + '/rosters.c
   return x;
 }, {});
 
-const lookup = fs.readdirSync(DATA_FOLDER + '/matches')
+const lookup = fs.readdirSync(DATA_FOLDER + '/' + CURRENT_SEASON + '/matches')
 .filter(fn => fn.match(/mnp-\d+-\d+/)) // only MNP league matches
 .map(fn => {
-  return JSON.parse(fs.readFileSync(DATA_FOLDER + '/matches/' + fn));
+  return JSON.parse(fs.readFileSync(DATA_FOLDER + '/' + CURRENT_SEASON + '/matches/' + fn));
 })
 .reduce((stats, match) => {
   const names = [ ...match.away.lineup, ...match.home.lineup ]
