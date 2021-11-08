@@ -2,8 +2,10 @@ var https = require('https');
 var fs = require('fs');
 var express = require('express');
 var router = require('./route/main');
+const config = require('./config');
 
-const CREDENTIALS_FOLDER = require('./config').CREDENTIALS_FOLDER;
+const CREDENTIALS_FOLDER = config.CREDENTIALS_FOLDER;
+const DATA_FOLDER = config.DATA_FOLDER;
 
 //var opts = JSON.parse(fs.readFileSync(CREDENTIALS_FOLDER + '/https.opts.mnp.json'));
 //var app = express(opts);
@@ -28,3 +30,5 @@ redirect.use(function(req,res,next) {
   res.redirect("https://" + req.headers.host + req.url);
 });
 redirect.listen(80);
+
+app.use(express.static(DATA_FOLDER + '/static'));
