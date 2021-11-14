@@ -35,6 +35,15 @@
         {
             "type": "pwa-node",
             "request": "launch",
+            "name": "Generate Stats",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/util/compute-stats.js"
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
             "name": "Summarize Week",
             "skipFiles": [
                 "<node_internals>/**"

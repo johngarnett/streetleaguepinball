@@ -1,6 +1,10 @@
 const fs = require('fs');
 const matches = require('../model/matches').all();
 
+const config = require('../config');
+const DATA_FOLDER = config.DATA_FOLDER;
+
+
 // match.key format: mnp-{season}-{week}-{away}-{home}
 const pattern = /^mnp-(\d+)-(\d+)/; //-(\w+)-(\w+)/;
 
@@ -18,7 +22,7 @@ const weeks = matches
 
 Object.keys(weeks).forEach(stem => {
   const week = weeks[stem];
-  const target = `static/match_summary/${stem}.json`;
+  const target = DATA_FOLDER + `/static/match_summary/${stem}.json`;
 
   fs.writeFileSync(target, JSON.stringify(week, null, 2));
 });
@@ -39,5 +43,5 @@ const current = Object.keys(weeks)
     return current;
   }, { order: 0 });
 
-const curName = 'static/match_summary/mnp-current.json';
+const curName = DATA_FOLDER + `/static/match_summary/mnp-current.json`;
 fs.writeFileSync(curName, JSON.stringify(weeks[current.stem], null, 2));
