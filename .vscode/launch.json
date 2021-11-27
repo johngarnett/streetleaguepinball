@@ -23,14 +23,23 @@
             "type": "pwa-node"
         },
         {
+            "name": "Launch Import Playoffs",
+            "program": "${workspaceFolder}/importers/import-playoffs.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
             "type": "pwa-node",
             "request": "launch",
-            "name": "Launch Spawn Matches Week 1",
+            "name": "Launch Spawn Matches Week 12",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}/util/spawn-matches.js",
-            "args": ["1"]
+            "args": ["12"]
         },
         {
             "type": "pwa-node",

@@ -7,6 +7,8 @@ const CURRENT_SEASON = process.argv[2] || config.CURRENT_SEASON;
 const stem = DATA_FOLDER + '/' + CURRENT_SEASON + '/';
 const seasonNumber = CURRENT_SEASON.split('-')[1];//numeric part of "season-13"
 
+const num_regular_season_weeks = config.NUM_WEEKS;
+
 /*
  * venues.csv is a list of venues in the form
  * FTB,Full Tilt Ballard
@@ -176,7 +178,7 @@ rows.forEach(row => {
     var home = teams[match.home];
     var away = teams[match.away];
 
-    if(match.week > 90) {
+    if(parseInt(match.week) > parseInt(num_regular_season_weeks)) {
       if(!home) {
         home = pteams[match.home];
         home.venue = 'TBD';
@@ -218,8 +220,7 @@ rows.forEach(row => {
         n: match.week,
         label: labels[match.week],
         code: codes[match.week],
-        // n: match.week < 91 ? match.week : pweeks[match.week],
-        isPlayoffs: match.week > 90,
+        isPlayoffs: parseInt(match.week) > parseInt(num_regular_season_weeks),
         date: match.date,
         matches: []
       };
