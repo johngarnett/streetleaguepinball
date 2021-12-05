@@ -140,9 +140,13 @@ router.get('/teams/:team_id',function(req,res) {
       const points = match.getPoints();
       //result -> '(W|L) team.score - opp.score'
       if(match.isDone()) {
-        result = isHome ?
-          ((points.home > points.away) ? 'W' : 'L') :
-          ((points.away > points.home) ? 'W' : 'L');
+        if(points.home == points.away) {
+          result = 'T'
+        } else {
+          result = isHome ?
+            ((points.home > points.away) ? 'W' : 'L') :
+            ((points.away > points.home) ? 'W' : 'L');
+        }
       }
       else {
         result = 'R' + match.round;
