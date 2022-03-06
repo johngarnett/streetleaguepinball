@@ -2,8 +2,10 @@ var fs = require('fs');
 
 var _map = {};
 
-const DATA_FOLDER = require('../config').DATA_FOLDER;
-const DATA_DIR = DATA_FOLDER + '/stats';
+const config = require('../config');
+const DATA_FOLDER = config.DATA_FOLDER;
+const CURRENT_SEASON = config.CURRENT_SEASON;
+const DATA_DIR = DATA_FOLDER + '/' + CURRENT_SEASON + '/stats';
 
 function load() {
   var list = fs.readdirSync(DATA_DIR);

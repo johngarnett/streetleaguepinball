@@ -24,7 +24,7 @@ fs.readFileSync(filename).toString()
     const home = season.teams[row[1]];
 
     const params = {
-      key: `mnp-13-S-${away.key}-${home.key}`,
+      key: `mnp-15-S-${away.key}-${home.key}`,
       name: `SCRM ${away.key} @ ${home.key}`,
       week: 'S',
       date: getDate(),

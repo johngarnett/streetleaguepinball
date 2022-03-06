@@ -51,6 +51,8 @@ mkdir data/players
 mkdir data/sessions
 mkdir data/stats
 
+#starting with season 15 we are storing stats under the current season folder.
+
 # As a backup and log of events, we save all non-auth posts to a directory.
 mkdir data/posts
 

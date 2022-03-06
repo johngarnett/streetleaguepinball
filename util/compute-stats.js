@@ -28,7 +28,6 @@ function format(num) {
   return str;
 }
 
-// TODO: Stop using hardcoded season numbers.
 const rosters = fs.readFileSync(DATA_FOLDER + '/' + CURRENT_SEASON + '/rosters.csv').toString()
 //.replace('\r', '')
 .split('\n')
