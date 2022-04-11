@@ -167,6 +167,10 @@ router.get('/matchrules',function(req,res) {
   // res.send(html);
 });
 
+router.get('/scoresheet',function(req,res) {
+  res.sendFile('template/scoresheetV5.pdf', {root: '.'});
+});
+
 router.get('/ifparules', function(req,res) {
   res.redirect('https://www.ifpapinball.com/wp/wp-content/uploads/2020/12/PAPA_IFPA-Complete-Competition-Rules-1.pdf');
 });
