@@ -343,4 +343,4 @@ const season = {
   groups: groups
 };
 
-fs.writeFileSync(`${stem}/season.json`, JSON.stringify(season,null,2));
+fs.writeFileSync(stem + 'season.json', JSON.stringify(season,null,2));
