@@ -23,8 +23,8 @@
             "type": "pwa-node"
         },
         {
-            "name": "Launch Import Playoffs",
-            "program": "${workspaceFolder}/importers/import-playoffs.js",
+            "name": "Launch Export Current Season",
+            "program": "${workspaceFolder}/importers/export-season.js",
             "request": "launch",
             "skipFiles": [
                 "<node_internals>/**"
@@ -34,12 +34,12 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "Launch Spawn Matches Week 5",
+            "name": "Launch Spawn Matches Week 15",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}/util/spawn-matches.js",
-            "args": ["5"]
+            "args": ["15"]
         },
         {
             "type": "pwa-node",
