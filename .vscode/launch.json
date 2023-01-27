@@ -34,12 +34,12 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "Launch Spawn Matches Week 15",
+            "name": "Launch Spawn Matches Week 14",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}/util/spawn-matches.js",
-            "args": ["15"]
+            "args": ["14"]
         },
         {
             "type": "pwa-node",

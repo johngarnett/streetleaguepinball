@@ -26,10 +26,13 @@ function getPlayer(k) {
     //Try to load from disk.
     var filename = DATA_FOLDER + '/players/' + key;
     if(util.fileExists(filename)) {
-      var raw = fs.readFileSync(DATA_FOLDER + '/players/' + key);
       try {
+        var raw = fs.readFileSync(DATA_FOLDER + '/players/' + key);
         p = JSON.parse(raw);
-      } catch (e) { console.log(e); }
+      } catch (e) {
+        console.log(e);
+        console.log(filename);
+      }
       if(p) _map[key] = p;
     }
     else {

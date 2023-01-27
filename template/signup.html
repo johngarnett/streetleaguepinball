@@ -4,6 +4,22 @@
 {{/redirect_url}}
 
 <div class="container">
+  <div>
+    <p>Account sign-up is free. Both roster players and substitutes can obtain an account. This
+      allows the player to enter their own scores on league night, and for captains to access the
+      additional features to manage a league night.</p>
+    <p>It is essential that the name listed here matches your IFPA/MatchPlay name, and be the same
+      name you use in all pinball tournaments. If uncertain what name to use and you’ve played
+      tournaments previously, please look up your name
+      here: <a href="http://pinballstats.info/search/">http://pinballstats.info/search</a>  if
+      you have multiple entries, use the name that includes an IFPA rank. If none have a rank,
+      use the entry with the highest Matchplay LB, which represents the name you’ve used most
+      often in prior pinball tournaments. If you are still uncertain and you have multiple names
+      associated to you, please contact the league at SeattleMNP@gmail.com to get name issues
+      resolved.</p>
+    <p>Once a name is selected, it is your responsibility to insist to captains in MNP, as well
+      as to the tournament directors for any pinball tournaments you play in, to use that name. </p>
+  </div>
   <div class="form-group row">
     <label for="name" class="col-sm-2 col-form-label">Name:</label>
     <div class="col-sm-10">
@@ -20,7 +36,7 @@
     </div>
   </div>
 
-  <div class="signup-reason">
+  <div class="signup-reason" style="display:none">
     <div class="row">
       <input type="radio" id="isLooking" name="signup_reason" value="looking"></input>
       <label for="isLooking">I am looking for a team</label>
@@ -31,7 +47,7 @@
     </div>
   </div>
 
-  <div>
+  <div style="display:none">
     Where would you like to play? In your choice of locations, you may include
     any location that has at least 8 machines, even if they don't have an MNP
     team yet. That will help us gauge where the next expansion teams might go.
@@ -39,42 +55,42 @@
 
   <!-- TODO: Toggle venue choice if player already has a team vs looking for one -->
 
-  <div class="form-group row">
+  <div class="form-group row" style="display:none">
     <div class="col-sm-10">
       <input type="text" class="form-control" id="venue_1" name="venue_1" list="venues" placeholder="First Venue Choice">
     </div>
   </div>
 
-  <div class="form-group row">
+  <div class="form-group row" style="display:none">
     <div class="col-sm-10">
       <input type="text" class="form-control" id="venue_2" name="venue_2" list="venues" placeholder="Second Venue Choice">
     </div>
   </div>
 
-  <div class="form-group row">
+  <div class="form-group row" style="display:none">
     <div class="col-sm-10">
       <input type="text" class="form-control" id="venue_3" name="venue_3" list="venues" placeholder="Third Venue Choice">
     </div>
   </div>
 
-  <div>
+  <div style="display:none">
     Would you be interested in being a team captain?
     <br><small>You need a minimum of 1 season played to be a captain.</small>
   </div>
 
-  <div class="form-check">
+  <div class="form-check" style="display:none">
     <label class="form-check-label">
       <input class="form-check-input" type="radio" name="captain" id="captain-yes" value="yes">
       Yes, and I have played at least 1 season.
     </label>
   </div>
-  <div class="form-check">
+  <div class="form-check" style="display:none">
     <label class="form-check-label">
       <input class="form-check-input" type="radio" name="captain" id="captain-no" value="no">
       No
     </label>
   </div>
-  <div class="form-check">
+  <div class="form-check" style="display:none">
     <label class="form-check-label">
       <input class="form-check-input" type="radio" name="captain" id="captain-maybe" value="interested">
       I'm interested, but I'm new to the league.
@@ -86,6 +102,19 @@
     <div class="offset-sm-2 col-sm-10">
       <button type="submit" class="btn btn-primary">SIGN UP</button>
     </div>
+  </div>
+
+  <div>
+    <p>Once your account request has been received, you should receive email with a link
+      to complete the account registration and select a password. If you do not get that
+      email within 15 minutes, please check your spam or junk folder. If still no success,
+      contact <a href="mailto:SeattleMNP@gmail.com">SeattleMNP@gmail.com</a> for support.</p>
+    <p>If you lost your account information or need to reset your password, you may use
+      this form to reenter your IFPA name and email address. Use the same confirmation
+      process to select the new password.</p>
+    <p>Email addresses will never be sold and not used for any purpose other than logging
+      into MNP account and for the league to contact individual players for MNP-related
+      communication.</p>
   </div>
 </div>
 

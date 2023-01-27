@@ -124,7 +124,7 @@ router.get('/signup',function(req,res) {
   var template = fs.readFileSync('./template/signup.html').toString();
 
   var html = mustache.render(base,{
-    title: 'Sign-Up',
+    title: 'Account Sign-Up',
     redirect_url: req.params.redirect_url,
     venues: venues.current()
   },{

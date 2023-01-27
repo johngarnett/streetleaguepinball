@@ -195,6 +195,16 @@ router.get('/ratings',function(req,res) {
   res.send(html);
 });
 
+router.get('/newplayers',function(req,res) {
+  const template = fs.readFileSync('./template/newplayers.html').toString();
+  const html = mustache.render(base,{
+    title: 'New Player Information'
+  },{
+    content: template
+  });
+  res.send(html);
+});
+
 //TODO: This function can be handled with Numeral on the client side.
 function format(num) {
   if(Math.round(num) == num) {
