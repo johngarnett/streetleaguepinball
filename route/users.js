@@ -148,7 +148,7 @@ router.post('/signup',function(req,res) {
 
   const reason = req.body.signup_reason || 'default';
 
-  fs.writeFileSync(DATA_FOLDER + '/signups/' + reason + '/' + key + '.json', json);
+  fs.writeFileSync(DATA_FOLDER + '/signups/account/' + key + '.json', json);
 
   var host = req.protocol + '://' +req.hostname;
   players.signup({

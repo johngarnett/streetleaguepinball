@@ -221,6 +221,7 @@ rows.forEach(row => {
         label: labels[match.week],
         code: codes[match.week],
         isPlayoffs: parseInt(match.week) > parseInt(num_regular_season_weeks),
+        isSpecial: match.week == 'S',
         date: match.date,
         matches: []
       };
