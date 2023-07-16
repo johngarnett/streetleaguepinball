@@ -94,6 +94,31 @@ router.post('/forgotpass',function(req,res) {
   });
 });
 
+router.post('/conduct', function(req,res) {
+  console.log('POST conduct')
+  req.body.timestamp = Date.now();
+  console.log(req.body)
+
+  players.sendPlayerConduct({
+    from: req.body.from, 
+    subject: req.body.subject,
+    message: req.body.message
+  }, function(err) {
+    return res.redirect('/conduct_thanks');
+  });
+});
+
+router.get('/conduct_thanks',function(req,res) {
+  console.log('/conduct_thanks post');
+  var template = fs.readFileSync('./template/conduct_thanks.html').toString();
+  var html = mustache.render(base, {
+    title: 'Thank you'
+  }, {
+    content: template
+  });
+  res.send(html);
+});
+
 //NOTE: This is mostly for testing. Users won't really
 //      need to logout for any reason. And considering
 //      they never even login, it would be odd to have logout.

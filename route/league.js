@@ -205,6 +205,16 @@ router.get('/newplayers',function(req,res) {
   res.send(html);
 });
 
+router.get('/conduct',function(req,res) {
+  const template = fs.readFileSync('./template/conduct.html').toString();
+  const html = mustache.render(base,{
+    title: 'Report Player Conduct'
+  },{
+    content: template
+  });
+  res.send(html);
+});
+
 //TODO: This function can be handled with Numeral on the client side.
 function format(num) {
   if(Math.round(num) == num) {

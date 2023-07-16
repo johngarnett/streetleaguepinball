@@ -1,0 +1,43 @@
+{{#error}}
+{{.}}
+{{/error}}
+<!--
+<h2>Report Player Conduct</h2>
+-->
+<form action="/conduct" method="POST">
+<div class="container">
+  <div class="form-group row">
+    Report Player Conduct Issues
+  </div>
+  <div class="form-group row">
+    If you witness a player conduct issue, we ask that they be reported here. Anyone can report an observation. Players who have multiple independent reports of conduct issues will be investigated with possible warnings given first, and suspension if conduct issues continues. 
+  </div>
+  <div class="form-group row">
+    You may submit anonymously, but we do encourage you to leave your name and contact information in case we want additional information when we investigate conduct issues.
+  </div>
+  <div class="form-group row">
+    <label for="from" class="col-sm-2 col-form-label">From</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="from" name="from" placeholder="Your name and contact information are optional, but encouraged.">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="subject" class="col-sm-2 col-form-label">Subject</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="subject" name="subject" placeholder="Identify the player/subject of this report.">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="message" class="col-sm-2 col-form-label">Message</label>
+    <div class="col-sm-10">
+      <textarea type="message" class="form-control" style="height:200px;" id="message" name="message" placeholder="Please provide details of the issue, including date and time, venue, and optionally, names of others who may be able to corroborate your account."></textarea>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="offset-sm-2">
+      <button type="submit" name="send" class="btn btn-primary" style="padding-left: 5em; padding-right: 5em; margin: 0.5em;">SEND</button>
+    </div>
+  </div>
+</div>
+</form>
+<br>

@@ -246,6 +246,16 @@ module.exports = {
     savePlayer(player);
     callback(null, player);
   },
+  sendPlayerConduct: function(params,callback) {
+    console.log('sendPlayerConduct function called');
+
+    var subject = 'Player Conduct - ' + params.subject;
+    var from = params.from.length > 0 ? params.from : 'anonymous';
+    var message = 'Reported by: ' + from + '\n\n' + params.message;
+  
+    email.send('seattlemnp@gmail.com', subject, message, message);
+    callback(null, null);
+  },
   forgotpass: function(params,callback) {
     console.log('player.forgotpass function called');
     const username = params.username;
