@@ -81,12 +81,18 @@ function savePlayer(player) {
   }
 }
 
+function cleanedName(rawName) {
+  var cleaned = rawName.replace(/[^a-zA-Z0-9 ]/g, '')
+  var truncated = cleaned.substring(0, 50);
+  return truncated
+}
+
 function sendVerify(params) {
   console.log("sendVerify()... ");
   var template = fs.readFileSync('./template/email_verify.html').toString();
 
   var url = params.url;
-  var name = params.name;
+  var name = cleanedName(params.name);
   var to = params.email;
   var subject = params.subject || 'MNP - Confirm Email';
 
@@ -101,12 +107,15 @@ function sendVerify(params) {
     link: urlLink
   });
   
-  email.send(to, subject, message, htmlMessage);
+  if (!util.isBannedEmail(to)) {
+    email.send(to, subject, message, htmlMessage);
+  }
 }
 
 function isString(val) {
   return typeof val === 'string' || ((!!val && typeof val === 'object') && Object.prototype.toString.call(val) === '[object String]');
 }
+
 function sendForgotPass(params) {
   console.log("sendForgotPass()... ");
   var template = fs.readFileSync('./template/email_forgotpass.html').toString();
@@ -126,8 +135,9 @@ function sendForgotPass(params) {
     name: name,
     link: urlLink
   });
-  
-  email.send(to, subject, message, htmlMessage);
+  if (!util.isBannedEmail(to)) {
+    email.send(to, subject, message, htmlMessage);
+  }
 }
 
 module.exports = {
@@ -208,7 +218,11 @@ module.exports = {
     var player = this.getByEmail(email);
     if(player) console.log("Email already used. verified: " +player.verified);
     var token;
-    if(!player) {
+
+    if (util.isBannedEmail(email)) {
+      console.log("Banned email.");
+      return callback("Banned email"); // don't provide any info
+    } else if(!player) {
       console.log("Player is unknown, creating new...");
       var key = makeKey(name);
       token = ids.create();
