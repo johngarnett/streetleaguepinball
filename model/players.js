@@ -96,14 +96,9 @@ function sendVerify(params) {
   var template = fs.readFileSync('./template/email_verify.html').toString();
 
   var url = params.url;
-  var nameUnclean = params.name.trim()
-  var name = cleanedName(nameUnclean);
+  var name = cleanedName(params.name.trim());
   var to = params.email.trim();
   var subject = params.subject || 'MNP - Confirm Email';
-
-  if (isBogusName(nameUnclean)) {
-    return
-  }
 
   var message = mustache.render(template, {
     name: name,
@@ -228,9 +223,9 @@ module.exports = {
     if(player) console.log("Email already used. verified: " +player.verified);
     var token;
 
-    if (util.isBannedEmail(email)) {
-      console.log("Banned email.");
-      return callback("Banned email"); // don't provide any info
+    if (util.isBannedEmail(email) || isBogusName(name.trim())) {
+      console.log("Banned email or name.");
+      return callback("Banned email or name"); // don't provide any info
     } else if(!player) {
       console.log("Player is unknown, creating new...");
       var key = makeKey(name);
