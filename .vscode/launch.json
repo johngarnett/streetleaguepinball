@@ -4,6 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "type": "pwa-node",
             "request": "launch",
@@ -34,12 +35,12 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "Launch Spawn Matches Week 14",
+            "name": "Launch Spawn Matches Week 1",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}/util/spawn-matches.js",
-            "args": ["14"]
+            "args": ["1"]
         },
         {
             "type": "pwa-node",
