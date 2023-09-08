@@ -20,7 +20,7 @@
 </head>
 <body>
 <p class="doc_title">Match Rules for Monday Night Pinball</p>
-<p class="last_updated"><a href="#M0.01">V4.09</a> (Last updated: 2023-1-5 by Stephen Rakonza)</p>
+<p class="last_updated"><a href="#M0.01">V4.10</a> (Last updated: 2023-9-07 by Stephen Rakonza)</p>
 <br>
 <p class="toc0"><a href="#M0.00">M0.00 - Overview</a></p>
 <p class="toc1"><a href="#M0.01">M0.01 - Version History</a></p>
@@ -34,10 +34,11 @@
 <p class="toc0"><a href="#M3.00">M3.00 - Match Start Time and Flow</a></p>
 <p class="toc0"><a href="#M4.00">M4.00 - Scoring</a></p>
 <p class="toc1"><a href="#M4.01">M4.01 - Scoring Errors</a></p>
-<p class="toc0"><a href="#M5.00">M5.00 - Malfunctions and Rulings</a></p>
+<p class="toc0"><a href="#M5.00">M5.00 - Malfunctions, Rulings and More</a></p>
 <p class="toc1"><a href="#M5.01">M5.01 - Rulings</a></p>
 <p class="toc1"><a href="#M5.02">M5.02 - Additions and Exceptions to IFPA/PAPA</a></p>
 <p class="toc1"><a href="#M5.03">M5.03 - Extra Balls</a></p>
+<p class="toc1"><a href="#M5.04">M5.04 - Physical Machines with Multiple Rulesets</a></p>
 <p class="toc0"><a href="#M6.00">M6.00 - Player Conduct</a></p>
 <p class="toc1"><a href="#M6.01">M6.01 - Death Saves and Bang Backs</a></p>
 <p class="toc0"><a href="#M7.00">M7.00 - Miscellaneous</a></p>
@@ -64,6 +65,7 @@ with cumulative match points as the main tiebreaker.</p>
 <p>NOTE: For more information on league standings and rules related to playoffs, see&nbsp;<a href="https://www.mondaynightpinball.com/leaguerules">League Rules for Monday Night Pinball</a>.</p>
 <h2 id="M0.01">M0.01 - Version History</h2>
 <ul>
+  <li><b>2022-9-07 by Stephen Rakonza</b>: 4.10 Machines with multiple rulesets.</li>
   <li><b>2022-4-10 by Stephen Rakonza</b>: 4.09 Spring 2023 new 8:15pm start time.</li>
   <li><b>2022-4-10 by Stephen Rakonza</b>: 4.08 Clarified <a href="#M5.03">M5.03 - Extra Balls</a>.</li>
   <li><b>2022-1-25 by Stephen Rakonza</b>: 4.07 Updated with Spring 2022 rule changes.</li>
@@ -91,18 +93,30 @@ pinball skill, over a period of time. &nbsp;Skilled players have a
 higher rating value. &nbsp;A player with no source data will have the 
 lowest rating value of 1 <a href="http://pinballstats.info/search">http://pinballstats.info/search</a></li>
   <li><b>Location: </b>See Venue below</li>
-  <li><b>Machine: </b>A machine is a physical pinball machine (NOT to be
- referred to as a game). &nbsp;A machine doesn’t have a score; a game 
-has a score.</li>
+  <li><b>Machine (Physical Machine / Machine-Ruleset): </b>A machine is a physical pinball machine (NOT to be
+    referred to as a game). &nbsp;A machine doesn’t have a score; a game has a score. <span class="newrule">
+    Some physical pinball machines have multiple rulesets / multiple ways to play. To this end, each ruleset
+    shall be treated as a separate machine (AKA machine-ruleset). </span></li>
+  <li class="newrule"><b>Machine-Ruleset: </b>Some physical machines have an option to play different rulesets.
+  In many places places within the rules, a machine should be interpreted as machine-ruleset (each ruleset
+  being listed as a separate machine). Example: 'Judge Dredd SuperGame' is a separate machine-ruleset than
+  'Judge Dredd'; 'Bride of Pinbot 2.0' is a separate machine-ruleset than 'Bride of Pinbot'; 'FunHouse Rudy's
+  Nightmare' is a separate machine-ruleset than 'FunHouse'.</span></li>
+</li>  
   <li><b>Match: </b>A competition between two Monday Night Pinball teams, the details of which are outlined in this document.</li>
   <li><b>Member / Team Member: </b>A person registered with the league as a rostered member of a team.</li>
   <li><b>MNP: </b>Monday Night Pinball</li>
+  <li class="newrule"><b>Physical Machine: </b>This refers to the physical pinball hardware. This is in contrast to
+    a machine-ruleset.</li>
   <li><b>Player: </b>Within the context of a match: a player is a person
  designated to participate in the match. &nbsp;Outside the context of a 
 match: a player is a person eligible to participate in a Monday Night 
 Pinball match.</li>
   <li><b>Roster: </b>A team’s registered members.</li>
   <li><b>Round: </b>A match occurs as a series of 4 rounds: two singles rounds, two doubles rounds.</li>
+  <li><b>Ruleset: </b>Most physical machines have a single way to play: press start and play the game. But some
+  physical machines have multiple ways of starting a game, allowing the player to play a different variation,
+  and sometimes a completely different experience. Each different ways to play is referred to as a ruleset.</li>
   <li><b>Schedule: </b>A season’s published matches</li>
   <li><b>Sub / Substitute: </b>A person listed on a team’s lineup, but not currently on the team’s roster.</li>
   <li><b>Team Rating: </b>The sum of each roster player’s IPR. &nbsp;In the context of a match - the sum of each player’s IPR on the lineup.</li>
@@ -125,7 +139,7 @@ notify the league and opposing captain when the issue is identified. The
 night, including the option of moving to another venue preemptively 
 based on the risk of the location not being available.</p>
 
-<p>M1.01.2 - Venues must have at least 8 machines&nbsp;per the location
+<p>M1.01.2 - Venues must have at least 8 physical machines per the location
 availability rules. On league night, at least 5 of them must be in 
 league-worthy condition to host league play, or the match must move to 
 another location. The league should be notified any time a venue failed 
@@ -153,6 +167,12 @@ beneficial malfunction ruling, then malfunction rules shall apply to
 that game, and the machine should not be used in subsequent rounds for 
 the rest of the evening. If a minor malfunction continues to happen and 
 is the same for both teams, then play continues.&nbsp;</p>
+
+<ul>
+  <li class="newrule">M1.02.1a: Each machine with multiple rulesets should
+  be identified sepaerately. (See <a href="#M5.04">M5.04 - Physical Machines
+  with Multiple Rulesets</a>)</li>
+</ul>
 
 <p class="note">NOTE: See&nbsp;<a href="https://www.mondaynightpinball.com/leaguerules">League Rules for Monday Night Pinball</a>&nbsp;for details related to machine worthiness.</p>
 
@@ -478,7 +498,7 @@ the same confirmation process as we will not alter scores. Even if
 incorrectly confirmed scores result in a loss for your team, the result 
 stands. &nbsp;Exception: the league may adjust match bonus points after 
 the match, which may change results, due to illegal rosters used.</p>
-<h1 id="M5.00">M5.00 - Malfunctions and Rulings</h1>
+<h1 id="M5.00">M5.00 - Malfunctions, Rulings and More</h1>
 <p>M5.00.0: MNP operates on the standardized <a href="https://www.ifpapinball.com/wp/wp-content/uploads/2020/12/PAPA_IFPA-Complete-Competition-Rules-1.pdf">IFPA/PAPA Rule set</a>, except when a rule is overridden by statements in this MNP rule set.</p>
 <h2 id="M5.01">M5.01 - Rulings</h2>
 <p>M5.01.0: Rulings are the responsibility of the team captains for the match, and the MNP Commissioner of Rules and Regulations.</p>
@@ -545,6 +565,18 @@ rule M5.2.02 applies. &nbsp;This rule only covers loss of ball. &nbsp;It
 warnings, locks, mode completion, etc.</p>
 
 <p>M5.02.3: Any machine awarding a Midnight Madness, or any similar experience, shall be treated as normal play.</p>
+
+<p class="newrule">M5.02.4: On Stern Insider games, Stern is increasingly adding scoring
+differences for logged in players on some machines (e.g. TMNT and Venom especially).
+To prevent any issue, players should NOT log in to any Stern Insider machine, even
+though it makes no difference in many cases.</p>
+
+<ul>
+  <li class="newrule">5.02.4a: A player who logs in will be DQd from the game, unless
+  captains on both teams accept that it is a machine with no scoring difference and allow
+  the player's score to stand. The best way to avoid this is do not log in during league play.</li>
+</ul>
+
 <h2 id="M5.03">M5.03 - Extra Balls</h2>
 <p>M5.03.0: An Extra Ball is, any ball awarded to a player, above and 
 beyond the standard number of balls, to be played after the current ball
@@ -596,11 +628,23 @@ for their team.</p>
 <p>M5.03.6: Some machines (e.g. Space Shuttle) provide timed bonus 
 balls. Any bonus ball that is timed and ends by disabling flippers CAN 
 be played; these are not considered extra balls.</p>
+
+<h2 id="M5.04">M5.04 - Physical Machines with Multiple Rulesets</h2>
+
+<p class="newrule">M5.04.0: Each rulesets must be listed as separate 'machine' (machine-ruleset).</p> 
+<p class="newrule">M5.04.1: During a round, the a physical machine can only be selected once.
+  Selecting 'FunHouse Rudy's Nightmare' and 'FunHouse' in the same round is not permitted.</p>
+<p class="newrule">M5.04.2: If it is determined at any time before a Ball 2 is plunged,
+  that the game was started incorrectly (the wrong ruleset was started), any player may request
+  a restart to the game, and the game must be restarted in the proper ruleset, regardless of the
+  state of the game and who might be winning. Once Player 1 plunges Ball 2, then the remainder of
+  the game is completed using the ruleset chosen.</p>  
+    
 <h1 id="M6.00">M6.00 - Player Conduct</h1>
 <p>M6.00.0: MNP members including captains, players, 
   and substitutes are subject to the IFPA/PAPA Player Conduct rules, as 
   stated in Section III of <a href="https://www.ifpapinball.com/wp/wp-content/uploads/2020/12/PAPA_IFPA-Complete-Competition-Rules-1.pdf">https://www.ifpapinball.com/wp/wp-content/uploads/2020/12/PAPA_IFPA-Complete-Competition-Rules-1.pdf</a></p>
-
+    
 <p>M6.00.1: We are all guests of the bars that host our matches, so we 
 must behave like guests. If a player displays unsportsmanlike conduct or
  threatens the safety of any individual or machine, then that player 
