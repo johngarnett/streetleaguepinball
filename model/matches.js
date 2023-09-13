@@ -742,6 +742,10 @@ Match.prototype = {
         points.rounds[r].away += g.away_points || 0;
       }
     }
+    if(this.point_adjust != null) {
+      points.home += this.point_adjust.home_points
+      points.away += this.point_adjust.away_points
+    }
     var hb = this.home.getBonusPoints();
     var ab = this.away.getBonusPoints();
     points.bonus = {
@@ -1042,6 +1046,10 @@ function calcPoints(game, round) {
     game.score_24 = game.score_2;
     game.away_points = (round == 2 ? points[1] : points[0]);
     game.home_points = (round == 2 ? points[0] : points[1]);
+  }
+  else if(round == 5) {
+    game.away_points = 0
+    game.home_points = 0
   }
   else {
     return undefined;
