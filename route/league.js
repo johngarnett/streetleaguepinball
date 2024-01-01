@@ -3,6 +3,10 @@ const router = express.Router();
 const fs = require('fs');
 const mustache = require('mustache');
 
+const config = require('../config');
+const ANNOUNCEMENTS_TEMPLATE_URL = config.ANNOUNCEMENTS_TEMPLATE_URL;
+const https = require("https");
+
 // TODO: This router is too big. There should be a closer 1:1 relationship with models.
 
 const venues = require('../model/venues');
@@ -16,12 +20,22 @@ const { nameForKey } = require('../lib/all-names');
 
 const base = fs.readFileSync('./template/base.html').toString();
 
+// If ANNOUNCEMENTS_TEMPLATE_URL doesn't exist, or has error, use latest index.html as announcementContent
+var announcementsContent = fs.readFileSync('./template/index.html').toString();
+
 router.get('/',function(req,res) {
-  const template = fs.readFileSync('./template/index.html').toString();
+  // refresh announcements
+  https.get(ANNOUNCEMENTS_TEMPLATE_URL, response => {
+    announcementsContent = ""
+    response.on('data',(chunk)=>{
+      announcementsContent+=chunk.toString();
+    });
+  });
+  
   const html = mustache.render(base,{
     title: 'Home'
   },{
-    content: template
+    content: announcementsContent
   });
   res.send(html);
 });

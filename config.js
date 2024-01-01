@@ -6,6 +6,7 @@ const config = {
   UPLOADS_FOLDER: process.env.UPLOADS_FOLDER || __dirname + '/data/uploads',
   CURRENT_SEASON: process.env.CURRENT_SEASON || 'season-14',
   NUM_WEEKS: process.env.NUM_WEEKS || 11,
+  ANNOUNCEMENTS_TEMPLATE_URL: process.env.ANNOUNCEMENTS_TEMPLATE_URL || 'https://raw.githubusercontent.com/Invader-Zim/mnp-announcements/main/index.html',
   CREDENTIALS_FOLDER: process.env.CREDENTIALS_FOLDER || './credentials',
   IFPA_API_KEY: process.env.IFPA_API_KEY,
   EMAIL_HOST: process.env.EMAIL_HOST,
