@@ -742,12 +742,22 @@ Match.prototype = {
         points.rounds[r].away += g.away_points || 0;
       }
     }
-    if(this.point_adjust != null) {
-      points.home += this.point_adjust.home_points
-      points.away += this.point_adjust.away_points
-    }
     var hb = this.home.getBonusPoints();
     var ab = this.away.getBonusPoints();
+    if(this.point_adjust != null) {
+      if (this.point_adjust.home_points < 0 && (this.point_adjust.home_points + hb) >= 0) {
+        // if negative adjust, assume the point adjust is to override and remove bonus points
+        hb += this.point_adjust.home_points
+      } else {
+        points.home += this.point_adjust.home_points
+      }
+      if (this.point_adjust.away_points < 0 && (this.point_adjust.away_points + ab) >= 0) {
+        // if negative adjust, assume the point adjust is to override and remove bonus points
+        ab += this.point_adjust.away_points
+      } else {
+        points.away += this.point_adjust.away_points
+      }
+    }
     points.bonus = {
       home: hb,
       away: ab
