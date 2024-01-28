@@ -9,6 +9,20 @@ const makeKey = require('../lib/make-key');
 const DATA_FOLDER = require('../config').DATA_FOLDER;
 var _map = {};
 
+function getQuestion() {
+  return "Please enter the PIN code (obtained from your captain)"
+}
+
+function getCorrectAnswer() {
+  var date = new Date();
+  var dayOfMonth = date.getDate();
+  var year = date.getFullYear() % 100;
+  var month = date.getMonth() + 1; // return 0 for January
+  const zeroPad = (num, places) => String(num).padStart(places, '0')
+  return year.toString() + zeroPad(month,2) + zeroPad(dayOfMonth,2);
+}
+
+
 // TODO: ALERT, destroy player isn't erasing anything but the player file.
 function destroyPlayer(k) {
   delete _map[k];
@@ -88,7 +102,9 @@ function cleanedName(rawName) {
 }
 
 function isBogusName(rawName) {
-  return rawName != cleanedName(rawName)
+  var cleaned = cleanedName(rawName)
+  var hasSpace = cleaned.indexOf(' ') > -1
+  return rawName != cleaned || !hasSpace
 }
 
 function sendVerify(params) {
@@ -209,6 +225,9 @@ module.exports = {
   signup: function(params,callback) {
     var name = params.name;
     var email = params.email;
+    var answerX = params.answerX;
+    var dayOfMonth = new Date().getDate();
+    var answerCorrect = getCorrectAnswer();
     if(!util.isEmail(email)) { return callback("ERROR: Invalid Email address. \"" +params.email+ "\""); }
 
     var player;
@@ -223,7 +242,10 @@ module.exports = {
     if(player) console.log("Email already used. verified: " +player.verified);
     var token;
 
-    if (util.isBannedEmail(email) || isBogusName(name.trim())) {
+    if (answerX != answerCorrect) {
+      console.log("Bogus answer.");
+      return callback("Bogus answer");
+    } else if (util.isBannedEmail(email) || isBogusName(name.trim())) {
       console.log("Banned email or name.");
       return callback("Banned email or name"); // don't provide any info
     } else if(!player) {
@@ -335,5 +357,6 @@ module.exports = {
     console.log("Password set for: " +player.key);
     callback(null,player);
   },
-  destroy: destroyPlayer
+  destroy: destroyPlayer,
+  getQuestion: getQuestion
 };
