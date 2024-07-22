@@ -62,7 +62,11 @@ function getPlayer(k) {
 }
 
 function getAll() {
-  var list = fs.readdirSync(DATA_FOLDER + '/players');
+  // var list = fs.readdirSync(DATA_FOLDER + '/players');
+  var list = fs.readdirSync(DATA_FOLDER + '/players').filter(function(file) {
+    if(file.indexOf(".")==-1)return file;
+  })
+
   var results = [];
   for(i in list) {
     var p = getPlayer(list[i]);
