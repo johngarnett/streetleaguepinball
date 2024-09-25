@@ -35,16 +35,6 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "Launch Spawn Matches Week 1",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/util/spawn-matches.js",
-            "args": ["1"]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
             "name": "Generate Stats",
             "skipFiles": [
                 "<node_internals>/**"
@@ -59,6 +49,146 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}/util/summarize-weeks.js"
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch Spawn Matches Week 1",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/util/spawn-matches.js",
+            "args": ["1"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch Spawn Matches Week 2",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/util/spawn-matches.js",
+            "args": ["2"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch Spawn Matches Week 3",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/util/spawn-matches.js",
+            "args": ["3"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch Spawn Matches Week 4",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/util/spawn-matches.js",
+            "args": ["4"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch Spawn Matches Week 5",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/util/spawn-matches.js",
+            "args": ["5"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch Spawn Matches Week 6",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/util/spawn-matches.js",
+            "args": ["6"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch Spawn Matches Week 7",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/util/spawn-matches.js",
+            "args": ["7"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch Spawn Matches Week 8",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/util/spawn-matches.js",
+            "args": ["8"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch Spawn Matches Week 9",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/util/spawn-matches.js",
+            "args": ["9"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch Spawn Matches Week 10",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/util/spawn-matches.js",
+            "args": ["10"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch Spawn Matches Week 11",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/util/spawn-matches.js",
+            "args": ["11"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch Spawn Matches Week 12",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/util/spawn-matches.js",
+            "args": ["12"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch Spawn Matches Week 13",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/util/spawn-matches.js",
+            "args": ["13"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch Spawn Matches Week 14",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/util/spawn-matches.js",
+            "args": ["14"]
         }
-    ]
+   ]
 }

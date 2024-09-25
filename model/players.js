@@ -165,7 +165,7 @@ function sendForgotPass(params) {
 }
 
 module.exports = {
-  makeKey, // TODO: Remove as an export from players, now that it's a lib.
+  makeKey,
   all: getAll,
   //TODO: Should this involve a callback?
   get: getPlayer,

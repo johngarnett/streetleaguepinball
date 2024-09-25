@@ -169,14 +169,14 @@ function Team(params) {
     params.captain,
     params.co_captain
   ].filter(x => !!x).map(name => ({
-    key: name.trim().toLowerCase() == "paul white wa" ? "878483c92abd068723e2356261cb06190c68db7d" : players.makeKey(name),
+    key: players.makeKey(name),
     name,
   }));
   this.lineup = (params.roster || []).map(({name}) => ({
     // This is a little band-aid to make spawning matches easier.
     // For example, it would be much easier to spawn a team vs team scrimmage.
     // TODO: We should use a non-hash key.
-    key: name.trim().toLowerCase() == "paul white wa" ? "878483c92abd068723e2356261cb06190c68db7d" : players.makeKey(name),
+    key: players.makeKey(name),
     name,
     sub: false,
     num_played: 0,
