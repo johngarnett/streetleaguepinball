@@ -43,7 +43,8 @@ router.get('/machines',function(req,res) {
 
 router.post('/machines',function(req,res) {
   var ukey = req.user.key;
-  if(CONST.ROOT == ukey) {
+  let isLeagueAdmin = !!config.LEAGUE_ADMINS.find(k => k === ukey);
+  if (CONST.ROOT == ukey || isLeagueAdmin) {
     machines.add({
       key: req.body.mkey,
       name: req.body.name
@@ -58,7 +59,8 @@ router.post('/machines',function(req,res) {
 
 router.post('/machines/:machine_key/remove',function(req,res) {
   var ukey = req.user.key;
-  if(CONST.ROOT == ukey) {
+  let isLeagueAdmin = !!config.LEAGUE_ADMINS.find(k => k === ukey);
+  if (CONST.ROOT == ukey || isLeagueAdmin) {
     machines.remove({
       key: req.body.mkey
     });
