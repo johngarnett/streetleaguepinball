@@ -24,8 +24,17 @@
             "type": "pwa-node"
         },
         {
-            "name": "Launch Export Current Season",
+            "name": "Launch Export Season Rosters",
             "program": "${workspaceFolder}/importers/export-season.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Launch Export Season Matches",
+            "program": "${workspaceFolder}/importers/export-season-matches.js",
             "request": "launch",
             "skipFiles": [
                 "<node_internals>/**"

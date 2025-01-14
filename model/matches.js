@@ -1143,11 +1143,17 @@ function countGames(match) {
     var p = match.away.lineup[i];
     var x = map[p.key] || 0;
     p.num_played = x;
+    if (x == 2) {
+      console.log("Player with only 2 rounds: ", p);
+    }
   }
   for(i in match.home.lineup) {
     var p = match.home.lineup[i];
     var x = map[p.key] || 0;
     p.num_played = x;
+    if (x == 2) {
+      console.log("Player with only 2 rounds: ", p);
+    }
   }
   // console.log(match.away.key,match.away.lineup);
   // console.log(match.home.key,match.home.lineup);
