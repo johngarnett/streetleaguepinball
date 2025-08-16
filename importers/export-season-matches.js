@@ -66,7 +66,7 @@ function outputHandicapCSV(match) {
   // Vpts R1-R4	Vbonus	Vpts	Hpts R1-R4	HBonus	Hpts
 
   // console.log(`${match.key}, 0, ${match.away.key}, ${aNumSubs},  ${aSubsIPR}, ${away_ipr - aSubsIPR}, ${away_ipr}, ${match.home.key}, ${hNumSubs},  ${hSubsIPR}, ${home_ipr - hSubsIPR}, ${home_ipr}, ${points.away - points.bonus.away}, ${points.bonus.away}, ${points.away}, ${points.home - points.bonus.home}, ${points.bonus.home}, ${points.home}`);
-  return `${match.key}, 0, ${match.away.key}, ${aNumSubs},  ${aSubsIPR}, ${away_ipr - aSubsIPR}, ${away_ipr}, ${match.home.key}, ${hNumSubs},  ${hSubsIPR}, ${home_ipr - hSubsIPR}, ${home_ipr}, ${points.away - points.bonus.away}, ${points.bonus.away}, ${points.away}, ${points.home - points.bonus.home}, ${points.bonus.home}, ${points.home}`;
+  return `${match.key}, 0, ${match.away.key}, ${aNumSubs},  ${aSubsIPR}, ${away_ipr - aSubsIPR}, ${away_ipr}, ${match.home.key}, ${hNumSubs},  ${hSubsIPR}, ${home_ipr - hSubsIPR}, ${home_ipr}, ${points.away - points.bonus.away}, ${points.bonus.away}, ${points.away}, ${points.rounds[3].away}, ${points.home - points.bonus.home}, ${points.bonus.home}, ${points.home}, ${points.rounds[3].home}`;
 }
 
 for(k in season.teams) {

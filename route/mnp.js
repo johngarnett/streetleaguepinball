@@ -286,6 +286,9 @@ router.get('/matches/:match_id/venue',function(req,res) {
     if(a.name === b.name) return 0; // This actually shouldn't happen!
     return [a.name, b.name].sort()[0] === a.name ? -1 : 1;
   });
+  var awayEPts = expectedPoints(match.away.lineup);
+  var homeEPts = expectedPoints(match.home.lineup);
+  var expected_points_to_win = 1 + Math.trunc((awayEPts + homeEPts)/2);
 
   var html = mustache.render(base, {
     redirect_url: '/matches/'+match.key+'/venue',
@@ -302,6 +305,7 @@ router.get('/matches/:match_id/venue',function(req,res) {
     home_team: match.home.name,
     home_bonus: points.bonus.home,
     home_total: points.home,
+    expected_points_to_win: expected_points_to_win,
     rounds: points.rounds,
     canEdit: auth,
     sugs: JSON.stringify(machines.all())
@@ -394,15 +398,21 @@ function renderTeam(params) {
       rating
     });
   }
+
+  let teamHandicap = expectedHcp(lineup);
   lineup.sort(function(a, b) {
     return [a.name, b.name].sort()[0] === a.name ? -1 : 1;
   });
+  var awayEPts = expectedPoints(match.away.lineup);
+  var homeEPts = expectedPoints(match.home.lineup);
+  var expected_points_to_win = 1 + Math.trunc((awayEPts + homeEPts)/2);
 
   var html = mustache.render(base,{
     redirect_url: params.redirect_url || '/matches/' + match.key,
     title: params.label + ' Team',
     name: match.name,
     team_rating: teamRating,
+    team_handicap: teamHandicap,
     key: match.key, //TODO: Maybe change to match_id
     venue: match.venue.name,
     ukey: ukey,
@@ -413,6 +423,7 @@ function renderTeam(params) {
     home_bonus: points.bonus.home,
     away_total: points.away,
     home_total: points.home,
+    expected_points_to_win: expected_points_to_win,
     rounds: points.rounds,
     home_or_away: params.label.toLowerCase(),
     label: params.label,
@@ -512,6 +523,46 @@ router.get('/matches/:match_id',function(req,res) {
     round: round
   }));
 });
+
+function expectedPoints(lineup) {
+  var epts = 41;
+  if(lineup.length == 9) {
+    epts += 4;
+  }
+  if(lineup.length == 10) {
+    epts += 9;
+  }
+  epts += expectedHcp(lineup);
+  return epts;
+}
+
+function expectedHcp(lineup) {
+  lineup.sort((a, b) => b.rating - a.rating);
+
+  var teamIPR = 0;
+  for(i in lineup) {
+    var p = lineup[i];
+    teamIPR += p.IPR;
+  }
+  if(lineup.length == 9) {
+    var p0 = lineup[0].IPR;
+    var p1 = lineup[1].IPR;
+    var p2 = lineup[2].IPR;
+    teamIPR += (p0 + p1 + p2)/3;
+  }
+  if(lineup.length == 8) {
+    var p0 = lineup[0].IPR;
+    var p1 = lineup[1].IPR;
+    var p2 = lineup[2].IPR;
+    teamIPR += (p0 + p1 + p2)/3;
+    var p3 = lineup[3].IPR;
+    var p4 = lineup[4].IPR;
+    var p5 = lineup[5].IPR;
+    teamIPR += (p3 + p4 + p5)/3;
+  }
+
+  return Math.trunc((50-teamIPR)/2);
+}
 
 function labelsFor(match, showCount) {
   //var venue = venues.get(match.venue);
@@ -680,6 +731,9 @@ function renderMatch(params) {
   var lineup = [];
   if(team) lineup = team.lineup;
   lineup.sort(nameSort);
+  var awayEPts = expectedPoints(match.away.lineup);
+  var homeEPts = expectedPoints(match.home.lineup);
+  var expected_points_to_win = 1 + Math.trunc((awayEPts + homeEPts)/2);
 
   var html = mustache.render(base, {
     title: 'Match',
@@ -719,6 +773,7 @@ function renderMatch(params) {
     home_points: p.home,
     home_bonus: points.bonus.home,
     home_total: points.home,
+    expected_points_to_win: expected_points_to_win,
     home_ipr,
     finished: state == CONST.PLAYING && round.done,
     isLeftCaptain: left.hasCaptain(ukey),

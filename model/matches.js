@@ -203,15 +203,34 @@ Team.prototype = {
   },
   getBonusPoints: function() {
     var count = 0;
+    var handicap = 0;
+    var playerRounds = 0; // At the end of the match, there are 30 player rounds: 8 + 7 + 7 + 8.
+    var teamIPR = 0;
+
     for(i in this.lineup) {
       var p = this.lineup[i];
       var n = p.num_played || 0;
+      playerRounds += n;
       if(n >= 3) count++;
+      var playerHandicap = 0;
+      teamIPR += p.IPR;
+      playerHandicap = ((6 - p.IPR)/2.0)
+      handicap += n * playerHandicap;
+      // console.log("Player (" + p.name + ") (rounds: " + p.num_played + ") handicap: " + playerHandicap + " IPR: " + p.IPR);
     }
+    handicap = (handicap * 10 / playerRounds);
+    handicap -= (playerRounds/6); // playerHandicap is (6-playerIPR)/2, but team handicap is only (50-teamIPR)/2. So, at the end
+    // of the match, we need to subtract the extra ((6-5)/2 * 10 players) or 5. But we need to amortize it across the rounds.
+    // So we subtract it as playerRounds/6 because at the end of the match playerRounds is 30, thus playerRounds/6 would be 5.
+
+    handicap = Math.trunc(handicap);
+    handicap = Math.max(handicap, 0);
+    // console.log("Handicap pts: " + handicap);
+
     //TODO: Bonus points depend on the season's rules.
-    if(count == 10) return 9;
-    if(count ==  9) return 4; // Season 6+7 was 5 for 9
-    return 0;
+    if(count == 10) return 9 + handicap;
+    if(count ==  9) return 4 + handicap; // Season 6+7 was 5 for 9
+    return handicap;
   },
 };
 

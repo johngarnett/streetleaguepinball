@@ -173,6 +173,8 @@ router.get('/teams/:team_id',function(req,res) {
     };
   });
 
+  let teamHandicap = expectedHcp(teamRating, lineup);
+
   const html = mustache.render(base,{
     canAdd: req.user.isLeagueAdmin,
     canRemove: req.user.isLeagueAdmin,
@@ -184,6 +186,7 @@ router.get('/teams/:team_id',function(req,res) {
     captain: team.captain,
     co_captain: team.co_captain,
     team_rating: teamRating,
+    team_handicap: teamHandicap,
     roster: lineup,
     schedule: weeks,
     sugs: JSON.stringify(getSuggestions(), null, 2),
@@ -269,5 +272,37 @@ router.post('/teams/:team_id/roster/remove', function(req,res) {
   // TODO: Redirect with a success msg (but first need to support messages)
   res.redirect(`/teams/${team.key}`);
 });
+
+function expectedHcp(teamRating, lineup) {
+  if(lineup.length == 10) {
+    return Math.trunc((50-teamRating)/2);
+  }
+
+  lineup.sort((a, b) => b.rating - a.rating);
+
+  var teamIPR = 0;
+  for(i in lineup) {
+    var p = lineup[i];
+    teamIPR += p.rating;
+  }
+  if(lineup.length == 9) {
+    var p0 = lineup[0].rating;
+    var p1 = lineup[1].rating;
+    var p2 = lineup[2].rating;
+    teamIPR += (p0 + p1 + p2)/3;
+  }
+  if(lineup.length == 8) {
+    var p0 = lineup[0].rating;
+    var p1 = lineup[1].rating;
+    var p2 = lineup[2].rating;
+    teamIPR += (p0 + p1 + p2)/3;
+    var p3 = lineup[3].rating;
+    var p4 = lineup[4].rating;
+    var p5 = lineup[5].rating;
+    teamIPR += (p3 + p4 + p5)/3;
+  }
+
+  return Math.trunc((50-teamIPR)/2);
+}
 
 module.exports = router;
