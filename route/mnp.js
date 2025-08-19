@@ -542,22 +542,22 @@ function expectedHcp(lineup) {
   var teamIPR = 0;
   for(i in lineup) {
     var p = lineup[i];
-    teamIPR += p.IPR;
+    if(Number.isFinite(p.IPR)) {
+      teamIPR += p.IPR;
+    } else {
+      teamIPR += p.rating;
+    } 
   }
-  if(lineup.length == 9) {
-    var p0 = lineup[0].IPR;
-    var p1 = lineup[1].IPR;
-    var p2 = lineup[2].IPR;
+  if(lineup.length < 10) {
+    var p0 = Number.isFinite(lineup[0].IPR) ? lineup[0].IPR : lineup[0].rating;
+    var p1 = Number.isFinite(lineup[1].IPR) ? lineup[1].IPR : lineup[1].rating;
+    var p2 = Number.isFinite(lineup[2].IPR) ? lineup[2].IPR : lineup[2].rating;
     teamIPR += (p0 + p1 + p2)/3;
   }
-  if(lineup.length == 8) {
-    var p0 = lineup[0].IPR;
-    var p1 = lineup[1].IPR;
-    var p2 = lineup[2].IPR;
-    teamIPR += (p0 + p1 + p2)/3;
-    var p3 = lineup[3].IPR;
-    var p4 = lineup[4].IPR;
-    var p5 = lineup[5].IPR;
+  if(lineup.length < 9) {
+    var p3 = Number.isFinite(lineup[3].IPR) ? lineup[3].IPR : lineup[3].rating;
+    var p4 = Number.isFinite(lineup[4].IPR) ? lineup[4].IPR : lineup[4].rating;
+    var p5 = Number.isFinite(lineup[5].IPR) ? lineup[5].IPR : lineup[5].rating;
     teamIPR += (p3 + p4 + p5)/3;
   }
 

@@ -201,35 +201,81 @@ Team.prototype = {
       canJoin: ukey != 'ANON'
     }
   },
+  getCalculatedTeamIPR: function(lineup) {
+    var teamIPR = 0;
+    lineup.sort((a, b) => b.rating - a.rating);
+
+    for(i in lineup) {
+      var p = this.lineup[i];
+      teamIPR += p.IPR;
+    }
+    if(lineup.length > 2 && lineup.length < 10) {
+      var p0 = lineup[0].IPR;
+      var p1 = lineup[1].IPR;
+      var p2 = lineup[2].IPR;
+      teamIPR += (p0 + p1 + p2)/3;
+    }
+    if(lineup.length > 5 && lineup.length < 9) {
+      var p3 = lineup[3].IPR;
+      var p4 = lineup[4].IPR;
+      var p5 = lineup[5].IPR;
+      teamIPR += (p3 + p4 + p5)/3;
+    }
+    return teamIPR;
+  },
   getBonusPoints: function() {
-    var count = 0;
     var handicap = 0;
     var playerRounds = 0; // At the end of the match, there are 30 player rounds: 8 + 7 + 7 + 8.
-    var teamIPR = 0;
+    var playerRoundsIPR = 0;
+    var numPlayersInLineup = this.lineup.length;
+    var played0Rounds = 0;
+    var played1Round = 0;
+    var played3Rounds = 0; // 3 or more
+    var teamIPR = this.getCalculatedTeamIPR(this.lineup);// If 10 players, then calculated IPR == sum of player IPR
 
     for(i in this.lineup) {
       var p = this.lineup[i];
       var n = p.num_played || 0;
       playerRounds += n;
-      if(n >= 3) count++;
-      var playerHandicap = 0;
-      teamIPR += p.IPR;
-      playerHandicap = ((6 - p.IPR)/2.0)
-      handicap += n * playerHandicap;
-      // console.log("Player (" + p.name + ") (rounds: " + p.num_played + ") handicap: " + playerHandicap + " IPR: " + p.IPR);
+      playerRoundsIPR += (n * p.IPR);
+      if(n >= 3) played3Rounds++;
+      if(n == 1) played1Round++;
+      if(n == 0) played0Rounds++;
     }
-    handicap = (handicap * 10 / playerRounds);
-    handicap -= (playerRounds/6); // playerHandicap is (6-playerIPR)/2, but team handicap is only (50-teamIPR)/2. So, at the end
-    // of the match, we need to subtract the extra ((6-5)/2 * 10 players) or 5. But we need to amortize it across the rounds.
-    // So we subtract it as playerRounds/6 because at the end of the match playerRounds is 30, thus playerRounds/6 would be 5.
+    // For now, no bonus or handicap points until the end of the match.
+    // This doesn't really change how we calculate the handicap points.
+    if(playerRounds < 30) {
+      return 0;
+    }
 
+    if(playerRounds == 0) {
+      return 0;
+    }
+    if(playerRounds<15) {
+        handicap = (50 - teamIPR)/2;
+    }
+    if(numPlayersInLineup==10) {
+      if(playerRounds<22 && played0Rounds==0) {
+        handicap = (50 - teamIPR)/2;
+      } else if(playerRounds<30 && played0Rounds==0 && played1Round==0) {
+        handicap = (50 - teamIPR)/2;
+      } else if(playerRounds==30 && played3Rounds==10) {
+        handicap = (50 - teamIPR)/2;
+      }
+    }
+    if(handicap == 0) {
+      var teamIPRpartialMatch = (playerRoundsIPR * 10)/playerRounds;
+      handicap = (50 - teamIPRpartialMatch)/2;
+    }
+
+    handicap *= playerRounds/30;
     handicap = Math.trunc(handicap);
     handicap = Math.max(handicap, 0);
-    // console.log("Handicap pts: " + handicap);
+    handicap = Math.min(handicap, 15);
 
     //TODO: Bonus points depend on the season's rules.
-    if(count == 10) return 9 + handicap;
-    if(count ==  9) return 4 + handicap; // Season 6+7 was 5 for 9
+    if(played3Rounds == 10) return 9 + handicap;
+    if(played3Rounds ==  9) return 4 + handicap; // Season 6+7 was 5 for 9
     return handicap;
   },
 };
