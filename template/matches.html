@@ -11,25 +11,37 @@
 
 {{#weeks}}
 <table id="week-{{n}}" class="table pane" style="display:none;">
+  <colgroup>
+    <col style="width: 54%;">
+    <col style="width: 6%;">
+    <col style="width: 6%;">
+    <col style="width: 6%;">
+    <col style="width: 6%;">
+    <col style="width: 6%;">
+    <col style="width: 6%;">
+    <col style="width: 12%;">
+  </colgroup>
 {{#boxes}}
 <tr class="table-active">
 <td>
 <a href="/matches/{{key}}">{{name}}</a>
 </td>
 {{#points.rounds}}
-<td class="text-xs-right">
+<td class="text-xs-right" style="min-width: 4%; max-width: 6%;">
 <a href="/matches/{{key}}?round={{n}}">{{n}}</a>
 </td>
 {{/points.rounds}}
-<td class="text-xs-right">B</td>
-<td class="text-xs-right pl-0">Total</td>
+<td class="text-xs-right" style="min-width: 4%; max-width: 6%;">B</td>
+<td class="text-xs-right" style="min-width: 4%; max-width: 6%;">H</td>
+<td class="text-xs-right pl-0" style="min-width: 4%; max-width: 6%;">Total</td>
 </tr>
 <tr>
 <td>{{away.name}}</td>
 {{#points.rounds}}
 <td class="text-xs-right">{{away}}</td>
 {{/points.rounds}}
-<td class="text-xs-right">{{points.bonus.away}}</td>
+<td class="text-xs-right">{{points.bonus.away.participation}}</td>
+<td class="text-xs-right">{{points.bonus.away.handicap}}</td>
 <td class="text-xs-right">{{points.away}}</td>
 </tr>
 <tr>
@@ -37,7 +49,8 @@
 {{#points.rounds}}
 <td class="text-xs-right">{{home}}</td>
 {{/points.rounds}}
-<td class="text-xs-right">{{points.bonus.home}}</td>
+<td class="text-xs-right">{{points.bonus.home.participation}}</td>
+<td class="text-xs-right">{{points.bonus.home.handicap}}</td>
 <td class="text-xs-right">{{points.home}}</td>
 </tr>
 <!-- <tr style="height:2px;background-color:#333"><td colspan="20"></td></tr> -->

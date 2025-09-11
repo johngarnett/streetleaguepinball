@@ -1,4 +1,14 @@
 <table class="table">
+  <colgroup>
+    <col style="width: 54%;">
+    <col style="width: 6%;">
+    <col style="width: 6%;">
+    <col style="width: 6%;">
+    <col style="width: 6%;">
+    <col style="width: 6%;">
+    <col style="width: 6%;">
+    <col style="width: 12%;">
+  </colgroup>
 <thead>
 <tr>
 <td>
@@ -10,6 +20,7 @@
 </td>
 {{/rounds}}
 <td class="text-xs-right">B</td>
+<td class="text-xs-right">H</td>
 <td class="text-xs-right pl-0">Total</td>
 </tr>
 </thead>
@@ -19,6 +30,7 @@
 <td class="text-xs-right">{{away}}</td>
 {{/rounds}}
 <td class="text-xs-right">{{away_bonus}}</td>
+<td class="text-xs-right">{{away_hcp}}</td>
 <td class="text-xs-right">{{away_total}}</td>
 </tr>
 <tr>
@@ -27,17 +39,26 @@
 <td class="text-xs-right">{{home}}</td>
 {{/rounds}}
 <td class="text-xs-right">{{home_bonus}}</td>
+<td class="text-xs-right">{{home_hcp}}</td>
 <td class="text-xs-right">{{home_total}}</td>
 </tr>
 </table>
 <table class="table">
+  <colgroup>
+    <col style="width: 68%;">
+    <col style="width: 10%;">
+    <col style="width: 22%;">
+  </colgroup>
+
 <tr>
-<td class="text-xs-right">Estimated Rounds Total to Tie (Away):</td>
+<td class="text-xs-left">Estimated Rounds Total to Tie (Away):</td>
 <td class="text-xs-right">{{expected_points_to_tie_A}}</td>
+<td></td>
 </tr>
 <tr>
-<td class="text-xs-right">Estimated Rounds Total to Tie (Home):</td>
+<td class="text-xs-left">Estimated Rounds Total to Tie (Home):</td>
 <td class="text-xs-right">{{expected_points_to_tie_H}}</td>
+<td></td>
 </tr>
 
 </table>

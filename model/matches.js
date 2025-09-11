@@ -230,7 +230,8 @@ Team.prototype = {
     }
     return teamIPR;
   },
-  getBonusPoints: function() {
+  getBonus: function() {
+    var bonus = { participation: 0, handicap: 0 }
     var handicap = 0;
     var playerRounds = 0; // At the end of the match, there are 30 player rounds: 8 + 7 + 7 + 8.
     var playerRoundsIPR = 0;
@@ -252,11 +253,11 @@ Team.prototype = {
     // For now, no bonus or handicap points until the end of the match.
     // This doesn't really change how we calculate the handicap points.
     if(playerRounds < 30) {
-      return 0;
+      return bonus;
     }
 
     if(playerRounds == 0) {
-      return 0;
+      return bonus;
     }
     if(playerRounds<15) {
         handicap = (50 - teamIPR)/2;
@@ -281,9 +282,14 @@ Team.prototype = {
     handicap = Math.min(handicap, 15);
 
     //TODO: Bonus points depend on the season's rules.
-    if(played3Rounds == 10) return 9 + handicap;
-    if(played3Rounds ==  9) return 4 + handicap; // Season 6+7 was 5 for 9
-    return handicap;
+    if(played3Rounds == 10) {
+      bonus.participation = 9;
+    }
+    if(played3Rounds ==  9) {
+      bonus.participation = 4;
+    }
+    bonus.handicap = handicap;
+    return bonus;
   },
 };
 
@@ -814,8 +820,10 @@ Match.prototype = {
         points.rounds[r].away += g.away_points || 0;
       }
     }
-    var hb = this.home.getBonusPoints();
-    var ab = this.away.getBonusPoints();
+    var hbonus = this.home.getBonus();
+    var hb = hbonus.participation + hbonus.handicap;
+    var abonus = this.away.getBonus();
+    var ab = abonus.participation + abonus.handicap;
     if(this.point_adjust != null) {
       if (this.point_adjust.home_points < 0 && (this.point_adjust.home_points + hb) >= 0) {
         // if negative adjust, assume the point adjust is to override and remove bonus points
@@ -831,8 +839,8 @@ Match.prototype = {
       }
     }
     points.bonus = {
-      home: hb,
-      away: ab
+      home: hbonus,
+      away: abonus,
     };
     points.home += hb;
     points.away += ab;
