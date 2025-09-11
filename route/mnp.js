@@ -288,7 +288,9 @@ router.get('/matches/:match_id/venue',function(req,res) {
   });
   var awayEPts = expectedPoints(match.away.lineup);
   var homeEPts = expectedPoints(match.home.lineup);
-  var expected_points_to_win = 1 + Math.trunc((awayEPts + homeEPts)/2);
+  var expected_points_to_tie = (awayEPts + homeEPts)/2;
+  var expected_points_to_tie_A = expected_points_to_tie - (expectedBonus(match.away.lineup) + expectedHcp(match.away.lineup));
+  var expected_points_to_tie_H = expected_points_to_tie - (expectedBonus(match.home.lineup) + expectedHcp(match.home.lineup));
 
   var html = mustache.render(base, {
     redirect_url: '/matches/'+match.key+'/venue',
@@ -305,7 +307,8 @@ router.get('/matches/:match_id/venue',function(req,res) {
     home_team: match.home.name,
     home_bonus: points.bonus.home,
     home_total: points.home,
-    expected_points_to_win: expected_points_to_win,
+    expected_points_to_tie_A: expected_points_to_tie_A,
+    expected_points_to_tie_H: expected_points_to_tie_A,
     rounds: points.rounds,
     canEdit: auth,
     sugs: JSON.stringify(machines.all())
@@ -405,7 +408,9 @@ function renderTeam(params) {
   });
   var awayEPts = expectedPoints(match.away.lineup);
   var homeEPts = expectedPoints(match.home.lineup);
-  var expected_points_to_win = 1 + Math.trunc((awayEPts + homeEPts)/2);
+  var expected_points_to_tie = (awayEPts + homeEPts)/2;
+  var expected_points_to_tie_A = expected_points_to_tie - (expectedBonus(match.away.lineup) + expectedHcp(match.away.lineup));
+  var expected_points_to_tie_H = expected_points_to_tie - (expectedBonus(match.home.lineup) + expectedHcp(match.home.lineup));
 
   var html = mustache.render(base,{
     redirect_url: params.redirect_url || '/matches/' + match.key,
@@ -423,7 +428,8 @@ function renderTeam(params) {
     home_bonus: points.bonus.home,
     away_total: points.away,
     home_total: points.home,
-    expected_points_to_win: expected_points_to_win,
+    expected_points_to_tie_A: expected_points_to_tie_A,
+    expected_points_to_tie_H: expected_points_to_tie_H,
     rounds: points.rounds,
     home_or_away: params.label.toLowerCase(),
     label: params.label,
@@ -524,14 +530,19 @@ router.get('/matches/:match_id',function(req,res) {
   }));
 });
 
-function expectedPoints(lineup) {
-  var epts = 41;
+function expectedBonus(lineup) {
   if(lineup.length == 9) {
-    epts += 4;
+    return 4;
   }
   if(lineup.length == 10) {
-    epts += 9;
+    return 9;
   }
+  return 0;
+} 
+
+function expectedPoints(lineup) {
+  var epts = 41;
+  epts += expectedBonus(lineup);
   epts += expectedHcp(lineup);
   return epts;
 }
@@ -739,7 +750,9 @@ function renderMatch(params) {
   lineup.sort(nameSort);
   var awayEPts = expectedPoints(match.away.lineup);
   var homeEPts = expectedPoints(match.home.lineup);
-  var expected_points_to_win = 1 + Math.trunc((awayEPts + homeEPts)/2);
+  var expected_points_to_tie = (awayEPts + homeEPts)/2;
+  var expected_points_to_tie_A = expected_points_to_tie - (expectedBonus(match.away.lineup) + expectedHcp(match.away.lineup));
+  var expected_points_to_tie_H = expected_points_to_tie - (expectedBonus(match.home.lineup) + expectedHcp(match.home.lineup));
 
   var html = mustache.render(base, {
     title: 'Match',
@@ -779,7 +792,9 @@ function renderMatch(params) {
     home_points: p.home,
     home_bonus: points.bonus.home,
     home_total: points.home,
-    expected_points_to_win: expected_points_to_win,
+    expected_points_to_tie: expected_points_to_tie,
+    expected_points_to_tie_A: expected_points_to_tie_A,
+    expected_points_to_tie_H: expected_points_to_tie_H,
     home_ipr,
     finished: state == CONST.PLAYING && round.done,
     isLeftCaptain: left.hasCaptain(ukey),
