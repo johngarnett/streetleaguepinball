@@ -388,7 +388,7 @@ function renderTeam(params) {
     var p = team.lineup[i];
     const rating = p.IPR || IPR.forName(p.name.trim()) || 0;
     // TODO: Handle cases where rating == undefined, instead of default to 0.
-    teamRating += parseInt(rating);
+    teamRating += Math.max(1, parseInt(rating));
 
     lineup.push({
       key: p.key,
@@ -536,32 +536,38 @@ function expectedPoints(lineup) {
   return epts;
 }
 
+function iprForPlayer(player) {
+    if(Number.isFinite(player.IPR)) {
+      return Math.max(1, player.IPR);
+    }
+    return Math.max(1, player.rating);
+}
+
 function expectedHcp(lineup) {
   lineup.sort((a, b) => b.rating - a.rating);
 
   var teamIPR = 0;
   for(i in lineup) {
     var p = lineup[i];
-    if(Number.isFinite(p.IPR)) {
-      teamIPR += p.IPR;
-    } else {
-      teamIPR += p.rating;
-    } 
+    teamIPR += iprForPlayer(p);
   }
   if(lineup.length < 10) {
-    var p0 = Number.isFinite(lineup[0].IPR) ? lineup[0].IPR : lineup[0].rating;
-    var p1 = Number.isFinite(lineup[1].IPR) ? lineup[1].IPR : lineup[1].rating;
-    var p2 = Number.isFinite(lineup[2].IPR) ? lineup[2].IPR : lineup[2].rating;
+    var p0 = iprForPlayer(lineup[0].IPR);
+    var p1 = iprForPlayer(lineup[1].IPR);
+    var p2 = iprForPlayer(lineup[2].IPR);
     teamIPR += (p0 + p1 + p2)/3;
   }
   if(lineup.length < 9) {
-    var p3 = Number.isFinite(lineup[3].IPR) ? lineup[3].IPR : lineup[3].rating;
-    var p4 = Number.isFinite(lineup[4].IPR) ? lineup[4].IPR : lineup[4].rating;
-    var p5 = Number.isFinite(lineup[5].IPR) ? lineup[5].IPR : lineup[5].rating;
+    var p3 = iprForPlayer(lineup[3].IPR);
+    var p4 = iprForPlayer(lineup[4].IPR);
+    var p5 = iprForPlayer(lineup[5].IPR);
     teamIPR += (p3 + p4 + p5)/3;
   }
 
-  return Math.trunc((50-teamIPR)/2);
+  var handicap = Math.trunc((50-teamIPR)/2);
+  handicap = Math.max(handicap, 0);
+  handicap = Math.min(handicap, 15);
+  return handicap;
 }
 
 function labelsFor(match, showCount) {

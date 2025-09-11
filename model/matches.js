@@ -184,6 +184,13 @@ function Team(params) {
   }));
 }
 
+function iprForPlayer(player) {
+    if(Number.isFinite(player.IPR)) {
+      return Math.max(1, player.IPR);
+    }
+    return Math.max(1, player.rating);
+}
+
 Team.prototype = {
   constructor: Team,
   /** Admins and captains can invite */
@@ -207,7 +214,7 @@ Team.prototype = {
 
     for(i in lineup) {
       var p = this.lineup[i];
-      teamIPR += p.IPR;
+      teamIPR += iprForPlayer(p);
     }
     if(lineup.length > 2 && lineup.length < 10) {
       var p0 = lineup[0].IPR;
@@ -237,7 +244,7 @@ Team.prototype = {
       var p = this.lineup[i];
       var n = p.num_played || 0;
       playerRounds += n;
-      playerRoundsIPR += (n * p.IPR);
+      playerRoundsIPR += (n * iprForPlayer(p));
       if(n >= 3) played3Rounds++;
       if(n == 1) played1Round++;
       if(n == 0) played0Rounds++;
