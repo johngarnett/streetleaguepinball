@@ -286,6 +286,11 @@ router.get('/matches/:match_id/venue',function(req,res) {
     if(a.name === b.name) return 0; // This actually shouldn't happen!
     return [a.name, b.name].sort()[0] === a.name ? -1 : 1;
   });
+  var awayEPts = expectedPoints(match.away.lineup);
+  var homeEPts = expectedPoints(match.home.lineup);
+  var expected_points_to_tie = (awayEPts + homeEPts)/2;
+  var expected_points_to_tie_A = expected_points_to_tie - (expectedBonus(match.away.lineup) + expectedHcp(match.away.lineup));
+  var expected_points_to_tie_H = expected_points_to_tie - (expectedBonus(match.home.lineup) + expectedHcp(match.home.lineup));
 
   var html = mustache.render(base, {
     redirect_url: '/matches/'+match.key+'/venue',
@@ -297,11 +302,15 @@ router.get('/matches/:match_id/venue',function(req,res) {
     //machines: match.venue.machines,
     machines: list,
     away_team: match.away.name,
-    away_bonus: points.bonus.away,
+    away_bonus: points.bonus.away.participation,
+    away_hcp: points.bonus.away.handicap,
     away_total: points.away,
     home_team: match.home.name,
-    home_bonus: points.bonus.home,
+    home_bonus: points.bonus.home.participation,
+    home_hcp: points.bonus.home.handicap,
     home_total: points.home,
+    expected_points_to_tie_A: expected_points_to_tie_A,
+    expected_points_to_tie_H: expected_points_to_tie_A,
     rounds: points.rounds,
     canEdit: auth,
     sugs: JSON.stringify(machines.all())
@@ -384,7 +393,7 @@ function renderTeam(params) {
     var p = team.lineup[i];
     const rating = p.IPR || IPR.forName(p.name.trim()) || 0;
     // TODO: Handle cases where rating == undefined, instead of default to 0.
-    teamRating += parseInt(rating);
+    teamRating += Math.max(1, parseInt(rating));
 
     lineup.push({
       key: p.key,
@@ -394,25 +403,37 @@ function renderTeam(params) {
       rating
     });
   }
+
+  let teamHandicap = expectedHcp(lineup);
   lineup.sort(function(a, b) {
     return [a.name, b.name].sort()[0] === a.name ? -1 : 1;
   });
+  var awayEPts = expectedPoints(match.away.lineup);
+  var homeEPts = expectedPoints(match.home.lineup);
+  var expected_points_to_tie = (awayEPts + homeEPts)/2;
+  var expected_points_to_tie_A = expected_points_to_tie - (expectedBonus(match.away.lineup) + expectedHcp(match.away.lineup));
+  var expected_points_to_tie_H = expected_points_to_tie - (expectedBonus(match.home.lineup) + expectedHcp(match.home.lineup));
 
   var html = mustache.render(base,{
     redirect_url: params.redirect_url || '/matches/' + match.key,
     title: params.label + ' Team',
     name: match.name,
     team_rating: teamRating,
+    team_handicap: teamHandicap,
     key: match.key, //TODO: Maybe change to match_id
     venue: match.venue.name,
     ukey: ukey,
     match_id: match.key,
     away_team: match.away.name,
     home_team: match.home.name,
-    away_bonus: points.bonus.away,
-    home_bonus: points.bonus.home,
+    away_bonus: points.bonus.away.participation,
+    away_hcp: points.bonus.away.handicap,
+    home_bonus: points.bonus.home.participation,
+    home_hcp: points.bonus.home.handicap,
     away_total: points.away,
     home_total: points.home,
+    expected_points_to_tie_A: expected_points_to_tie_A,
+    expected_points_to_tie_H: expected_points_to_tie_H,
     rounds: points.rounds,
     home_or_away: params.label.toLowerCase(),
     label: params.label,
@@ -512,6 +533,57 @@ router.get('/matches/:match_id',function(req,res) {
     round: round
   }));
 });
+
+function expectedBonus(lineup) {
+  if(lineup.length == 9) {
+    return 4;
+  }
+  if(lineup.length == 10) {
+    return 9;
+  }
+  return 0;
+} 
+
+function expectedPoints(lineup) {
+  var epts = 41;
+  epts += expectedBonus(lineup);
+  epts += expectedHcp(lineup);
+  return epts;
+}
+
+function iprForPlayer(player) {
+    if(Number.isFinite(player.IPR)) {
+      return Math.max(1, player.IPR);
+    }
+    return Math.max(1, player.rating);
+}
+
+function expectedHcp(lineup) {
+  lineup.sort((a, b) => b.rating - a.rating);
+
+  var teamIPR = 0;
+  for(i in lineup) {
+    var p = lineup[i];
+    teamIPR += iprForPlayer(p);
+  }
+  if(lineup.length < 10) {
+    var p0 = iprForPlayer(lineup[0].IPR);
+    var p1 = iprForPlayer(lineup[1].IPR);
+    var p2 = iprForPlayer(lineup[2].IPR);
+    teamIPR += (p0 + p1 + p2)/3;
+  }
+  if(lineup.length < 9) {
+    var p3 = iprForPlayer(lineup[3].IPR);
+    var p4 = iprForPlayer(lineup[4].IPR);
+    var p5 = iprForPlayer(lineup[5].IPR);
+    teamIPR += (p3 + p4 + p5)/3;
+  }
+
+  var handicap = Math.trunc((50-teamIPR)/2);
+  handicap = Math.max(handicap, 0);
+  handicap = Math.min(handicap, 15);
+  return handicap;
+}
 
 function labelsFor(match, showCount) {
   //var venue = venues.get(match.venue);
@@ -680,6 +752,11 @@ function renderMatch(params) {
   var lineup = [];
   if(team) lineup = team.lineup;
   lineup.sort(nameSort);
+  var awayEPts = expectedPoints(match.away.lineup);
+  var homeEPts = expectedPoints(match.home.lineup);
+  var expected_points_to_tie = (awayEPts + homeEPts)/2;
+  var expected_points_to_tie_A = expected_points_to_tie - (expectedBonus(match.away.lineup) + expectedHcp(match.away.lineup));
+  var expected_points_to_tie_H = expected_points_to_tie - (expectedBonus(match.home.lineup) + expectedHcp(match.home.lineup));
 
   var html = mustache.render(base, {
     title: 'Match',
@@ -711,14 +788,19 @@ function renderMatch(params) {
     away: match.away,
     team_name: team_name,
     away_team: match.away.name,
-    away_bonus: points.bonus.away,
+    away_bonus: points.bonus.away.participation,
+    away_hcp: points.bonus.away.handicap,
     away_points: p.away,
     away_total: points.away,
     away_ipr,
     home_team: match.home.name,
     home_points: p.home,
-    home_bonus: points.bonus.home,
+    home_bonus: points.bonus.home.participation,
+    home_hcp: points.bonus.home.handicap,
     home_total: points.home,
+    expected_points_to_tie: expected_points_to_tie,
+    expected_points_to_tie_A: expected_points_to_tie_A,
+    expected_points_to_tie_H: expected_points_to_tie_H,
     home_ipr,
     finished: state == CONST.PLAYING && round.done,
     isLeftCaptain: left.hasCaptain(ukey),
