@@ -185,10 +185,13 @@ function Team(params) {
 }
 
 function iprForPlayer(player) {
-    if(Number.isFinite(player.IPR)) {
-      return Math.max(1, player.IPR);
-    }
-    return Math.max(1, player.rating);
+  if (!player) {
+    return 0;
+  }
+  if(Number.isFinite(player.IPR)) {
+    return Math.max(1, player.IPR);
+  }
+  return Math.max(1, player.rating);
 }
 
 Team.prototype = {
@@ -210,22 +213,22 @@ Team.prototype = {
   },
   getCalculatedTeamIPR: function(lineup) {
     var teamIPR = 0;
-    lineup.sort((a, b) => b.rating - a.rating);
+    lineup.sort((a, b) => iprForPlayer(b) - iprForPlayer(a));
 
     for(i in lineup) {
       var p = this.lineup[i];
       teamIPR += iprForPlayer(p);
     }
     if(lineup.length > 2 && lineup.length < 10) {
-      var p0 = lineup[0].IPR;
-      var p1 = lineup[1].IPR;
-      var p2 = lineup[2].IPR;
+      var p0 = iprForPlayer(lineup[0]);
+      var p1 = iprForPlayer(lineup[1]);
+      var p2 = iprForPlayer(lineup[2]);
       teamIPR += (p0 + p1 + p2)/3;
     }
     if(lineup.length > 5 && lineup.length < 9) {
-      var p3 = lineup[3].IPR;
-      var p4 = lineup[4].IPR;
-      var p5 = lineup[5].IPR;
+      var p3 = iprForPlayer(lineup[3]);
+      var p4 = iprForPlayer(lineup[4]);
+      var p5 = iprForPlayer(lineup[5]);
       teamIPR += (p3 + p4 + p5)/3;
     }
     return teamIPR;

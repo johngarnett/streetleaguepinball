@@ -273,12 +273,22 @@ router.post('/teams/:team_id/roster/remove', function(req,res) {
   res.redirect(`/teams/${team.key}`);
 });
 
+function iprForPlayer(player) {
+  if (!player) {
+    return 0;
+  }
+  if(Number.isFinite(player.IPR)) {
+    return Math.max(1, player.IPR);
+  }
+  return Math.max(1, player.rating);
+}
+
 function expectedHcp(teamRating, lineup) {
   if(lineup.length == 10) {
     return Math.trunc((50-teamRating)/2);
   }
 
-  lineup.sort((a, b) => b.rating - a.rating);
+  lineup.sort((a, b) => iprForPlayer(b) - iprForPlayer(a));
 
   var teamIPR = 0;
   for(i in lineup) {
@@ -286,19 +296,19 @@ function expectedHcp(teamRating, lineup) {
     teamIPR += p.rating;
   }
   if(lineup.length == 9) {
-    var p0 = lineup[0].rating;
-    var p1 = lineup[1].rating;
-    var p2 = lineup[2].rating;
+    var p0 = iprForPlayer(lineup[0]);
+    var p1 = iprForPlayer(lineup[1]);
+    var p2 = iprForPlayer(lineup[2]);
     teamIPR += (p0 + p1 + p2)/3;
   }
   if(lineup.length == 8) {
-    var p0 = lineup[0].rating;
-    var p1 = lineup[1].rating;
-    var p2 = lineup[2].rating;
+    var p0 = iprForPlayer(lineup[0]);
+    var p1 = iprForPlayer(lineup[1]);
+    var p2 = iprForPlayer(lineup[2]);
     teamIPR += (p0 + p1 + p2)/3;
-    var p3 = lineup[3].rating;
-    var p4 = lineup[4].rating;
-    var p5 = lineup[5].rating;
+    var p3 = iprForPlayer(lineup[3]);
+    var p4 = iprForPlayer(lineup[4]);
+    var p5 = iprForPlayer(lineup[5]);
     teamIPR += (p3 + p4 + p5)/3;
   }
 
