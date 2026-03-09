@@ -64,6 +64,8 @@ for(k in lineup) {
     label: npl + lineup[k].name
   });
 }
+players.sort((a,b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0));
+machines.sort((a,b) => (labels[a] > labels[b]) ? 1 : ((labels[b] > labels[a]) ? -1 : 0));
 
 //Need to render games.
 for(var i = 0; i < games.length; i++) {
