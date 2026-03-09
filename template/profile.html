@@ -1,9 +1,184 @@
-<h3>Profile</h3>
-Hello, {{player.name}}
-<br>
-<p>
-We will have more on this page in the future.
-Right now you can use it to verify that your name matches what shows up on your team and/or matches.
-If you notice a problem, please contact us.
-</p>
-<br><a href="/logout{{#redirect_url}}?redirect_url={{.}}{{/redirect_url}}">Logout</a>
+<script>
+async function fetchData() {
+    const url = 'https://pinballstats.info/search/iprsearch.pl?json={{player.name}}';
+
+    try {
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data); // Log the parsed data for debugging
+
+        displayData(data);
+
+    } catch (error) {
+        console.error('Error fetching data:', error); // Handle any errors
+        document.getElementById('data-container').innerHTML = '<p>Failed to load data.</p>';
+    }
+}
+
+function displayData(jsonData) {
+
+    player_name = "{{player.name}}";
+
+    IPR_value = jsonData["players"][player_name]?.["IPR"] || "";
+    if (IPR_value == "") {
+        IPR_value = 1;
+    }
+    document.getElementById('IPR').innerHTML = IPR_value;
+    document.getElementById('IPR').setAttribute('class', 'badge badge-'+IPR_value);
+
+    IFPA_dateupdated_value = jsonData["players"][player_name]?.["IFPA_dateupdated"] || "";
+    document.getElementById('IFPA_dateupdated').innerHTML = IFPA_dateupdated_value;
+
+    IFPA_ID_value = jsonData["players"][player_name]?.["IFPA_ID"] || "";
+    if (IFPA_ID_value != "") {
+        IFPA_ID_value = "<a href=\"https://www.ifpapinball.com/players/view.php?p=" + IFPA_ID_value + "\">" + IFPA_ID_value + "</a>";
+    }
+    else {
+        IFPA_ID_value = "<a href=\"https://www.ifpapinball.com/menu/about/faq/\">How do I become an official IFPA member?</a>";
+    }
+    document.getElementById('IFPA_ID').innerHTML = IFPA_ID_value;
+
+    IFPA_RANK_value = jsonData["players"][player_name]?.["IFPA_RANK"] || "";
+    document.getElementById('IFPA_RANK').innerHTML = IFPA_RANK_value;
+
+    MP_dateupdated_value = jsonData["players"][player_name]?.["MP_dateupdated"] || "";
+    document.getElementById('MP_dateupdated').innerHTML = MP_dateupdated_value;
+
+    MP_ID_value = jsonData["players"][player_name]?.["MP_ID"] || "";
+    if (MP_ID_value != "") {
+        MP_ID_value = "<a href=\"https://app.matchplay.events/users/" + MP_ID_value + "\">" + MP_ID_value + "</a>";
+    }
+    else {
+        MP_ID_value = "<a href=\"https://app.matchplay.events/\">Create or claim an account on Match Play Events</a>";
+    }
+    document.getElementById('MP_ID').innerHTML = MP_ID_value;
+
+    MP_LB_value = jsonData["players"][player_name]?.["MP_LB"] || "";
+    document.getElementById('MP_LB').innerHTML = MP_LB_value;
+
+    MP_RD_value = jsonData["players"][player_name]?.["MP_RD"] || "";
+    document.getElementById('MP_RD').innerHTML = MP_RD_value;
+
+    IFPA6_value = jsonData["thresholds"]?.["IFPA6"] || "";
+    document.getElementById('IFPA6').innerHTML = "&lt;&nbsp;" + IFPA6_value;
+    IFPA5_value = jsonData["thresholds"]?.["IFPA5"] || "";
+    document.getElementById('IFPA5').innerHTML = "&lt;&nbsp;" + IFPA5_value;
+    IFPA4_value = jsonData["thresholds"]?.["IFPA4"] || "";
+    document.getElementById('IFPA4').innerHTML = "&lt;&nbsp;" + IFPA4_value;
+    IFPA3_value = jsonData["thresholds"]?.["IFPA3"] || "";
+    document.getElementById('IFPA3').innerHTML = "&lt;&nbsp;" + IFPA3_value;
+    IFPA21_value = jsonData["thresholds"]?.["IFPA21"] || "";
+    document.getElementById('IFPA2').innerHTML = "&lt;&nbsp;" + IFPA21_value;
+    document.getElementById('IFPA1').innerHTML = "&ge;&nbsp;" + IFPA21_value;
+
+    MP6_value = jsonData["thresholds"]?.["MP6"] || "";
+    document.getElementById('MP6').innerHTML = "&gt;&nbsp;" + MP6_value;
+    MP5_value = jsonData["thresholds"]?.["MP5"] || "";
+    document.getElementById('MP5').innerHTML = "&gt;&nbsp;" + MP5_value;
+    MP4_value = jsonData["thresholds"]?.["MP4"] || "";
+    document.getElementById('MP4').innerHTML = "&gt;&nbsp;" + MP4_value;
+    MP3_value = jsonData["thresholds"]?.["MP3"] || "";
+    document.getElementById('MP3').innerHTML = "&gt;&nbsp;" + MP3_value;
+    MP21_value = jsonData["thresholds"]?.["MP21"] || "";
+    document.getElementById('MP2').innerHTML = "&gt;&nbsp;" + MP21_value;
+    document.getElementById('MP1').innerHTML = "&le;&nbsp;" + MP21_value;
+}
+
+fetchData();
+</script>
+
+<h3>My Account</h3>
+<table class="table" align="center" style="width: 90%;">
+  <tr>
+    <td colspan="2" style="text-align: center;"><span style="font-weight: bold;"><a href="https://pinballstats.info/search/iprsearch.pl?q={{player.name}}">{{player.name}}</a></span></td>
+  </tr>
+  <tr>
+    <td style="text-align: right; width: 50%;">IPR:</td>
+    <td><span id="IPR"><b>loading...</b></span></td>
+  </tr>
+</table>
+</br>
+<table class="table" align="center" style="width: 90%;">
+  <tr class="header-row">
+    <th class="text-xs-center" colspan="2">IFPA</th>
+  </tr>
+  <tr>
+    <td style="text-align: right; width: 50%;">ID:</td>
+    <td><span id="IFPA_ID" style="font-weight: bold;">loading...</span></td>
+  </tr>
+  <tr>
+    <td style="text-align: right; width: 50%;">Rank:</td>
+    <td><span id="IFPA_RANK" style="font-weight: bold;">loading...</span></td>
+  </tr>
+  <tr>
+    <td style="text-align: right; width: 50%;">Updated:</td>
+    <td><span id="IFPA_dateupdated" style="font-weight: bold;">loading...</span></td>
+  </tr>
+</table>
+</br>
+<table class="table" align="center" style="width: 90%;">
+  <tr class="header-row">
+    <th class="text-xs-center" colspan="2">Match Play Rating</th>
+  </tr>
+  <tr>
+    <td style="text-align: right; width: 50%;">ID:</td>
+    <td><span id="MP_ID" style="font-weight: bold;">loading...</span></td>
+  </tr>
+  <tr>
+    <td style="text-align: right; width: 50%;">LB:</td>
+    <td><span id="MP_LB" style="font-weight: bold;">loading...</span></td>
+  </tr>
+  <tr>
+    <td style="text-align: right; width: 50%;">RD:</td>
+    <td><span id="MP_RD" style="font-weight: bold;">loading...</span></td>
+  </tr>
+  <tr>
+    <td style="text-align: right; width: 50%;">Updated:</td>
+    <td><span id="MP_dateupdated" style="font-weight: bold;">loading...</span></td>
+  </tr>
+</table>
+<br/>
+<table class="table" align="center" style="width: 90%;">
+  <tr class="header-row">
+    <th style="padding-left: 20%;">IPR</th>
+    <th class="text-xs-center" style="padding-left: 15%;">IFPA Rank</th>
+    <th class="text-xs-center" style="padding-right: 15%;">Matchplay LB</th>
+  </tr>
+  <tr>
+    <td style="padding-left: 20%;"><a href="http://pinballstats.info/search/iprsearch.pl?ipr=6"><span class='badge badge-6'>6</span></a></td>
+    <td class="text-xs-center" style="padding-left: 15%;"><span id="IFPA6" style="font-weight: bold;">loading...</span></td>
+    <td class="text-xs-center" style="padding-right: 15%;"><span id="MP6" style="font-weight: bold;">loading...</span></td>
+  </tr>
+  <tr>
+    <td style="padding-left: 20%;"><a href="http://pinballstats.info/search/iprsearch.pl?ipr=5"><span class='badge badge-5'>5</span></a></td>
+    <td class="text-xs-center" style="padding-left: 15%;"><span id="IFPA5" style="font-weight: bold;">loading...</span></td>
+    <td class="text-xs-center" style="padding-right: 15%;"><span id="MP5" style="font-weight: bold;">loading...</span></td>
+  </tr>
+  <tr>
+    <td style="padding-left: 20%;"><a href="http://pinballstats.info/search/iprsearch.pl?ipr=4"><span class='badge badge-4'>4</span></a></td>
+    <td class="text-xs-center" style="padding-left: 15%;"><span id="IFPA4" style="font-weight: bold;">loading...</span></td>
+    <td class="text-xs-center" style="padding-right: 15%;"><span id="MP4" style="font-weight: bold;">loading...</span></td>
+  </tr>
+  <tr>
+    <td style="padding-left: 20%;"><a href="http://pinballstats.info/search/iprsearch.pl?ipr=3"><span class='badge badge-3'>3</span></a></td>
+    <td class="text-xs-center" style="padding-left: 15%;"><span id="IFPA3" style="font-weight: bold;">loading...</span></td>
+    <td class="text-xs-center" style="padding-right: 15%;"><span id="MP3" style="font-weight: bold;">loading...</span></td>
+  </tr>
+  <tr>
+    <td style="padding-left: 20%;"><a href="http://pinballstats.info/search/iprsearch.pl?ipr=2"><span class='badge badge-2'>2</span></a></td>
+    <td class="text-xs-center" style="padding-left: 15%;"><span id="IFPA2" style="font-weight: bold;">loading...</span></td>
+    <td class="text-xs-center" style="padding-right: 15%;"><span id="MP2" style="font-weight: bold;">loading...</span></td>
+  </tr>
+  <tr>
+    <td style="padding-left: 20%;"><a href="http://pinballstats.info/search/iprsearch.pl?ipr=1"><span class='badge badge-1'>1</span></a></td>
+    <td class="text-xs-center" style="padding-left: 15%;"><span id="IFPA1" style="font-weight: bold;">loading...</span></td>
+    <td class="text-xs-center" style="padding-right: 15%;"><span id="MP1" style="font-weight: bold;">loading...</span></td>
+  </tr>
+</table>
+
+<br><a href="/logout{{#redirect_url}}?redirect_url={{.}}{{/redirect_url}}{{^redirect_url}}?redirect_url=./login{{/redirect_url}}"">Logout</a>

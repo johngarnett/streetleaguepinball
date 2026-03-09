@@ -32,8 +32,10 @@ router.get('/',function(req,res) {
     });
   });
   
+  const ukey = req.user.key || 'ANON';  
   const html = mustache.render(base,{
-    title: 'Home'
+    title: 'Home',
+    playerFN: players.get(ukey) ? players.get(ukey).name.split(' ')[0] : "PLAYER"
   },{
     content: announcementsContent
   });
@@ -61,8 +63,10 @@ router.get('/standings',function(req,res) {
     groupKey: groupKeys[tier]
   }));
 
+  const ukey = req.user.key || 'ANON';
   const html = mustache.render(base,{
     title: 'Standings',
+    playerFN: players.get(ukey) ? players.get(ukey).name.split(' ')[0] : "PLAYER",
     divisions
   },{
     content: template
@@ -79,8 +83,10 @@ router.get('/schedule',function(req,res) {
 
   //TODO: Q: Where and when do we add results to the weeks?
 
+  const ukey = req.user.key || 'ANON';
   const html = mustache.render(base,{
     title: 'Schedule',
+    playerFN: players.get(ukey) ? players.get(ukey).name.split(' ')[0] : "PLAYER",
     weeks: weeks
   },{
     content: template
@@ -146,8 +152,10 @@ router.get('/stats',function(req,res) {
     };
   });
 
+  const ukey = req.user.key || 'ANON';
   const html = mustache.render(base,{
     title: 'Stats',
+    playerFN: players.get(ukey) ? players.get(ukey).name.split(' ')[0] : "PLAYER",
     divisions
   }, {
     content: template
@@ -191,8 +199,10 @@ router.get('/ifparules', function(req,res) {
 
 router.get('/new-teams',function(req,res) {
   const template = fs.readFileSync('./template/call-for-teams.html').toString();
+  const ukey = req.user.key || 'ANON';
   const html = mustache.render(base,{
-    title: 'Call For Teams'
+    title: 'Call For Teams',
+    playerFN: players.get(ukey) ? players.get(ukey).name.split(' ')[0] : "PLAYER"
   },{
     content: template
   });
@@ -201,8 +211,10 @@ router.get('/new-teams',function(req,res) {
 
 router.get('/ratings',function(req,res) {
   const template = fs.readFileSync('./template/ratings.html').toString();
+  const ukey = req.user.key || 'ANON';
   const html = mustache.render(base,{
-    title: 'Ratings'
+    title: 'Ratings',
+    playerFN: players.get(ukey) ? players.get(ukey).name.split(' ')[0] : "PLAYER"
   },{
     content: template
   });
@@ -211,8 +223,10 @@ router.get('/ratings',function(req,res) {
 
 router.get('/newplayers',function(req,res) {
   const template = fs.readFileSync('./template/newplayers.html').toString();
+  const ukey = req.user.key || 'ANON';
   const html = mustache.render(base,{
-    title: 'New Player Information'
+    title: 'New Player Information',
+    playerFN: players.get(ukey) ? players.get(ukey).name.split(' ')[0] : "PLAYER"
   },{
     content: template
   });
@@ -221,8 +235,10 @@ router.get('/newplayers',function(req,res) {
 
 router.get('/conduct',function(req,res) {
   const template = fs.readFileSync('./template/conduct.html').toString();
+  const ukey = req.user.key || 'ANON';
   const html = mustache.render(base,{
-    title: 'Report Player Conduct'
+    title: 'Report Player Conduct',
+    playerFN: players.get(ukey) ? players.get(ukey).name.split(' ')[0] : "PLAYER"
   },{
     content: template
   });
@@ -250,8 +266,10 @@ function format(num) {
 router.get('/players',function(req,res) {
   const template = fs.readFileSync('./template/players.html').toString();
 
+  const ukey = req.user.key || 'ANON';
   const html = mustache.render(base,{
     title: 'Players',
+    playerFN: players.get(ukey) ? players.get(ukey).name.split(' ')[0] : "PLAYER",
     players: players.all()
   },{
     content: template
@@ -299,8 +317,10 @@ router.get('/players/:key',function(req,res) {
 
   //TODO: Might be nice to have team mapped.
   const st = fullStats.divisions.all;
+  const ukey = req.user.key || 'ANON';
   const html = mustache.render(base,{
     title: 'Player',
+    playerFN: players.get(ukey) ? players.get(ukey).name.split(' ')[0] : "PLAYER",
     name,
     num_matches: st.num_matches,
     points_won: st.points.won,

@@ -7,6 +7,7 @@ const makeKey = require('../lib/make-key');
 const venues = require('../model/venues');
 const seasons = require('../model/seasons');
 const matches = require('../model/matches'); //For standings
+const players = require('../model/players');
 const stats = require('../model/stats');
 const IPR = require('../model/ratings');
 const { ROOT } = require('../constants');
@@ -57,8 +58,10 @@ router.get('/teams',function(req,res) {
   // sort by name
   list.sort(byName);
 
+  const ukey = req.user.key || 'ANON';
   const html = mustache.render(base,{
     title: 'Teams',
+    playerFN: players.get(ukey) ? players.get(ukey).name.split(' ')[0] : "PLAYER",
     teams: list
   },{
     content: template
@@ -179,11 +182,13 @@ router.get('/teams/:team_id',function(req,res) {
 
   let teamHandicap = expectedHcp(teamRating, lineup);
 
+  const ukey = req.user.key || 'ANON';
   const html = mustache.render(base,{
     canAdd: req.user.isLeagueAdmin,
     canRemove: req.user.isLeagueAdmin,
     team_id: team.key,
     title: team.name,
+    playerFN: players.get(ukey) ? players.get(ukey).name.split(' ')[0] : "PLAYER",
     name: team.name,
     group: group,
     venue: vname,

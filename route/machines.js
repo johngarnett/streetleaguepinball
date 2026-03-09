@@ -4,7 +4,7 @@ var express = require('express');
 var mustache = require('mustache');
 var router = express.Router();
 const config = require('../config');
-
+var players = require('../model/players');
 var machines = require('../model/machines');
 
 var base = fs.readFileSync('./template/base.html').toString();
@@ -31,6 +31,7 @@ router.get('/machines',function(req,res) {
 
   var html = mustache.render(base, {
     title: 'Machines',
+    playerFN: players.get(ukey) ? players.get(ukey).name.split(' ')[0] : "PLAYER",
     machines: list,
     canAdd: canAdd,
     canRemove: canRemove

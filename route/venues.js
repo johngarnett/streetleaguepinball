@@ -8,6 +8,7 @@ const machines = require('../model/machines');
 const venues = require('../model/venues');
 const seasons = require('../model/seasons');
 const config = require('../config');
+const players = require('../model/players');
 
 const base = fs.readFileSync('./template/base.html').toString();
 
@@ -31,6 +32,7 @@ router.get('/venues',function(req,res) {
 
   const html = mustache.render(base,{
     title: 'Venues',
+    playerFN: players.get(ukey) ? players.get(ukey).name.split(' ')[0] : "PLAYER",
     venues: list,
     canCreate: canCreate
   },{
@@ -50,7 +52,8 @@ router.get('/venues/create',function(req,res) {
 
   const template = fs.readFileSync('./template/venue_create.html').toString();
   const html = mustache.render(base,{
-    title: 'Create Venue'
+    title: 'Create Venue',
+    playerFN: players.get(ukey) ? players.get(ukey).name.split(' ')[0] : "PLAYER"
     //TODO: Include list of venue keys to avoid collision?
   },{
     content: template
@@ -141,8 +144,10 @@ router.get('/venues/:key',function(req,res) {
   list.sort((a,b) => [a.name, b.name].sort()[0] == a.name ? -1 : 1);
 
   const template = fs.readFileSync('./template/venue.html').toString();
+  const ukey = req.user.key || 'ANON';
   const html = mustache.render(base,{
     title: name,
+    playerFN: players.get(ukey) ? players.get(ukey).name.split(' ')[0] : "PLAYER",
     canAdd: canAdd,
     canRemove: canRemove,
     venue_id: key,

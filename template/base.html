@@ -39,33 +39,47 @@ on and off, that it might be pretty close to ideal.
 http://webdesignerwall.com/tutorials/css-responsive-navigation-menu
 -->
 
-<div class="nav-bar py-0">
+<div class="nav-bar py-0" style="display: flex; justify-content: space-between; width: 100%;">
   <div class="btn-group">
     <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <img src="/icon_128.png" width="38" height="38" /><span class="px-1 text-uppercase">{{title}}</span>
     </button>
     <div class="dropdown-menu">
       <a class="dropdown-item" href="/">HOME</a>
-      <a class="dropdown-item" href="http://pinballstats.info/search/">PLAYER LOOKUP</a>
       <a class="dropdown-item" href="/teams">TEAMS</a>
       <a class="dropdown-item" href="/schedule">SCHEDULE</a>
       <a class="dropdown-item" href="/standings">STANDINGS</a>
       <a class="dropdown-item" href="/matches">MATCHES</a>
-      <a class="dropdown-item" href="/mymatch">MY MATCH</a>
       <a class="dropdown-item" href="/stats">STATS</a>
       <a class="dropdown-item" href="/venues">VENUES</a>
       <a class="dropdown-item" href="/machines">MACHINES</a>
-      <a class="dropdown-item" href="/ratings">RATINGS</a>
       <a class="dropdown-item" href="/leaguerules">LEAGUE RULES</a>
       <a class="dropdown-item" href="/matchrules">MATCH RULES</a>
-      <a class="dropdown-item" href="http://tinyurl.com/mnparchive">ARCHIVES</a>
-      <a class="dropdown-item" href="/scoresheet">SCORESHEET PDF</a>      
       <a class="dropdown-item" href="/ifparules">IFPA RULES</a>
+      <a class="dropdown-item" href="/ratings">RATINGS</a>
+      <a class="dropdown-item" href="/scoresheet">SCORESHEET PDF</a>      
+      <a class="dropdown-item" href="http://tinyurl.com/mnparchive">ARCHIVES</a>
+    </div>
+  </div>
+
+  <div class="btn-group" style="width: 300px;">
+    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <img src="/icon_128.png" width="0" height="38" /><span class="px-1 text-uppercase">
+        {{#playerFN}}
+          {{playerFN}}
+        {{/playerFN}}
+        {{^playerFN}}
+          PLAYER
+        {{/playerFN}}
+      </span>
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="/mymatch">MY MATCH</a>
+      <a class="dropdown-item" href="/profile">MY ACCOUNT</a>
       <a class="dropdown-item" href="/signup">ACCOUNT SIGN-UP</a>
       <a class="dropdown-item" href="/NEWPLAYERS">NEW PLAYER INFORMATION</a>
       <a class="dropdown-item" href="/CONDUCT">REPORT PLAYER CONDUCT</a>
-      <a class="dropdown-item" href="/login{{#redirect_url}}?redirect_url={{.}}{{/redirect_url}}">LOGIN</a>
-      <a class="dropdown-item" href="/profile">PROFILE</a>
+      <a class="dropdown-item" href="http://pinballstats.info/search/">PLAYER LOOKUP</a>
     </div>
   </div>
 </div>
@@ -79,7 +93,7 @@ http://webdesignerwall.com/tutorials/css-responsive-navigation-menu
 </div>
 <div style="color: white;">
 <center>
-&copy;2019-2023 Monday Night Pinball
+&copy;2019-2026 Monday Night Pinball
 </center>
 </div>
 
