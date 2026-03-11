@@ -1,6 +1,9 @@
 var express = require('express');
 var fs = require('fs');
 var util = require('../lib/util');
+var matches = require('../model/matches');
+var CONST = require('../constants');
+
 var router = express.Router();
 
 const config = require('../config');
@@ -14,9 +17,34 @@ const UPLOADS_FOLDER = config.UPLOADS_FOLDER;
 
 console.log("Loaded postlog.js");
 
+// Capture the match info when available.
+
+router.post('/matches/:match_id/*', function(req, res, next) {
+   var match = matches.get(req.params.match_id);
+
+   if (match) {
+      req._match = match;
+   }
+   next();
+});
+
+// Note when both lineups are ready and confirmed. This handler runs before
+// the one that updates the match to reflect the final confirmation.
+
+router.post('/matches/:match_id/confirm', function(req, res, next) {
+   var match = req._match;
+
+   if (req.body && match && (match.state == CONST.PREGAME) && match.away && match.home && match.away.ready && match.home.ready) {
+      req._confirmed = (match.home.confirmed && req.body.right) || (match.away.confirmed && req.body.left);
+   } else {
+      req._confirmed = false;
+   }
+   next();
+});
+
 //I also want to log ALL POST operations to a file.
 router.post('/*',function(req,res,next) {
-console.log("RECORDING POST....");
+  console.log("RECORDING POST....");
 
   //TODO: Semi weird to do this photo scrubbing here,
   //	  but I'm just moving the data so that we don't
@@ -24,12 +52,7 @@ console.log("RECORDING POST....");
   //      a standardized convention for photos and save
   //      them to a cache, and attach the filename to
   //      the req.
-/*
-for(prop in req.body) {
-  var x = req.body[prop];
-  console.log(prop,typeof x,x.length);
-}
-*/
+
   if(req.body.photo_data) {
     console.log("Saving photo data ...");
     var x = req.body.photo_data;
@@ -52,14 +75,45 @@ for(prop in req.body) {
     ukey: req.user.key
   };
 
-  var chunk = JSON.stringify(data,null,2);
-  var id = util.digest(chunk);
+  emit(req, data);
 
-  //THIS WAS A REALLY BAD IDEA TO APPEND TO A COMMON FILE.
-  //fs.appendFileSync(DATA_FOLDER + '/post.log',chunk+',\n');
+  if (req._match && req._confirmed) {
+     const match = req._match;
 
-  fs.writeFileSync(DATA_FOLDER + '/posts/'+id,chunk);
+     emit(req, {
+        when: Date.now(),
+        body: {
+           venue: match.venue,
+           away: match.away.lineup,
+           home: match.home.lineup
+        }
+     });
+  }
+
   next();
+
+  function emit(req, data) {
+     var combined = data;
+
+     if (req._match) {
+        const match = req._match;
+        const matchInfo = {
+           match: {
+              key: match.key,
+              state: match.state,
+              round: match.round
+           }
+        };
+
+        console.log(match); // DEBUG
+
+        combined = {...data, ...matchInfo};
+     }
+     var chunk = JSON.stringify(combined, null, 2);
+     var id = util.digest(chunk);
+
+     fs.writeFileSync(DATA_FOLDER + '/posts/' + id, chunk);
+  }
 });
 
 module.exports = router;
