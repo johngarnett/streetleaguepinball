@@ -248,7 +248,7 @@ router.post('/matches/:match_id/picks',function(req,res) {
     state: state,
     round: round
   }, function(errors,m) {
-    if(errors) {
+    if(hasErrors(errors)) {
       console.log(errors);
       res.send(renderMatch({
         match: match,
@@ -980,5 +980,9 @@ router.get('/pics/:pid',function(req,res) {
     res.send("NOT FOUND");
   }
 });
+
+function hasErrors(errors) {
+   return (Array.isArray(errors)) ? (errors.length > 0) : errors;
+}
 
 module.exports = router;
