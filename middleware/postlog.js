@@ -82,6 +82,7 @@ router.post('/*',function(req,res,next) {
 
      emit(req, {
         when: Date.now(),
+        path: "/matches/" + match.key + "/lineups",
         body: {
            venue: match.venue,
            away: match.away.lineup,
